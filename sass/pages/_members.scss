@@ -564,3 +564,237 @@
 		margin-top: $space-6;
 	}
 }
+
+// -----------------------------------------------------------------------------
+// WordPress.org credentials section (badges, plugins, themes)
+// -----------------------------------------------------------------------------
+.wcu-folks-credentials {
+	display: flex;
+	flex-direction: column;
+	gap: $space-8;
+	margin-top: $space-12;
+	padding: $space-8;
+	background-color: $color-white;
+	border: $border-width solid $color-border;
+	border-radius: $radius-lg;
+}
+
+.wcu-folks-credentials__header {
+	display: flex;
+	flex-direction: column;
+	gap: $space-2;
+	align-items: flex-start;
+	justify-content: space-between;
+	padding-bottom: $space-5;
+	border-bottom: $border-width solid $color-border;
+
+	@include breakpoint-up(sm) {
+		flex-direction: row;
+		gap: $space-4;
+		align-items: baseline;
+	}
+}
+
+.wcu-folks-credentials__heading {
+	margin: 0;
+	font-size: fluid(20, 24);
+}
+
+.wcu-folks-credentials__profile-link {
+	display: inline-flex;
+	gap: $space-2;
+	align-items: center;
+	font-family: $font-heading;
+	font-size: $font-size-sm;
+	font-weight: $font-weight-semibold;
+	color: $color-primary;
+	text-decoration: none;
+
+	&:hover,
+	&:focus-visible {
+		color: $color-primary-dark;
+		text-decoration: underline;
+	}
+}
+
+.wcu-folks-credentials__group {
+	display: flex;
+	flex-direction: column;
+	gap: $space-4;
+}
+
+.wcu-folks-credentials__group-heading {
+	margin: 0;
+	font-family: $font-heading;
+	font-size: $font-size-sm;
+	font-weight: $font-weight-semibold;
+	color: $color-text-muted;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+}
+
+// -----------------------------------------------------------------------------
+// Badges
+// -----------------------------------------------------------------------------
+.wcu-folks-badges {
+	@include list-reset;
+
+	display: flex;
+	flex-wrap: wrap;
+	gap: $space-2;
+
+	li {
+		margin: 0;
+	}
+}
+
+.wcu-folks-badge {
+	display: inline-flex;
+	gap: $space-2;
+	align-items: center;
+	padding: 0.4rem $space-3;
+	font-family: $font-heading;
+	font-size: $font-size-sm;
+	font-weight: $font-weight-medium;
+	color: $color-text;
+	background-color: $color-bg-alt;
+	border: $border-width solid $color-border;
+	border-radius: $radius-pill;
+}
+
+.wcu-folks-badge__dot {
+	display: inline-block;
+	flex-shrink: 0;
+	width: 0.6rem;
+	height: 0.6rem;
+	background-color: $color-primary;
+	border-radius: $radius-circle;
+}
+
+// Badge color hints based on common wp.org slugs.
+.wcu-folks-badge--core-team .wcu-folks-badge__dot,
+.wcu-folks-badge--core-contributor .wcu-folks-badge__dot { background-color: #2271B1; }
+
+.wcu-folks-badge--plugin-developer .wcu-folks-badge__dot,
+.wcu-folks-badge--plugin-author .wcu-folks-badge__dot { background-color: #826EB4; }
+
+.wcu-folks-badge--theme-developer .wcu-folks-badge__dot,
+.wcu-folks-badge--theme-author .wcu-folks-badge__dot { background-color: #EC4899; }
+
+.wcu-folks-badge--community-team .wcu-folks-badge__dot,
+.wcu-folks-badge--community-contributor .wcu-folks-badge__dot,
+.wcu-folks-badge--meetup-organizer .wcu-folks-badge__dot,
+.wcu-folks-badge--wordcamp-speaker .wcu-folks-badge__dot { background-color: #16A34A; }
+
+.wcu-folks-badge--polyglots-team .wcu-folks-badge__dot,
+.wcu-folks-badge--translation-editor .wcu-folks-badge__dot,
+.wcu-folks-badge--translation-contributor .wcu-folks-badge__dot { background-color: #F59E0B; }
+
+.wcu-folks-badge--accessibility-team .wcu-folks-badge__dot,
+.wcu-folks-badge--accessibility-contributor .wcu-folks-badge__dot { background-color: #06B6D4; }
+
+.wcu-folks-badge--training-team .wcu-folks-badge__dot,
+.wcu-folks-badge--training-contributor .wcu-folks-badge__dot { background-color: #DB2777; }
+
+.wcu-folks-badge--photos-team .wcu-folks-badge__dot,
+.wcu-folks-badge--photo-contributor .wcu-folks-badge__dot { background-color: #14B8A6; }
+
+// -----------------------------------------------------------------------------
+// Authored plugins / themes list
+// -----------------------------------------------------------------------------
+.wcu-folks-projects {
+	@include list-reset;
+
+	display: grid;
+	gap: $space-3;
+
+	@include breakpoint-up(sm) {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	li {
+		margin: 0;
+	}
+}
+
+.wcu-folks-projects--themes {
+	@include breakpoint-up(md) {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+}
+
+.wcu-folks-project__link {
+	display: flex;
+	gap: $space-3;
+	align-items: flex-start;
+	padding: $space-3;
+	color: $color-text;
+	text-decoration: none;
+	background-color: $color-bg-alt;
+	border: $border-width solid $color-border;
+	border-radius: $radius-md;
+	transition: border-color $transition-fast, background-color $transition-fast;
+
+	&:hover,
+	&:focus-visible {
+		background-color: $color-white;
+		border-color: $color-primary;
+	}
+}
+
+.wcu-folks-project__icon {
+	flex-shrink: 0;
+	width: 3rem;
+	height: 3rem;
+	overflow: hidden;
+	object-fit: cover;
+	background-color: $color-white;
+	border-radius: $radius-md;
+}
+
+.wcu-folks-project__icon--theme {
+	width: 5rem;
+	height: 3rem;
+}
+
+.wcu-folks-project__icon--placeholder {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-family: $font-heading;
+	font-size: $font-size-lg;
+	font-weight: $font-weight-bold;
+	color: $color-primary;
+	background-color: rgba($color-primary, 0.1);
+}
+
+.wcu-folks-project__body {
+	display: flex;
+	flex-direction: column;
+	gap: $space-1;
+	min-width: 0;
+}
+
+.wcu-folks-project__name {
+	font-family: $font-heading;
+	font-size: $font-size-md;
+	font-weight: $font-weight-semibold;
+	color: $color-text;
+
+	.wcu-folks-project__link:hover &,
+	.wcu-folks-project__link:focus-visible & {
+		color: $color-primary;
+	}
+}
+
+.wcu-folks-project__desc {
+	font-size: $font-size-sm;
+	line-height: $line-height-base;
+	color: $color-text-muted;
+}
+
+.wcu-folks-project__meta {
+	font-family: $font-heading;
+	font-size: $font-size-xs;
+	color: $color-text-muted;
+}

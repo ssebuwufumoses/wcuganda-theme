@@ -299,6 +299,131 @@ while ( have_posts() ) :
 					</div>
 				</section>
 			<?php endif; ?>
+
+			<?php
+			// =========================================================
+			// WordPress.org credentials — badges + authored plugins/themes
+			// =========================================================
+			if ( ! empty( $wcu_wporg_username ) ) :
+				$wcu_badges  = class_exists( 'WCU_WPOrg_Profiles' ) ? WCU_WPOrg_Profiles::get_badges( $wcu_wporg_username ) : array();
+				$wcu_plugins = class_exists( 'WCU_WPOrg_Repo' ) ? WCU_WPOrg_Repo::get_plugins( $wcu_wporg_username, 12 ) : array();
+				$wcu_themes  = class_exists( 'WCU_WPOrg_Repo' ) ? WCU_WPOrg_Repo::get_themes( $wcu_wporg_username, 12 ) : array();
+
+				if ( ! empty( $wcu_badges ) || ! empty( $wcu_plugins ) || ! empty( $wcu_themes ) ) :
+					?>
+					<section class="wcu-folks-credentials">
+
+						<header class="wcu-folks-credentials__header">
+							<h2 class="wcu-folks-credentials__heading"><?php esc_html_e( 'On WordPress.org', 'wcuganda' ); ?></h2>
+							<a class="wcu-folks-credentials__profile-link" href="<?php echo esc_url( 'https://profiles.wordpress.org/' . rawurlencode( $wcu_wporg_username ) . '/' ); ?>" rel="noopener" target="_blank">
+								@<?php echo esc_html( $wcu_wporg_username ); ?>
+								<?php wcu_svg_icon( 'arrow-right', array( 'width' => 14, 'height' => 14 ) ); ?>
+							</a>
+						</header>
+
+						<?php if ( ! empty( $wcu_badges ) ) : ?>
+							<div class="wcu-folks-credentials__group">
+								<h3 class="wcu-folks-credentials__group-heading"><?php esc_html_e( 'Contributor badges', 'wcuganda' ); ?></h3>
+								<ul class="wcu-folks-badges">
+									<?php foreach ( $wcu_badges as $wcu_badge ) : ?>
+										<li>
+											<span class="wcu-folks-badge wcu-folks-badge--<?php echo esc_attr( $wcu_badge['slug'] ); ?>">
+												<span class="wcu-folks-badge__dot" aria-hidden="true"></span>
+												<span class="wcu-folks-badge__name"><?php echo esc_html( $wcu_badge['name'] ); ?></span>
+											</span>
+										</li>
+									<?php endforeach; ?>
+								</ul>
+							</div>
+						<?php endif; ?>
+
+						<?php if ( ! empty( $wcu_plugins ) ) : ?>
+							<div class="wcu-folks-credentials__group">
+								<h3 class="wcu-folks-credentials__group-heading">
+									<?php
+									printf(
+										/* translators: %d: count. */
+										esc_html( _n( 'Plugin authored (%d)', 'Plugins authored (%d)', count( $wcu_plugins ), 'wcuganda' ) ),
+										(int) count( $wcu_plugins )
+									);
+									?>
+								</h3>
+								<ul class="wcu-folks-projects">
+									<?php foreach ( $wcu_plugins as $wcu_plugin ) : ?>
+										<li class="wcu-folks-project">
+											<a class="wcu-folks-project__link" href="<?php echo esc_url( $wcu_plugin['url'] ); ?>" rel="noopener" target="_blank">
+												<?php if ( ! empty( $wcu_plugin['icon'] ) ) : ?>
+													<img class="wcu-folks-project__icon" src="<?php echo esc_url( $wcu_plugin['icon'] ); ?>" alt="" loading="lazy">
+												<?php else : ?>
+													<span class="wcu-folks-project__icon wcu-folks-project__icon--placeholder" aria-hidden="true">
+														<?php echo esc_html( strtoupper( mb_substr( $wcu_plugin['name'], 0, 1 ) ) ); ?>
+													</span>
+												<?php endif; ?>
+												<span class="wcu-folks-project__body">
+													<span class="wcu-folks-project__name"><?php echo esc_html( $wcu_plugin['name'] ); ?></span>
+													<?php if ( ! empty( $wcu_plugin['description'] ) ) : ?>
+														<span class="wcu-folks-project__desc"><?php echo esc_html( wp_trim_words( $wcu_plugin['description'], 18 ) ); ?></span>
+													<?php endif; ?>
+													<?php if ( $wcu_plugin['active_installs'] > 0 ) : ?>
+														<span class="wcu-folks-project__meta">
+															<?php
+															printf(
+																/* translators: %s: install count, e.g. "1,000+". */
+																esc_html__( '%s+ active installs', 'wcuganda' ),
+																esc_html( number_format_i18n( $wcu_plugin['active_installs'] ) )
+															);
+															?>
+														</span>
+													<?php endif; ?>
+												</span>
+											</a>
+										</li>
+									<?php endforeach; ?>
+								</ul>
+							</div>
+						<?php endif; ?>
+
+						<?php if ( ! empty( $wcu_themes ) ) : ?>
+							<div class="wcu-folks-credentials__group">
+								<h3 class="wcu-folks-credentials__group-heading">
+									<?php
+									printf(
+										/* translators: %d: count. */
+										esc_html( _n( 'Theme authored (%d)', 'Themes authored (%d)', count( $wcu_themes ), 'wcuganda' ) ),
+										(int) count( $wcu_themes )
+									);
+									?>
+								</h3>
+								<ul class="wcu-folks-projects wcu-folks-projects--themes">
+									<?php foreach ( $wcu_themes as $wcu_theme ) : ?>
+										<li class="wcu-folks-project">
+											<a class="wcu-folks-project__link" href="<?php echo esc_url( $wcu_theme['url'] ); ?>" rel="noopener" target="_blank">
+												<?php if ( ! empty( $wcu_theme['icon'] ) ) : ?>
+													<img class="wcu-folks-project__icon wcu-folks-project__icon--theme" src="<?php echo esc_url( $wcu_theme['icon'] ); ?>" alt="" loading="lazy">
+												<?php else : ?>
+													<span class="wcu-folks-project__icon wcu-folks-project__icon--placeholder" aria-hidden="true">
+														<?php echo esc_html( strtoupper( mb_substr( $wcu_theme['name'], 0, 1 ) ) ); ?>
+													</span>
+												<?php endif; ?>
+												<span class="wcu-folks-project__body">
+													<span class="wcu-folks-project__name"><?php echo esc_html( $wcu_theme['name'] ); ?></span>
+													<?php if ( ! empty( $wcu_theme['description'] ) ) : ?>
+														<span class="wcu-folks-project__desc"><?php echo esc_html( wp_trim_words( $wcu_theme['description'], 18 ) ); ?></span>
+													<?php endif; ?>
+												</span>
+											</a>
+										</li>
+									<?php endforeach; ?>
+								</ul>
+							</div>
+						<?php endif; ?>
+
+					</section>
+					<?php
+				endif;
+			endif;
+			?>
+
 		</div>
 
 	</article>

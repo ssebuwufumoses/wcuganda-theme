@@ -45,6 +45,8 @@ $wcu_includes = array(
 	'/inc/custom-post-types.php',
 	'/inc/taxonomies.php',
 	'/inc/api/class-wporg-events.php',
+	'/inc/api/class-wporg-profiles.php',
+	'/inc/api/class-wporg-repo.php',
 	'/inc/admin/class-meta-box.php',
 	'/inc/admin/meta-boxes.php',
 	'/inc/admin/admin-columns.php',
