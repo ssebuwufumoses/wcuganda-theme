@@ -76,8 +76,11 @@ if ( empty( $wcu_event_cards ) && class_exists( 'WCU_WPOrg_Events' ) ) {
 			<h2><?php esc_html_e( 'Upcoming events', 'wcuganda' ); ?></h2>
 		</header>
 
-		<?php if ( ! empty( $wcu_event_cards ) ) : ?>
-			<div class="wcu-grid wcu-grid--3">
+		<?php if ( ! empty( $wcu_event_cards ) ) :
+			$wcu_event_count = min( count( $wcu_event_cards ), 3 );
+			$wcu_grid_class  = 'wcu-grid wcu-grid--' . (int) $wcu_event_count;
+			?>
+			<div class="<?php echo esc_attr( $wcu_grid_class ); ?>">
 				<?php foreach ( $wcu_event_cards as $wcu_card ) : ?>
 					<article class="wcu-card">
 						<?php if ( ! empty( $wcu_card['image'] ) ) : ?>

@@ -9,6 +9,13 @@
 	gap: $space-6;
 }
 
+.wcu-grid--1 {
+	grid-template-columns: 1fr;
+	max-width: 32rem;
+	margin-right: auto;
+	margin-left: auto;
+}
+
 .wcu-grid--2 {
 	@include breakpoint-up(sm) {
 		grid-template-columns: repeat(2, 1fr);
