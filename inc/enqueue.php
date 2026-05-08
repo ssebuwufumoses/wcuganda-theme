@@ -18,19 +18,12 @@ function wcu_enqueue_assets() {
 	$theme_uri = WCU_THEME_URI;
 	$version   = WCU_THEME_VERSION;
 
-	// Google Fonts: Inter (headings) + Source Serif 4 (body).
-	wp_enqueue_style(
-		'wcu-google-fonts',
-		'https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap',
-		array(),
-		null
-	);
-
-	// Compiled theme stylesheet.
+	// Compiled theme stylesheet (declares @font-face rules for self-hosted Inter
+	// and Source Serif 4 variable fonts).
 	wp_enqueue_style(
 		'wcu-style',
 		$theme_uri . '/assets/css/style.css',
-		array( 'wcu-google-fonts' ),
+		array(),
 		$version
 	);
 
@@ -51,22 +44,26 @@ function wcu_enqueue_assets() {
 add_action( 'wp_enqueue_scripts', 'wcu_enqueue_assets' );
 
 /**
- * Add preconnect resource hints for Google Fonts.
+ * Preload the Latin variable font files used above the fold so the browser
+ * can fetch them in parallel with the stylesheet instead of waiting for the
+ * @font-face rules to be parsed.
  *
- * @param array  $urls          Resource URLs already queued for the relation.
- * @param string $relation_type Relation type being requested.
- * @return array Filtered URLs.
+ * @return void
  */
-function wcu_resource_hints( $urls, $relation_type ) {
-	if ( wp_style_is( 'wcu-google-fonts', 'enqueued' ) && 'preconnect' === $relation_type ) {
-		$urls[] = array(
-			'href'        => 'https://fonts.gstatic.com',
-			'crossorigin' => 'anonymous',
+function wcu_preload_fonts() {
+	$fonts = array(
+		'inter-latin-wght-normal.woff2',
+		'source-serif-4-latin-wght-normal.woff2',
+	);
+
+	foreach ( $fonts as $font ) {
+		printf(
+			'<link rel="preload" href="%s" as="font" type="font/woff2" crossorigin>' . "\n",
+			esc_url( WCU_THEME_URI . '/assets/fonts/' . $font )
 		);
 	}
-	return $urls;
 }
-add_filter( 'wp_resource_hints', 'wcu_resource_hints', 10, 2 );
+add_action( 'wp_head', 'wcu_preload_fonts', 2 );
 
 /**
  * Enqueue editor (Gutenberg) styles.

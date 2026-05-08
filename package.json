@@ -9,6 +9,8 @@
     "build": "sass sass/style.scss:assets/css/style.css --style=compressed --no-source-map"
   },
   "devDependencies": {
+    "@fontsource-variable/inter": "^5.2.8",
+    "@fontsource-variable/source-serif-4": "^5.2.9",
     "sass": "^1.77.0"
   }
 }
