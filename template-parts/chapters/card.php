@@ -75,17 +75,17 @@ $wcu_chapter_excerpt   = get_the_excerpt();
 
 	</div>
 
-	<?php if ( ! empty( $wcu_chapter_meetup ) ) : ?>
-		<div class="wcu-card__footer">
-			<a class="wcu-btn wcu-btn--ghost wcu-btn--sm" href="<?php the_permalink(); ?>">
-				<?php esc_html_e( 'Visit chapter', 'wcuganda' ); ?>
-				<?php wcu_svg_icon( 'arrow-right', array( 'width' => 14, 'height' => 14 ) ); ?>
-			</a>
+	<div class="wcu-card__footer">
+		<a class="wcu-btn wcu-btn--ghost wcu-btn--sm" href="<?php the_permalink(); ?>">
+			<?php esc_html_e( 'Visit chapter', 'wcuganda' ); ?>
+			<?php wcu_svg_icon( 'arrow-right', array( 'width' => 14, 'height' => 14 ) ); ?>
+		</a>
+		<?php if ( ! empty( $wcu_chapter_meetup ) ) : ?>
 			<a class="wcu-card__meetup-link" href="<?php echo esc_url( $wcu_chapter_meetup ); ?>" rel="nofollow noopener" target="_blank" aria-label="<?php esc_attr_e( 'Open on Meetup.com', 'wcuganda' ); ?>">
 				<?php esc_html_e( 'Meetup.com', 'wcuganda' ); ?>
 				<?php wcu_svg_icon( 'arrow-right', array( 'width' => 12, 'height' => 12 ) ); ?>
 			</a>
-		</div>
-	<?php endif; ?>
+		<?php endif; ?>
+	</div>
 
 </article>
