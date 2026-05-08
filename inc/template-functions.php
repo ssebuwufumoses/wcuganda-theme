@@ -75,6 +75,65 @@ function wcu_excerpt_more( $more ) {
 add_filter( 'excerpt_more', 'wcu_excerpt_more' );
 
 /**
+ * Tune the events archive query: only future events, sorted by event date,
+ * filterable by ?chapter=slug and ?type=slug.
+ *
+ * @param WP_Query $query Query object.
+ * @return void
+ */
+function wcu_events_archive_query( $query ) {
+	if ( is_admin() || ! $query->is_main_query() ) {
+		return;
+	}
+
+	if ( ! $query->is_post_type_archive( 'wcu_event' ) ) {
+		return;
+	}
+
+	$query->set( 'posts_per_page', 9 );
+	$query->set( 'meta_key', '_wcu_event_date' );
+	$query->set( 'orderby', 'meta_value' );
+	$query->set( 'order', 'ASC' );
+
+	$meta_query = array(
+		array(
+			'key'     => '_wcu_event_date',
+			'value'   => current_time( 'Y-m-d' ),
+			'compare' => '>=',
+			'type'    => 'DATE',
+		),
+	);
+
+	$tax_query = array();
+
+	$chapter = isset( $_GET['chapter'] ) ? sanitize_title( wp_unslash( $_GET['chapter'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	if ( '' !== $chapter ) {
+		$tax_query[] = array(
+			'taxonomy' => 'wcu_chapter_tax',
+			'field'    => 'slug',
+			'terms'    => $chapter,
+		);
+	}
+
+	$type = isset( $_GET['type'] ) ? sanitize_title( wp_unslash( $_GET['type'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	if ( '' !== $type ) {
+		$tax_query[] = array(
+			'taxonomy' => 'wcu_event_type',
+			'field'    => 'slug',
+			'terms'    => $type,
+		);
+	}
+
+	$query->set( 'meta_query', $meta_query );
+
+	if ( ! empty( $tax_query ) ) {
+		$tax_query['relation'] = 'AND';
+		$query->set( 'tax_query', $tax_query );
+	}
+}
+add_action( 'pre_get_posts', 'wcu_events_archive_query' );
+
+/**
  * Strip the "Category:" / "Tag:" / "Archives:" prefix from archive titles.
  *
  * @param string $title Archive title.

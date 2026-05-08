@@ -112,6 +112,47 @@ if ( ! function_exists( 'wcu_entry_footer' ) ) :
 	}
 endif;
 
+if ( ! function_exists( 'wcu_event_to_card_array' ) ) :
+	/**
+	 * Normalize a wcu_event post into the shape expected by template-parts/events/card.php.
+	 *
+	 * @param int|WP_Post $post Post ID or object.
+	 * @return array<string,mixed>
+	 */
+	function wcu_event_to_card_array( $post ) {
+		$post_id = is_object( $post ) ? $post->ID : (int) $post;
+
+		return array(
+			'title'    => get_the_title( $post_id ),
+			'url'      => get_permalink( $post_id ),
+			'date'     => get_post_meta( $post_id, '_wcu_event_date', true ),
+			'venue'    => get_post_meta( $post_id, '_wcu_event_venue', true ),
+			'image'    => get_the_post_thumbnail_url( $post_id, 'wcu-card' ),
+			'is_local' => true,
+		);
+	}
+endif;
+
+if ( ! function_exists( 'wcu_wporg_event_to_card_array' ) ) :
+	/**
+	 * Normalize a WP.org Events API payload into the card shape.
+	 *
+	 * @param array $event WP.org event array (from WCU_WPOrg_Events::get_events).
+	 * @return array<string,mixed>
+	 */
+	function wcu_wporg_event_to_card_array( $event ) {
+		return array(
+			'title'    => isset( $event['title'] ) ? $event['title'] : '',
+			'url'      => isset( $event['url'] ) ? $event['url'] : '',
+			'date'     => isset( $event['date'] ) ? $event['date'] : '',
+			'venue'    => isset( $event['location'] ) ? $event['location'] : '',
+			'image'    => '',
+			'is_local' => false,
+			'meetup'   => isset( $event['meetup'] ) ? $event['meetup'] : '',
+		);
+	}
+endif;
+
 if ( ! function_exists( 'wcu_post_thumbnail' ) ) :
 	/**
 	 * Output the featured image for the current post in a responsive wrapper.

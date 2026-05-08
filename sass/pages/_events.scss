@@ -1,0 +1,314 @@
+// =============================================================================
+// Events archive + single event styles.
+// =============================================================================
+
+@use '../abstracts' as *;
+
+// -----------------------------------------------------------------------------
+// Archive
+// -----------------------------------------------------------------------------
+.wcu-events-archive__header {
+	padding-top: $space-12;
+	padding-bottom: $space-8;
+	background-color: $color-bg-alt;
+
+	@include breakpoint-up(md) {
+		padding-top: $space-16;
+		padding-bottom: $space-10;
+	}
+}
+
+.wcu-events-archive__title {
+	margin: 0 0 $space-3;
+	font-size: fluid(36, 56);
+	letter-spacing: -0.02em;
+}
+
+.wcu-events-archive__lead {
+	max-width: 60ch;
+	margin: 0;
+	font-size: $font-size-lg;
+	line-height: $line-height-relaxed;
+	color: $color-text-muted;
+}
+
+.wcu-events-archive__section {
+	padding-top: $space-10;
+
+	&:last-child {
+		padding-bottom: $space-16;
+	}
+
+	@include breakpoint-up(md) {
+		padding-top: $space-12;
+	}
+}
+
+.wcu-events-archive__section-title {
+	margin: 0 0 $space-6;
+	font-size: fluid(22, 28);
+	letter-spacing: -0.01em;
+}
+
+.wcu-events-archive__section-lead {
+	margin: -$space-4 0 $space-6;
+	color: $color-text-muted;
+}
+
+.wcu-events-archive__section--past {
+	.wcu-card {
+		opacity: 0.85;
+		filter: saturate(0.85);
+
+		&:hover,
+		&:focus-within {
+			opacity: 1;
+			filter: none;
+		}
+	}
+}
+
+.wcu-events-archive__section--remote {
+	padding-top: $space-12;
+	margin-top: $space-12;
+	border-top: $border-width solid $color-border;
+}
+
+.wcu-events-archive__empty {
+	padding: $space-8;
+	font-size: $font-size-lg;
+	color: $color-text-muted;
+	text-align: center;
+	background: $color-bg-alt;
+	border-radius: $radius-lg;
+}
+
+// -----------------------------------------------------------------------------
+// Filter chips
+// -----------------------------------------------------------------------------
+.wcu-event-filters {
+	display: flex;
+	flex-direction: column;
+	gap: $space-4;
+	padding: $space-5 0 $space-2;
+
+	@include breakpoint-up(md) {
+		gap: $space-5;
+		padding: $space-6 0 $space-3;
+	}
+}
+
+.wcu-event-filters__group {
+	display: flex;
+	flex-wrap: wrap;
+	gap: $space-2 $space-3;
+	align-items: center;
+}
+
+.wcu-event-filters__label {
+	flex-shrink: 0;
+	font-family: $font-heading;
+	font-size: $font-size-sm;
+	font-weight: $font-weight-semibold;
+	color: $color-text-muted;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+}
+
+.wcu-event-filters__chip {
+	display: inline-flex;
+	align-items: center;
+	padding: $space-2 $space-4;
+	font-family: $font-heading;
+	font-size: $font-size-sm;
+	font-weight: $font-weight-medium;
+	color: $color-text;
+	text-decoration: none;
+	background-color: $color-white;
+	border: $border-width solid $color-border;
+	border-radius: $radius-pill;
+	transition: color $transition-fast, background-color $transition-fast,
+		border-color $transition-fast;
+
+	&:hover,
+	&:focus-visible {
+		color: $color-primary;
+		text-decoration: none;
+		background-color: $color-bg-alt;
+		border-color: $color-primary;
+	}
+
+	&.is-active {
+		color: $color-white;
+		background-color: $color-primary;
+		border-color: $color-primary;
+	}
+}
+
+// -----------------------------------------------------------------------------
+// Single event
+// -----------------------------------------------------------------------------
+.wcu-event-hero {
+	padding: $space-12 0;
+	color: $color-text-on-dark;
+	background-color: $color-primary;
+
+	@include breakpoint-up(md) {
+		padding: $space-16 0;
+	}
+}
+
+.wcu-event-hero__back {
+	display: inline-flex;
+	gap: $space-2;
+	align-items: center;
+	margin-bottom: $space-5;
+	font-family: $font-heading;
+	font-size: $font-size-sm;
+	font-weight: $font-weight-semibold;
+	color: rgba($color-text-on-dark, 0.85);
+	text-decoration: none;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+
+	&:hover,
+	&:focus-visible {
+		color: $color-text-on-dark;
+		text-decoration: none;
+	}
+}
+
+.wcu-event-hero__date {
+	display: flex;
+	gap: $space-2;
+	align-items: center;
+	margin: 0 0 $space-3;
+	font-family: $font-heading;
+	font-size: $font-size-md;
+	color: rgba($color-text-on-dark, 0.9);
+
+	svg {
+		flex-shrink: 0;
+	}
+}
+
+.wcu-event-hero__title {
+	margin: 0;
+	font-size: fluid(32, 56);
+	line-height: 1.05;
+	color: $color-text-on-dark;
+	letter-spacing: -0.02em;
+}
+
+.wcu-event-hero__past-badge {
+	display: inline-block;
+	margin-top: $space-4;
+	padding: $space-1 $space-3;
+	font-family: $font-heading;
+	font-size: $font-size-xs;
+	font-weight: $font-weight-semibold;
+	color: $color-text-on-dark;
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+	background-color: rgba($color-text-on-dark, 0.18);
+	border-radius: $radius-pill;
+}
+
+.wcu-event-single__inner {
+	display: grid;
+	gap: $space-10;
+	padding-top: $space-12;
+	padding-bottom: $space-16;
+
+	@include breakpoint-up(lg) {
+		grid-template-columns: minmax(0, 1fr) 22rem;
+		gap: $space-12;
+	}
+}
+
+.wcu-event-single__main {
+	min-width: 0;
+}
+
+.wcu-event-single__media {
+	margin: 0 0 $space-8;
+	overflow: hidden;
+	border-radius: $radius-lg;
+	border: $border-width solid $color-border;
+}
+
+.wcu-event-single__content {
+	font-size: $font-size-lg;
+	line-height: $line-height-relaxed;
+
+	h2,
+	h3 {
+		margin-top: $space-8;
+	}
+}
+
+.wcu-event-single__sidebar {
+	display: flex;
+	flex-direction: column;
+	gap: $space-6;
+	padding: $space-6;
+	background-color: $color-bg-alt;
+	border-radius: $radius-lg;
+
+	@include breakpoint-up(lg) {
+		position: sticky;
+		top: $space-20;
+		align-self: start;
+	}
+}
+
+.wcu-event-meta {
+	display: flex;
+	flex-direction: column;
+	gap: $space-4;
+	margin: 0;
+}
+
+.wcu-event-meta__row {
+	dt {
+		margin-bottom: $space-1;
+		font-family: $font-heading;
+		font-size: $font-size-xs;
+		font-weight: $font-weight-semibold;
+		color: $color-text-muted;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+
+	dd {
+		margin: 0;
+		font-size: $font-size-md;
+		color: $color-text;
+	}
+}
+
+.wcu-event-meta__address {
+	font-size: $font-size-sm;
+	color: $color-text-muted;
+}
+
+// -----------------------------------------------------------------------------
+// Card variant for remote (WP.org) events
+// -----------------------------------------------------------------------------
+.wcu-event-card--remote {
+	&::after {
+		content: '';
+		position: absolute;
+		top: $space-3;
+		right: $space-3;
+		width: 0.5rem;
+		height: 0.5rem;
+		background-color: $color-primary;
+		border-radius: $radius-circle;
+		opacity: 0.6;
+	}
+}
+
+.wcu-event-card {
+	position: relative;
+}
