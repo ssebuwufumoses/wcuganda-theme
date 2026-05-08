@@ -22,10 +22,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 class WCU_WPOrg_Profiles {
 
 	const API_ENDPOINT     = 'https://profiles.wordpress.org/wp-json/wporg-internal/v1/users/';
+	const USERS_ENDPOINT   = 'https://profiles.wordpress.org/wp-json/wp/v2/users';
 	const PROFILE_URL_BASE = 'https://profiles.wordpress.org/';
 	const CACHE_LIFETIME   = 24 * HOUR_IN_SECONDS;
 	const CACHE_NEGATIVE   = 30 * MINUTE_IN_SECONDS;
 	const CACHE_PREFIX     = 'wcu_wporg_badges_';
+	const AVATAR_PREFIX    = 'wcu_wporg_avatar_';
 
 	/**
 	 * Get badges for a wp.org username.
@@ -68,7 +70,79 @@ class WCU_WPOrg_Profiles {
 		$username = self::sanitize_username( $username );
 		if ( '' !== $username ) {
 			delete_transient( self::CACHE_PREFIX . md5( $username ) );
+			delete_transient( self::AVATAR_PREFIX . md5( $username ) );
 		}
+	}
+
+	/**
+	 * Get the WordPress.org avatar URL for a username, sized.
+	 *
+	 * Uses the standard `wp/v2/users?slug=` endpoint on profiles.wordpress.org
+	 * and rewrites the gravatar `s=` query var to the requested pixel size.
+	 *
+	 * @param string $username Username.
+	 * @param int    $size     Pixel size (32-2048).
+	 * @return string Avatar URL, or '' on failure.
+	 */
+	public static function get_avatar_url( $username, $size = 256 ) {
+		$username = self::sanitize_username( $username );
+		if ( '' === $username ) {
+			return '';
+		}
+
+		$size = max( 32, min( 2048, (int) $size ) );
+
+		$cache_key = self::AVATAR_PREFIX . md5( $username );
+		$cached    = get_transient( $cache_key );
+
+		if ( false !== $cached && is_string( $cached ) ) {
+			return self::resize_avatar_url( $cached, $size );
+		}
+
+		$response = wp_remote_get(
+			add_query_arg( 'slug', rawurlencode( $username ), self::USERS_ENDPOINT ),
+			array(
+				'timeout'    => 5,
+				'user-agent' => 'WCUganda/' . WCU_THEME_VERSION . '; ' . home_url(),
+			)
+		);
+
+		$url = '';
+		if ( ! is_wp_error( $response ) && 200 === (int) wp_remote_retrieve_response_code( $response ) ) {
+			$body = json_decode( wp_remote_retrieve_body( $response ), true );
+			if ( is_array( $body ) && ! empty( $body[0]['avatar_urls'] ) && is_array( $body[0]['avatar_urls'] ) ) {
+				// Prefer the largest size advertised — WP usually exposes 24/48/96.
+				$avatars = $body[0]['avatar_urls'];
+				$url     = (string) ( $avatars['96'] ?? end( $avatars ) );
+			}
+		}
+
+		// Cache the *base* URL (without size override) so we can rescale on demand.
+		$lifetime = '' === $url ? self::CACHE_NEGATIVE : self::CACHE_LIFETIME;
+		set_transient( $cache_key, $url, $lifetime );
+
+		if ( '' === $url ) {
+			return '';
+		}
+
+		return self::resize_avatar_url( $url, $size );
+	}
+
+	/**
+	 * Rewrite the `s=` query var on a gravatar URL to the desired pixel size.
+	 *
+	 * @param string $url  Original URL.
+	 * @param int    $size Pixel size.
+	 * @return string
+	 */
+	private static function resize_avatar_url( $url, $size ) {
+		if ( '' === $url ) {
+			return '';
+		}
+		if ( false !== strpos( $url, 's=' ) ) {
+			return preg_replace( '/([?&])s=\d+/', '$1s=' . (int) $size, $url );
+		}
+		return add_query_arg( 's', (int) $size, $url );
 	}
 
 	/**

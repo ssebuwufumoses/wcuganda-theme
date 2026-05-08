@@ -20,6 +20,13 @@ $wcu_chapter_name  = ( $wcu_chapter_terms && ! is_wp_error( $wcu_chapter_terms )
 	: '';
 
 $wcu_skill_terms = get_the_terms( $wcu_member_id, 'wcu_skills' );
+
+// WordPress.org avatar fallback.
+$wcu_wporg_username_card = get_post_meta( $wcu_member_id, '_wcu_member_wporg_username', true );
+$wcu_card_avatar         = '';
+if ( ! has_post_thumbnail() && ! empty( $wcu_wporg_username_card ) && class_exists( 'WCU_WPOrg_Profiles' ) ) {
+	$wcu_card_avatar = WCU_WPOrg_Profiles::get_avatar_url( $wcu_wporg_username_card, 160 );
+}
 ?>
 
 <article <?php post_class( 'wcu-card wcu-member-card' ); ?>>
@@ -27,6 +34,10 @@ $wcu_skill_terms = get_the_terms( $wcu_member_id, 'wcu_skills' );
 	<a class="wcu-member-card__avatar" href="<?php the_permalink(); ?>" aria-hidden="true" tabindex="-1">
 		<?php if ( has_post_thumbnail() ) : ?>
 			<?php the_post_thumbnail( 'wcu-avatar', array( 'loading' => 'lazy' ) ); ?>
+		<?php elseif ( ! empty( $wcu_card_avatar ) ) : ?>
+			<img src="<?php echo esc_url( $wcu_card_avatar ); ?>"
+				alt="<?php echo esc_attr( get_the_title() ); ?>"
+				loading="lazy">
 		<?php else : ?>
 			<span class="wcu-member-card__avatar-placeholder" aria-hidden="true">
 				<?php echo esc_html( strtoupper( mb_substr( get_the_title(), 0, 1 ) ) ); ?>

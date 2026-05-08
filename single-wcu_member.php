@@ -60,6 +60,12 @@ while ( have_posts() ) :
 
 	$wcu_handle = ! empty( $wcu_wporg_username ) ? $wcu_wporg_username : get_post_field( 'post_name', $wcu_member_id );
 
+	// Fall back to the WordPress.org avatar when no featured image is set.
+	$wcu_wporg_avatar = '';
+	if ( ! has_post_thumbnail() && ! empty( $wcu_wporg_username ) && class_exists( 'WCU_WPOrg_Profiles' ) ) {
+		$wcu_wporg_avatar = WCU_WPOrg_Profiles::get_avatar_url( $wcu_wporg_username, 256 );
+	}
+
 	$wcu_socials = array_filter(
 		array(
 			'twitter'   => $wcu_twitter,
@@ -97,6 +103,10 @@ while ( have_posts() ) :
 					<div class="wcu-folks-hero__avatar">
 						<?php if ( has_post_thumbnail() ) : ?>
 							<?php the_post_thumbnail( 'wcu-avatar' ); ?>
+						<?php elseif ( ! empty( $wcu_wporg_avatar ) ) : ?>
+							<img src="<?php echo esc_url( $wcu_wporg_avatar ); ?>"
+								alt="<?php echo esc_attr( get_the_title() ); ?>"
+								loading="lazy">
 						<?php else : ?>
 							<span class="wcu-folks-hero__avatar-placeholder" aria-hidden="true">
 								<?php echo esc_html( strtoupper( mb_substr( get_the_title(), 0, 1 ) ) ); ?>
