@@ -134,12 +134,24 @@ while ( have_posts() ) :
 
 				<dl class="wcu-event-meta">
 
-					<?php if ( ! empty( $wcu_wporg ) ) : ?>
+					<?php
+					if ( ! empty( $wcu_wporg ) ) :
+						// Be resilient if the admin pasted the full profile URL or
+						// a leading "@" — extract just the username for display.
+						$wcu_wporg_username = $wcu_wporg;
+						if ( false !== strpos( $wcu_wporg_username, 'profiles.wordpress.org' ) ) {
+							$wcu_parsed = wp_parse_url( $wcu_wporg_username );
+							if ( ! empty( $wcu_parsed['path'] ) ) {
+								$wcu_wporg_username = trim( $wcu_parsed['path'], '/' );
+							}
+						}
+						$wcu_wporg_username = ltrim( $wcu_wporg_username, '@' );
+						?>
 						<div class="wcu-event-meta__row">
 							<dt><?php esc_html_e( 'WordPress.org', 'wcuganda' ); ?></dt>
 							<dd>
-								<a href="<?php echo esc_url( 'https://profiles.wordpress.org/' . rawurlencode( $wcu_wporg ) . '/' ); ?>" rel="noopener" target="_blank">
-									@<?php echo esc_html( $wcu_wporg ); ?>
+								<a href="<?php echo esc_url( 'https://profiles.wordpress.org/' . rawurlencode( $wcu_wporg_username ) . '/' ); ?>" rel="noopener" target="_blank">
+									@<?php echo esc_html( $wcu_wporg_username ); ?>
 								</a>
 							</dd>
 						</div>
@@ -152,24 +164,6 @@ while ( have_posts() ) :
 								<a href="<?php echo esc_url( $wcu_website ); ?>" rel="me noopener" target="_blank">
 									<?php echo esc_html( wp_parse_url( $wcu_website, PHP_URL_HOST ) ?: $wcu_website ); ?>
 								</a>
-							</dd>
-						</div>
-					<?php endif; ?>
-
-					<?php if ( $wcu_is_speaker || $wcu_is_organizer ) : ?>
-						<div class="wcu-event-meta__row">
-							<dt><?php esc_html_e( 'Active as', 'wcuganda' ); ?></dt>
-							<dd>
-								<?php
-								$wcu_active = array();
-								if ( $wcu_is_organizer ) {
-									$wcu_active[] = esc_html__( 'Organizer', 'wcuganda' );
-								}
-								if ( $wcu_is_speaker ) {
-									$wcu_active[] = esc_html__( 'Speaker', 'wcuganda' );
-								}
-								echo esc_html( implode( ', ', $wcu_active ) );
-								?>
 							</dd>
 						</div>
 					<?php endif; ?>
