@@ -35,7 +35,7 @@
 		content: '';
 		position: absolute;
 		inset: 0;
-		background-image: radial-gradient(circle at 1px 1px, rgba($color-text-on-dark, 0.05) 1px, transparent 0);
+		background-image: radial-gradient(circle at 1px 1px, rgba($color-text-on-dark, 0.06) 1px, transparent 0);
 		background-size: 24px 24px;
 		pointer-events: none;
 		mask-image: linear-gradient(to bottom, black, transparent);
@@ -365,7 +365,7 @@
 		content: '';
 		position: absolute;
 		inset: 0;
-		background-image: radial-gradient(circle at 1px 1px, rgba($color-text-on-dark, 0.05) 1px, transparent 0);
+		background-image: radial-gradient(circle at 1px 1px, rgba($color-text-on-dark, 0.06) 1px, transparent 0);
 		background-size: 24px 24px;
 		pointer-events: none;
 	}
