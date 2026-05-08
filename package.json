@@ -1,0 +1,14 @@
+{
+  "name": "wcuganda",
+  "version": "1.0.0",
+  "description": "Official theme for WordPress Community Uganda",
+  "author": "WordPress Community Uganda",
+  "license": "GPL-2.0-or-later",
+  "scripts": {
+    "sass": "sass sass/style.scss:style.css --style=expanded --watch --silence-deprecation=import",
+    "build": "sass sass/style.scss:style.css --style=compressed --silence-deprecation=import"
+  },
+  "devDependencies": {
+    "sass": "^1.77.0"
+  }
+}
