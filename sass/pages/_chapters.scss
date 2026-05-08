@@ -1,0 +1,162 @@
+// =============================================================================
+// Chapters archive + single chapter styles. Reuses .wcu-event-single__inner,
+// .wcu-event-single__sidebar, .wcu-event-meta, etc. from _events.scss for the
+// two-column layout (DRY: chapter pages share the same body geometry).
+// =============================================================================
+
+@use '../abstracts' as *;
+
+// -----------------------------------------------------------------------------
+// Archive
+// -----------------------------------------------------------------------------
+.wcu-chapters-archive__header {
+	padding-top: $space-12;
+	padding-bottom: $space-8;
+	background-color: $color-bg-alt;
+
+	@include breakpoint-up(md) {
+		padding-top: $space-16;
+		padding-bottom: $space-10;
+	}
+}
+
+.wcu-chapters-archive__title {
+	margin: 0 0 $space-3;
+	font-size: fluid(36, 56);
+	letter-spacing: -0.02em;
+}
+
+.wcu-chapters-archive__lead {
+	max-width: 60ch;
+	margin: 0;
+	font-size: $font-size-lg;
+	line-height: $line-height-relaxed;
+	color: $color-text-muted;
+}
+
+.wcu-chapters-archive__section {
+	padding-top: $space-10;
+	padding-bottom: $space-16;
+
+	@include breakpoint-up(md) {
+		padding-top: $space-12;
+	}
+}
+
+// -----------------------------------------------------------------------------
+// Chapter card
+// -----------------------------------------------------------------------------
+.wcu-chapter-card {
+	.wcu-card__excerpt {
+		margin: 0;
+	}
+
+	.wcu-card__footer {
+		display: flex;
+		gap: $space-3;
+		align-items: center;
+		justify-content: space-between;
+	}
+}
+
+.wcu-card__meetup-link {
+	display: inline-flex;
+	gap: $space-1;
+	align-items: center;
+	font-family: $font-heading;
+	font-size: $font-size-xs;
+	font-weight: $font-weight-semibold;
+	color: $color-text-muted;
+	text-decoration: none;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+
+	&:hover,
+	&:focus-visible {
+		color: $color-primary;
+	}
+}
+
+// -----------------------------------------------------------------------------
+// Single chapter
+// -----------------------------------------------------------------------------
+.wcu-chapter-hero {
+	padding: $space-12 0;
+	color: $color-text-on-dark;
+	background-color: $color-primary;
+
+	@include breakpoint-up(md) {
+		padding: $space-16 0;
+	}
+}
+
+.wcu-chapter-hero__city {
+	display: flex;
+	gap: $space-2;
+	align-items: center;
+	margin: 0 0 $space-3;
+	font-family: $font-heading;
+	font-size: $font-size-md;
+	font-weight: $font-weight-semibold;
+	color: rgba($color-text-on-dark, 0.9);
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+
+	svg {
+		flex-shrink: 0;
+	}
+}
+
+.wcu-chapter-hero__title {
+	margin: 0;
+	font-size: fluid(36, 64);
+	line-height: 1.05;
+	color: $color-text-on-dark;
+	letter-spacing: -0.02em;
+}
+
+// Reuse the events two-column layout for the body.
+.wcu-chapter-single__inner {
+	display: grid;
+	gap: $space-10;
+	padding-top: $space-12;
+	padding-bottom: $space-16;
+
+	@include breakpoint-up(lg) {
+		grid-template-columns: minmax(0, 1fr) 22rem;
+		gap: $space-12;
+	}
+}
+
+.wcu-chapter-single__main {
+	min-width: 0;
+}
+
+.wcu-chapter-organizers {
+	@include list-reset;
+
+	display: flex;
+	flex-direction: column;
+	gap: $space-1;
+
+	li {
+		margin: 0;
+	}
+}
+
+// -----------------------------------------------------------------------------
+// Meetup.com embed section
+// -----------------------------------------------------------------------------
+.wcu-chapter-meetup__embed {
+	overflow: hidden;
+	border: $border-width solid $color-border;
+	border-radius: $radius-lg;
+	box-shadow: $shadow-md;
+
+	iframe {
+		display: block;
+		width: 100%;
+		min-height: 28rem;
+		border: 0;
+	}
+}
