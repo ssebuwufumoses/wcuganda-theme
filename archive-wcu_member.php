@@ -33,8 +33,11 @@ get_header();
 
 		<section class="wcu-members-archive__section">
 
-			<?php if ( have_posts() ) : ?>
-				<div class="wcu-grid wcu-grid--4">
+			<?php if ( have_posts() ) :
+				$wcu_member_count = (int) ( $GLOBALS['wp_query']->found_posts ?? 0 );
+				$wcu_grid_class   = 'wcu-grid wcu-grid--' . (int) min( max( $wcu_member_count, 1 ), 4 );
+				?>
+				<div class="<?php echo esc_attr( $wcu_grid_class ); ?>">
 					<?php
 					while ( have_posts() ) :
 						the_post();
