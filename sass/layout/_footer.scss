@@ -5,8 +5,8 @@
 @use '../abstracts' as *;
 
 .site-footer {
-	color: rgba($color-white, 0.85);
-	background-color: $color-dark;
+	color: rgba($color-text-on-dark, 0.85);
+	background-color: $color-bg-dark;
 }
 
 .site-footer__top {
@@ -74,13 +74,13 @@
 	font-size: $font-size-sm;
 
 	a {
-		color: rgba($color-white, 0.75);
+		color: rgba($color-text-on-dark, 0.75);
 		text-decoration: none;
 		transition: color $transition-fast;
 
 		&:hover,
 		&:focus-visible {
-			color: $color-accent;
+			color: $color-text-on-dark;
 		}
 	}
 }
@@ -134,15 +134,15 @@
 		justify-content: center;
 		width: 2.25rem;
 		height: 2.25rem;
-		color: rgba($color-white, 0.85);
-		background-color: rgba($color-white, 0.08);
+		color: rgba($color-text-on-dark, 0.85);
+		background-color: rgba($color-text-on-dark, 0.08);
 		border-radius: $radius-circle;
 		transition: color $transition-fast, background-color $transition-fast;
 
 		&:hover,
 		&:focus-visible {
-			color: $color-dark;
-			background-color: $color-accent;
+			color: $color-bg-dark;
+			background-color: $color-text-on-dark;
 		}
 
 		svg {

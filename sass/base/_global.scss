@@ -46,8 +46,8 @@
 }
 
 .section--dark {
-	color: $color-white;
-	background-color: $color-dark;
+	color: $color-text-on-dark;
+	background-color: $color-bg-dark;
 
 	h1,
 	h2,
@@ -55,11 +55,18 @@
 	h4,
 	h5,
 	h6 {
-		color: $color-white;
+		color: $color-text-on-dark;
 	}
 
 	a {
-		color: $color-accent;
+		color: $color-text-on-dark;
+		text-decoration-thickness: 2px;
+
+		&:hover,
+		&:focus-visible {
+			color: $color-text-on-dark;
+			text-decoration-thickness: 3px;
+		}
 	}
 }
 

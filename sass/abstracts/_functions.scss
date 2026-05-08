@@ -26,19 +26,18 @@
 
 // Type-safe color lookup against a palette map (extension point for tokens).
 $palette: (
-	primary:    $color-primary,
-	secondary:  $color-secondary,
-	accent:     $color-accent,
-	dark:       $color-dark,
-	light:      $color-light,
-	white:      $color-white,
-	border:     $color-border,
-	text:       $color-text,
-	text-muted: $color-text-muted,
-	success:    $color-success,
-	error:      $color-error,
-	warning:    $color-warning,
-	info:       $color-info,
+	primary:                $color-primary,
+	primary-dark:           $color-primary-dark,
+	bg:                     $color-bg,
+	bg-alt:                 $color-bg-alt,
+	bg-dark:                $color-bg-dark,
+	text:                   $color-text,
+	text-muted:             $color-text-muted,
+	text-on-dark:           $color-text-on-dark,
+	text-muted-on-dark:     $color-text-muted-on-dark,
+	border:                 $color-border,
+	white:                  $color-white,
+	black:                  $color-black,
 );
 
 @function brand($name) {

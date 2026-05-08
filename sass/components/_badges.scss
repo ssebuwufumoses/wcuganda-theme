@@ -1,5 +1,5 @@
 // =============================================================================
-// Badges — chapter tags, sponsor tiers, member roles, status indicators.
+// Badges — neutral pill style + soft variant + sponsor tier semantic colors.
 // =============================================================================
 
 @use '../abstracts' as *;
@@ -17,46 +17,33 @@
 	letter-spacing: 0.05em;
 	text-transform: uppercase;
 	white-space: nowrap;
-	background-color: $color-secondary;
+	background-color: $color-primary;
 	border-radius: $radius-pill;
 }
 
-// Color variants
-.wcu-badge--primary  { background-color: $color-primary; }
-.wcu-badge--accent   { color: $color-dark; background-color: $color-accent; }
-.wcu-badge--dark     { background-color: $color-dark; }
-.wcu-badge--success  { background-color: $color-success; }
-.wcu-badge--error    { background-color: $color-error; }
-.wcu-badge--warning  { color: $color-dark; background-color: $color-warning; }
-.wcu-badge--info     { background-color: $color-info; }
-
 .wcu-badge--soft {
-	color: $color-secondary;
-	background-color: rgba($color-secondary, 0.12);
+	color: $color-primary-dark;
+	background-color: rgba($color-primary, 0.12);
 }
 
-.wcu-badge--soft-primary {
-	color: $color-primary;
-	background-color: rgba($color-primary, 0.10);
-}
-
-// Sponsor tiers — shorthand utility classes for the wcu_sponsor_tier taxonomy.
+// Sponsor tier semantic variants — these are tier identities (industry
+// convention), not WCUganda brand colors, so they stay as direct hex.
 .wcu-badge--platinum {
-	color: $color-dark;
-	background: linear-gradient(135deg, #e5e4e2, #b3b3b3);
+	color: $color-text;
+	background: linear-gradient(135deg, #E5E4E2, #B3B3B3);
 }
 
 .wcu-badge--gold {
-	color: $color-dark;
-	background-color: $color-accent;
+	color: $color-text;
+	background-color: #D4AF37;
 }
 
 .wcu-badge--silver {
-	color: $color-dark;
-	background-color: #c0c0c0;
+	color: $color-text;
+	background-color: #C0C0C0;
 }
 
 .wcu-badge--bronze {
 	color: $color-white;
-	background-color: #cd7f32;
+	background-color: #CD7F32;
 }

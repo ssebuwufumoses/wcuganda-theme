@@ -31,7 +31,7 @@ label {
 	font-family: $font-heading;
 	font-size: $font-size-sm;
 	font-weight: $font-weight-semibold;
-	color: $color-dark;
+	color: $color-text;
 }
 
 .wcu-form__hint {
@@ -42,7 +42,7 @@ label {
 .wcu-form__error {
 	font-size: $font-size-xs;
 	font-weight: $font-weight-semibold;
-	color: $color-error;
+	color: #991B1B; // AAA-safe red for inline error messages
 }
 
 input[type='text'],
@@ -77,13 +77,13 @@ select {
 	}
 
 	&:focus {
-		border-color: $color-secondary;
+		border-color: $color-primary;
 		outline: 0;
 		box-shadow: $shadow-focus;
 	}
 
 	&[aria-invalid='true'] {
-		border-color: $color-error;
+		border-color: #991B1B; // AAA-safe red border for invalid inputs
 	}
 
 	&:disabled,

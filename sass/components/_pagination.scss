@@ -31,7 +31,7 @@
 		padding: 0 $space-3;
 		font-size: $font-size-sm;
 		font-weight: $font-weight-semibold;
-		color: $color-dark;
+		color: $color-text;
 		text-decoration: none;
 		background-color: $color-white;
 		border: $border-width solid $color-border;
@@ -48,8 +48,8 @@
 
 		&.current {
 			color: $color-white;
-			background-color: $color-dark;
-			border-color: $color-dark;
+			background-color: $color-bg-dark;
+			border-color: $color-bg-dark;
 		}
 
 		&.dots {
@@ -57,7 +57,7 @@
 			border-color: transparent;
 
 			&:hover {
-				color: $color-dark;
+				color: $color-text;
 				background: none;
 				border-color: transparent;
 			}
@@ -88,7 +88,7 @@
 
 		a {
 			display: block;
-			color: $color-dark;
+			color: $color-text;
 			text-decoration: none;
 
 			&:hover,

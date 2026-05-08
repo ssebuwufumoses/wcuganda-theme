@@ -14,9 +14,9 @@
 	overflow: hidden;
 	color: $color-white;
 	background:
-		radial-gradient(ellipse at top right, rgba($color-primary, 0.6), transparent 60%),
-		radial-gradient(ellipse at bottom left, rgba($color-accent, 0.18), transparent 55%),
-		linear-gradient(135deg, $color-dark 0%, color.adjust($color-dark, $lightness: 6%) 100%);
+		radial-gradient(ellipse at top right, rgba($color-primary, 0.55), transparent 60%),
+		radial-gradient(ellipse at bottom left, rgba($color-primary-dark, 0.45), transparent 55%),
+		linear-gradient(135deg, $color-bg-dark 0%, color.adjust($color-bg-dark, $lightness: 6%) 100%);
 
 	@include breakpoint-up(md) {
 		padding: $space-20 0 $space-16;
@@ -28,7 +28,7 @@
 
 	&--has-image {
 		background-image:
-			linear-gradient(135deg, rgba($color-dark, 0.85), rgba($color-dark, 0.65)),
+			linear-gradient(135deg, rgba($color-bg-dark, 0.85), rgba($color-bg-dark, 0.65)),
 			var(--wcu-hero-image);
 		background-position: center;
 		background-size: cover;
@@ -38,7 +38,7 @@
 		content: '';
 		position: absolute;
 		inset: 0;
-		background-image: radial-gradient(circle at 1px 1px, rgba($color-white, 0.05) 1px, transparent 0);
+		background-image: radial-gradient(circle at 1px 1px, rgba($color-text-on-dark, 0.05) 1px, transparent 0);
 		background-size: 24px 24px;
 		pointer-events: none;
 		mask-image: linear-gradient(to bottom, black, transparent);
@@ -62,7 +62,7 @@
 	font-size: $font-size-sm;
 	font-weight: $font-weight-semibold;
 	letter-spacing: 0.18em;
-	color: $color-accent;
+	color: rgba($color-text-on-dark, 0.85);
 	text-transform: uppercase;
 }
 
@@ -70,7 +70,7 @@
 	margin: 0;
 	font-size: fluid(36, 64);
 	line-height: 1.05;
-	color: $color-white;
+	color: $color-text-on-dark;
 	letter-spacing: -0.02em;
 }
 
@@ -78,7 +78,7 @@
 	max-width: 56ch;
 	font-size: fluid(16, 20);
 	line-height: $line-height-relaxed;
-	color: rgba($color-white, 0.85);
+	color: rgba($color-text-on-dark, 0.85);
 
 	p {
 		margin: 0 0 $space-3;
@@ -146,7 +146,7 @@
 	font-size: fluid(36, 56);
 	font-weight: $font-weight-bold;
 	line-height: 1;
-	color: $color-dark;
+	color: $color-text;
 	letter-spacing: -0.02em;
 }
 
@@ -200,8 +200,8 @@
 	position: relative;
 	padding: $space-10 0;
 	overflow: hidden;
-	color: $color-white;
-	background: linear-gradient(135deg, $color-primary 0%, color.adjust($color-primary, $lightness: -10%) 100%);
+	color: $color-text-on-dark;
+	background: linear-gradient(135deg, $color-primary 0%, $color-primary-dark 100%);
 
 	@include breakpoint-up(md) {
 		padding: $space-12 0;
@@ -214,7 +214,7 @@
 		right: -10%;
 		width: 60%;
 		height: 200%;
-		background: rgba($color-accent, 0.12);
+		background: rgba($color-text-on-dark, 0.08);
 		transform: rotate(15deg);
 		pointer-events: none;
 	}
@@ -239,7 +239,7 @@
 	font-size: $font-size-sm;
 	font-weight: $font-weight-semibold;
 	letter-spacing: 0.18em;
-	color: $color-accent;
+	color: rgba($color-text-on-dark, 0.85);
 	text-transform: uppercase;
 }
 
@@ -247,7 +247,7 @@
 	margin: 0 0 $space-3;
 	font-size: fluid(24, 40);
 	line-height: 1.1;
-	color: $color-white;
+	color: $color-text-on-dark;
 	letter-spacing: -0.01em;
 }
 
@@ -266,10 +266,10 @@
 		gap: $space-2;
 		align-items: center;
 		margin: 0;
-		color: rgba($color-white, 0.9);
+		color: rgba($color-text-on-dark, 0.9);
 
 		svg {
-			color: $color-accent;
+			color: rgba($color-text-on-dark, 0.7);
 		}
 	}
 }
@@ -364,18 +364,18 @@
 .wcu-newsletter {
 	background:
 		radial-gradient(circle at 20% 0%, rgba($color-primary, 0.35), transparent 50%),
-		radial-gradient(circle at 80% 100%, rgba($color-accent, 0.18), transparent 55%),
-		$color-dark;
+		radial-gradient(circle at 80% 100%, rgba($color-primary-dark, 0.4), transparent 55%),
+		$color-bg-dark;
 }
 
 .wcu-newsletter__heading {
 	font-size: fluid(28, 44);
-	color: $color-white;
+	color: $color-text-on-dark;
 }
 
 .wcu-newsletter__subheading {
 	font-size: fluid(16, 18);
-	color: rgba($color-white, 0.85);
+	color: rgba($color-text-on-dark, 0.85);
 
 	p {
 		margin: 0;
@@ -395,7 +395,7 @@
 	max-width: 520px;
 	margin: $space-3 auto 0;
 	font-size: $font-size-xs;
-	color: rgba($color-white, 0.6);
+	color: rgba($color-text-on-dark, 0.6);
 	text-align: center;
 }
 

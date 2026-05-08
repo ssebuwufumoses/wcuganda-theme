@@ -2,7 +2,6 @@
 // Buttons. `.wcu-btn` is the canonical class; native button elements inherit it.
 // =============================================================================
 
-@use 'sass:color';
 @use '../abstracts' as *;
 
 %btn-base {
@@ -31,8 +30,8 @@
 	&:focus {
 		color: $color-white;
 		text-decoration: none;
-		background-color: color.adjust($color-primary, $lightness: -8%);
-		border-color: color.adjust($color-primary, $lightness: -8%);
+		background-color: $color-primary-dark;
+		border-color: $color-primary-dark;
 	}
 
 	&:active {
@@ -54,31 +53,6 @@
 // -----------------------------------------------------------------------------
 // Variants
 // -----------------------------------------------------------------------------
-.wcu-btn--secondary {
-	color: $color-white;
-	background-color: $color-secondary;
-	border-color: $color-secondary;
-
-	&:hover,
-	&:focus {
-		background-color: color.adjust($color-secondary, $lightness: -8%);
-		border-color: color.adjust($color-secondary, $lightness: -8%);
-	}
-}
-
-.wcu-btn--accent {
-	color: $color-dark;
-	background-color: $color-accent;
-	border-color: $color-accent;
-
-	&:hover,
-	&:focus {
-		color: $color-dark;
-		background-color: color.adjust($color-accent, $lightness: -8%);
-		border-color: color.adjust($color-accent, $lightness: -8%);
-	}
-}
-
 .wcu-btn--outline {
 	color: $color-primary;
 	background-color: transparent;
@@ -97,7 +71,7 @@
 
 	&:hover,
 	&:focus {
-		color: $color-dark;
+		color: $color-text;
 		background-color: $color-white;
 	}
 }
@@ -109,7 +83,7 @@
 
 	&:hover,
 	&:focus {
-		color: $color-primary;
+		color: $color-primary-dark;
 		background-color: rgba($color-primary, 0.08);
 		border-color: transparent;
 	}

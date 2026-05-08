@@ -102,8 +102,8 @@ cite {
 
 mark {
 	padding: 0 $space-1;
-	color: $color-dark;
-	background-color: rgba($color-accent, 0.5);
+	color: $color-text;
+	background-color: rgba($color-primary, 0.18);
 }
 
 abbr[title] {
@@ -178,8 +178,8 @@ pre {
 
 code {
 	padding: 0.15em 0.4em;
-	color: $color-dark;
-	background-color: $color-light;
+	color: $color-text;
+	background-color: $color-bg-alt;
 	border-radius: $radius-sm;
 }
 
@@ -187,7 +187,7 @@ pre {
 	padding: $space-4;
 	margin: 0 0 $space-4;
 	overflow-x: auto;
-	background-color: $color-light;
+	background-color: $color-bg-alt;
 	border-radius: $radius-md;
 
 	code {

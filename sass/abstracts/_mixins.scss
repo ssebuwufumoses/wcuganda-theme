@@ -115,7 +115,7 @@ $breakpoints: (
 }
 
 // Visible focus ring — always pair interactive elements with this.
-@mixin focus-ring($color: $color-secondary) {
+@mixin focus-ring($color: $color-primary) {
 	outline: 2px solid $color;
 	outline-offset: 2px;
 	box-shadow: 0 0 0 4px rgba($color, 0.2);
@@ -128,7 +128,7 @@ $breakpoints: (
 	font-family: $font-heading;
 	font-weight: $font-weight-bold;
 	line-height: $line-height-tight;
-	color: $color-dark;
+	color: $color-text;
 }
 
 @mixin body-text {

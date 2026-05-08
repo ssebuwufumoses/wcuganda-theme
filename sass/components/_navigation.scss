@@ -21,7 +21,7 @@
 	justify-content: center;
 	width: 2.75rem;
 	height: 2.75rem;
-	color: $color-dark;
+	color: $color-text;
 	border-radius: $radius-md;
 
 	&:hover,
@@ -114,7 +114,7 @@
 	font-family: $font-heading;
 	font-size: $font-size-md;
 	font-weight: $font-weight-medium;
-	color: $color-dark;
+	color: $color-text;
 	text-decoration: none;
 	border-radius: $radius-md;
 	transition: color $transition-fast, background-color $transition-fast;
