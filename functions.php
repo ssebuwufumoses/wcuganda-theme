@@ -42,6 +42,7 @@ $wcu_includes = array(
 	'/inc/template-functions.php',
 	'/inc/template-tags.php',
 	'/inc/customizer.php',
+	'/inc/api/class-wporg-events.php',
 );
 
 foreach ( $wcu_includes as $wcu_include ) {

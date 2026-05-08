@@ -36,6 +36,17 @@ function wcu_enqueue_assets() {
 		true
 	);
 
+	// Homepage stats counter (only loaded when the homepage is rendered).
+	if ( is_front_page() ) {
+		wp_enqueue_script(
+			'wcu-stats-counter',
+			$theme_uri . '/assets/js/src/stats-counter.js',
+			array(),
+			$version,
+			true
+		);
+	}
+
 	// Threaded comments support.
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
 		wp_enqueue_script( 'comment-reply' );

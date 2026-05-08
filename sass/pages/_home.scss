@@ -1,0 +1,408 @@
+// =============================================================================
+// Homepage section styles. Mobile-first; min-width breakpoints scale up.
+// =============================================================================
+
+@use 'sass:color';
+@use '../abstracts' as *;
+
+// -----------------------------------------------------------------------------
+// Hero
+// -----------------------------------------------------------------------------
+.wcu-hero {
+	position: relative;
+	padding: $space-16 0 $space-12;
+	overflow: hidden;
+	color: $color-white;
+	background:
+		radial-gradient(ellipse at top right, rgba($color-primary, 0.6), transparent 60%),
+		radial-gradient(ellipse at bottom left, rgba($color-secondary, 0.55), transparent 55%),
+		linear-gradient(135deg, $color-dark 0%, color.adjust($color-dark, $lightness: 6%) 100%);
+
+	@include breakpoint-up(md) {
+		padding: $space-20 0 $space-16;
+	}
+
+	@include breakpoint-up(lg) {
+		padding: $space-24 0 $space-20;
+	}
+
+	&--has-image {
+		background-image:
+			linear-gradient(135deg, rgba($color-dark, 0.85), rgba($color-dark, 0.65)),
+			var(--wcu-hero-image);
+		background-position: center;
+		background-size: cover;
+	}
+
+	&::before {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background-image: radial-gradient(circle at 1px 1px, rgba($color-white, 0.05) 1px, transparent 0);
+		background-size: 24px 24px;
+		pointer-events: none;
+		mask-image: linear-gradient(to bottom, black, transparent);
+		-webkit-mask-image: linear-gradient(to bottom, black, transparent);
+	}
+}
+
+.wcu-hero__inner {
+	position: relative;
+	z-index: 1;
+	display: flex;
+	flex-direction: column;
+	gap: $space-5;
+	max-width: 880px;
+	text-align: left;
+}
+
+.wcu-hero__eyebrow {
+	margin: 0;
+	font-family: $font-heading;
+	font-size: $font-size-sm;
+	font-weight: $font-weight-semibold;
+	letter-spacing: 0.18em;
+	color: $color-accent;
+	text-transform: uppercase;
+}
+
+.wcu-hero__heading {
+	margin: 0;
+	font-size: fluid(36, 64);
+	line-height: 1.05;
+	color: $color-white;
+	letter-spacing: -0.02em;
+}
+
+.wcu-hero__subheading {
+	max-width: 56ch;
+	font-size: fluid(16, 20);
+	line-height: $line-height-relaxed;
+	color: rgba($color-white, 0.85);
+
+	p {
+		margin: 0 0 $space-3;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+}
+
+.wcu-hero__actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: $space-3;
+	margin-top: $space-3;
+}
+
+// -----------------------------------------------------------------------------
+// Stats
+// -----------------------------------------------------------------------------
+.wcu-stats {
+	padding-top: $space-10;
+	padding-bottom: $space-10;
+
+	@include breakpoint-up(md) {
+		padding-top: $space-12;
+		padding-bottom: $space-12;
+	}
+}
+
+.wcu-stats__grid {
+	@include list-reset;
+
+	display: grid;
+	gap: $space-6;
+	grid-template-columns: repeat(2, 1fr);
+
+	@include breakpoint-up(md) {
+		grid-template-columns: repeat(4, 1fr);
+		gap: $space-8;
+	}
+}
+
+.wcu-stats__item {
+	display: flex;
+	flex-direction: column;
+	gap: $space-1;
+	padding: $space-4 0;
+	text-align: left;
+	border-left: 3px solid $color-primary;
+	padding-left: $space-4;
+
+	@include breakpoint-up(md) {
+		text-align: center;
+		border-left: 0;
+		border-top: 3px solid $color-primary;
+		padding-left: 0;
+		padding-top: $space-3;
+	}
+}
+
+.wcu-stats__value {
+	display: block;
+	font-family: $font-heading;
+	font-size: fluid(36, 56);
+	font-weight: $font-weight-bold;
+	line-height: 1;
+	color: $color-dark;
+	letter-spacing: -0.02em;
+}
+
+.wcu-stats__label {
+	font-family: $font-heading;
+	font-size: $font-size-sm;
+	font-weight: $font-weight-medium;
+	color: $color-text-muted;
+	letter-spacing: 0.02em;
+	text-transform: uppercase;
+}
+
+// -----------------------------------------------------------------------------
+// Events preview
+// -----------------------------------------------------------------------------
+.wcu-events-preview__cta {
+	margin-top: $space-10;
+	text-align: center;
+}
+
+.wcu-events-preview__empty {
+	padding: $space-8;
+	font-size: $font-size-lg;
+	color: $color-text-muted;
+	text-align: center;
+	background: $color-bg-alt;
+	border-radius: $radius-lg;
+}
+
+.wcu-card__meta {
+	display: flex;
+	gap: $space-2;
+	align-items: center;
+	margin: 0;
+
+	svg {
+		flex-shrink: 0;
+		color: $color-primary;
+	}
+}
+
+.wcu-card__meta--source {
+	font-size: $font-size-xs;
+	color: $color-text-muted;
+}
+
+// -----------------------------------------------------------------------------
+// WordCamp banner
+// -----------------------------------------------------------------------------
+.wcu-wordcamp-banner {
+	position: relative;
+	padding: $space-10 0;
+	overflow: hidden;
+	color: $color-white;
+	background: linear-gradient(135deg, $color-primary 0%, color.adjust($color-primary, $lightness: -10%) 100%);
+
+	@include breakpoint-up(md) {
+		padding: $space-12 0;
+	}
+
+	&::after {
+		content: '';
+		position: absolute;
+		top: -50%;
+		right: -10%;
+		width: 60%;
+		height: 200%;
+		background: rgba($color-accent, 0.12);
+		transform: rotate(15deg);
+		pointer-events: none;
+	}
+}
+
+.wcu-wordcamp-banner__inner {
+	position: relative;
+	z-index: 1;
+	display: grid;
+	gap: $space-6;
+	align-items: center;
+
+	@include breakpoint-up(md) {
+		grid-template-columns: 1fr auto;
+		gap: $space-8;
+	}
+}
+
+.wcu-wordcamp-banner__eyebrow {
+	margin: 0 0 $space-2;
+	font-family: $font-heading;
+	font-size: $font-size-sm;
+	font-weight: $font-weight-semibold;
+	letter-spacing: 0.18em;
+	color: $color-accent;
+	text-transform: uppercase;
+}
+
+.wcu-wordcamp-banner__title {
+	margin: 0 0 $space-3;
+	font-size: fluid(24, 40);
+	line-height: 1.1;
+	color: $color-white;
+	letter-spacing: -0.01em;
+}
+
+.wcu-wordcamp-banner__meta {
+	@include list-reset;
+
+	display: flex;
+	flex-wrap: wrap;
+	gap: $space-4;
+	margin: 0;
+	font-family: $font-heading;
+	font-size: $font-size-md;
+
+	li {
+		display: flex;
+		gap: $space-2;
+		align-items: center;
+		margin: 0;
+		color: rgba($color-white, 0.9);
+
+		svg {
+			color: $color-accent;
+		}
+	}
+}
+
+// -----------------------------------------------------------------------------
+// Sponsors
+// -----------------------------------------------------------------------------
+.wcu-sponsors__tier {
+	margin-bottom: $space-10;
+	text-align: center;
+
+	&:last-of-type {
+		margin-bottom: 0;
+	}
+}
+
+.wcu-sponsors__tier-name {
+	margin: 0 0 $space-5;
+	font-family: $font-heading;
+	font-size: $font-size-sm;
+	font-weight: $font-weight-semibold;
+	color: $color-text-muted;
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+}
+
+.wcu-sponsors__logos {
+	@include list-reset;
+
+	display: flex;
+	flex-wrap: wrap;
+	gap: $space-6 $space-10;
+	align-items: center;
+	justify-content: center;
+}
+
+.wcu-sponsors__logo {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-height: 4rem;
+
+	a {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		transition: opacity $transition-fast;
+
+		&:hover,
+		&:focus-visible {
+			opacity: 0.7;
+		}
+	}
+
+	img {
+		max-width: 160px;
+		max-height: 64px;
+		width: auto;
+		height: auto;
+		filter: grayscale(100%);
+		opacity: 0.85;
+		transition: filter $transition-base, opacity $transition-base;
+
+		&:hover,
+		&:focus-visible {
+			filter: grayscale(0%);
+			opacity: 1;
+		}
+	}
+}
+
+.wcu-sponsors__name {
+	font-family: $font-heading;
+	font-weight: $font-weight-semibold;
+	color: $color-text-muted;
+}
+
+.wcu-sponsors__empty {
+	margin: 0 0 $space-6;
+	text-align: center;
+	color: $color-text-muted;
+}
+
+.wcu-sponsors__cta {
+	margin: $space-10 0 0;
+	text-align: center;
+}
+
+// -----------------------------------------------------------------------------
+// Newsletter
+// -----------------------------------------------------------------------------
+.wcu-newsletter {
+	background:
+		radial-gradient(circle at 20% 0%, rgba($color-primary, 0.35), transparent 50%),
+		radial-gradient(circle at 80% 100%, rgba($color-secondary, 0.3), transparent 55%),
+		$color-dark;
+}
+
+.wcu-newsletter__heading {
+	font-size: fluid(28, 44);
+	color: $color-white;
+}
+
+.wcu-newsletter__subheading {
+	font-size: fluid(16, 18);
+	color: rgba($color-white, 0.85);
+
+	p {
+		margin: 0;
+	}
+}
+
+.wcu-newsletter__form {
+	max-width: 520px;
+	margin: $space-6 auto 0;
+
+	input[type='email'] {
+		background-color: rgba($color-white, 0.95);
+	}
+}
+
+.wcu-newsletter__note {
+	max-width: 520px;
+	margin: $space-3 auto 0;
+	font-size: $font-size-xs;
+	color: rgba($color-white, 0.6);
+	text-align: center;
+}
+
+// -----------------------------------------------------------------------------
+// Map
+// -----------------------------------------------------------------------------
+.wcu-map__embed {
+	border: $border-width solid $color-border;
+	box-shadow: $shadow-md;
+}
