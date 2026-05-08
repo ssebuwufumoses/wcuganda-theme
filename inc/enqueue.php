@@ -47,6 +47,17 @@ function wcu_enqueue_assets() {
 		);
 	}
 
+	// Member profile Share button (Web Share API + clipboard fallback).
+	if ( is_singular( 'wcu_member' ) ) {
+		wp_enqueue_script(
+			'wcu-member-share',
+			$theme_uri . '/assets/js/src/member-share.js',
+			array(),
+			$version,
+			true
+		);
+	}
+
 	// Threaded comments support.
 	if ( is_singular() && comments_open() && get_option( 'thread_comments' ) ) {
 		wp_enqueue_script( 'comment-reply' );

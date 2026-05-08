@@ -98,11 +98,47 @@ function wcu_register_member_meta_box() {
 				'type'        => 'text',
 				'placeholder' => __( 'e.g. Frontend Developer', 'wcuganda' ),
 			),
+			'_wcu_member_pronouns'        => array(
+				'label'       => __( 'Pronouns', 'wcuganda' ),
+				'type'        => 'text',
+				'placeholder' => __( 'he/him · she/her · they/them', 'wcuganda' ),
+			),
+			'_wcu_member_short_bio'       => array(
+				'label'       => __( 'Short bio', 'wcuganda' ),
+				'type'        => 'textarea',
+				'description' => __( 'A 1-2 sentence summary shown in the profile hero card.', 'wcuganda' ),
+			),
+			'_wcu_member_company'         => array(
+				'label'       => __( 'Company', 'wcuganda' ),
+				'type'        => 'text',
+				'placeholder' => __( 'e.g. Freelance, Automattic, etc.', 'wcuganda' ),
+			),
+			'_wcu_member_preferred_hosting' => array(
+				'label'       => __( 'Preferred hosting', 'wcuganda' ),
+				'type'        => 'text',
+				'placeholder' => __( 'e.g. Pressable, self-hosted', 'wcuganda' ),
+			),
+			'_wcu_member_first_wp_version' => array(
+				'label'       => __( 'First WordPress version used', 'wcuganda' ),
+				'type'        => 'text',
+				'placeholder' => __( 'e.g. 4.x, 5.5, 6.0', 'wcuganda' ),
+			),
+			'_wcu_member_birthday'        => array(
+				'label'       => __( 'Birthday (no year)', 'wcuganda' ),
+				'type'        => 'text',
+				'placeholder' => __( 'e.g. August 6', 'wcuganda' ),
+			),
+			'_wcu_member_specialties'     => array(
+				'label'       => __( 'Specialties', 'wcuganda' ),
+				'type'        => 'text',
+				'placeholder' => __( 'e.g. Project Manager, Designer, Site Builder', 'wcuganda' ),
+				'description' => __( 'Comma-separated list of specialty pills shown on the profile.', 'wcuganda' ),
+			),
 			'_wcu_member_wporg_username'  => array(
 				'label'       => __( 'WordPress.org username', 'wcuganda' ),
 				'type'        => 'text',
 				'placeholder' => 'your-wp-username',
-				'description' => __( 'Used to display contributor badges via the wp.org Profiles API.', 'wcuganda' ),
+				'description' => __( 'Username only (no @ or full URL). Powers the WordPress.org link and future badge / photo integrations.', 'wcuganda' ),
 			),
 			'_wcu_member_twitter'         => array(
 				'label'       => __( 'Twitter / X URL', 'wcuganda' ),
@@ -133,6 +169,26 @@ function wcu_register_member_meta_box() {
 				'label'          => __( 'Organizer', 'wcuganda' ),
 				'type'           => 'checkbox',
 				'checkbox_label' => __( 'This member is part of the organizing team.', 'wcuganda' ),
+			),
+			'_wcu_member_featured'        => array(
+				'label'          => __( 'Featured', 'wcuganda' ),
+				'type'           => 'checkbox',
+				'checkbox_label' => __( 'Show a verified-style star next to the name.', 'wcuganda' ),
+			),
+			'_wcu_member_available_for_hire' => array(
+				'label'          => __( 'Available for hire', 'wcuganda' ),
+				'type'           => 'checkbox',
+				'checkbox_label' => __( 'Show "Available for hire" pill on the profile.', 'wcuganda' ),
+			),
+			'_wcu_member_open_sponsorship' => array(
+				'label'          => __( 'Open to sponsorship', 'wcuganda' ),
+				'type'           => 'checkbox',
+				'checkbox_label' => __( 'Show "Open to sponsorship" pill on the profile.', 'wcuganda' ),
+			),
+			'_wcu_member_open_volunteering' => array(
+				'label'          => __( 'Open to volunteering', 'wcuganda' ),
+				'type'           => 'checkbox',
+				'checkbox_label' => __( 'Show "Open to volunteering" pill on the profile.', 'wcuganda' ),
 			),
 		)
 	);
