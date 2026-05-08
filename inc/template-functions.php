@@ -134,6 +134,62 @@ function wcu_events_archive_query( $query ) {
 add_action( 'pre_get_posts', 'wcu_events_archive_query' );
 
 /**
+ * Tune the members archive query: filterable by ?chapter=, ?role=,
+ * and ?skill= via taxonomy slugs. 12 per page (3 columns × 4 rows).
+ *
+ * @param WP_Query $query Query object.
+ * @return void
+ */
+function wcu_members_archive_query( $query ) {
+	if ( is_admin() || ! $query->is_main_query() ) {
+		return;
+	}
+
+	if ( ! $query->is_post_type_archive( 'wcu_member' ) ) {
+		return;
+	}
+
+	$query->set( 'posts_per_page', 12 );
+	$query->set( 'orderby', 'title' );
+	$query->set( 'order', 'ASC' );
+
+	$tax_query = array();
+
+	$chapter = isset( $_GET['chapter'] ) ? sanitize_title( wp_unslash( $_GET['chapter'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	if ( '' !== $chapter ) {
+		$tax_query[] = array(
+			'taxonomy' => 'wcu_chapter_tax',
+			'field'    => 'slug',
+			'terms'    => $chapter,
+		);
+	}
+
+	$role = isset( $_GET['role'] ) ? sanitize_title( wp_unslash( $_GET['role'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	if ( '' !== $role ) {
+		$tax_query[] = array(
+			'taxonomy' => 'wcu_member_role',
+			'field'    => 'slug',
+			'terms'    => $role,
+		);
+	}
+
+	$skill = isset( $_GET['skill'] ) ? sanitize_title( wp_unslash( $_GET['skill'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	if ( '' !== $skill ) {
+		$tax_query[] = array(
+			'taxonomy' => 'wcu_skills',
+			'field'    => 'slug',
+			'terms'    => $skill,
+		);
+	}
+
+	if ( ! empty( $tax_query ) ) {
+		$tax_query['relation'] = 'AND';
+		$query->set( 'tax_query', $tax_query );
+	}
+}
+add_action( 'pre_get_posts', 'wcu_members_archive_query' );
+
+/**
  * Strip the "Category:" / "Tag:" / "Archives:" prefix from archive titles.
  *
  * @param string $title Archive title.
