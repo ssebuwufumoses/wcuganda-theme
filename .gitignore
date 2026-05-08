@@ -1,3 +1,7 @@
+# Sass / compiled CSS artifacts
+*.css.map
+.sass-cache/
+
 # Logs
 logs
 *.log
