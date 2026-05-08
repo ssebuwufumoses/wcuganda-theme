@@ -1,0 +1,102 @@
+// =============================================================================
+// Site header — sticky, with brand + primary nav.
+// =============================================================================
+
+@use '../abstracts' as *;
+
+.site-header {
+	position: sticky;
+	top: 0;
+	z-index: $z-header;
+	background-color: $color-white;
+	border-bottom: $border-width solid $color-border;
+	transition: box-shadow $transition-base;
+
+	&.is-scrolled {
+		box-shadow: $shadow-md;
+	}
+}
+
+.site-header__inner {
+	@include container;
+
+	display: flex;
+	gap: $space-4;
+	align-items: center;
+	justify-content: space-between;
+	min-height: 4rem;
+}
+
+// -----------------------------------------------------------------------------
+// Branding (logo + site title)
+// -----------------------------------------------------------------------------
+.site-branding {
+	display: flex;
+	gap: $space-3;
+	align-items: center;
+	min-width: 0;
+}
+
+.custom-logo-link,
+.site-branding__logo {
+	display: inline-flex;
+	flex-shrink: 0;
+	align-items: center;
+}
+
+.custom-logo,
+.site-branding__logo img {
+	width: auto;
+	max-height: 2.5rem;
+}
+
+.site-title {
+	margin: 0;
+	font-family: $font-heading;
+	font-size: $font-size-lg;
+	font-weight: $font-weight-bold;
+	line-height: 1.1;
+	color: $color-dark;
+
+	a {
+		color: inherit;
+		text-decoration: none;
+
+		&:hover,
+		&:focus-visible {
+			color: $color-primary;
+		}
+	}
+}
+
+.site-description {
+	margin: 0;
+	font-family: $font-heading;
+	font-size: $font-size-xs;
+	color: $color-text-muted;
+
+	@include breakpoint-down(md) {
+		display: none;
+	}
+}
+
+// -----------------------------------------------------------------------------
+// Header CTA
+// -----------------------------------------------------------------------------
+.site-header__cta {
+	display: none;
+
+	@include breakpoint-up(lg) {
+		display: inline-flex;
+	}
+}
+
+// -----------------------------------------------------------------------------
+// Primary nav alignment
+// -----------------------------------------------------------------------------
+.site-navigation {
+	display: flex;
+	gap: $space-4;
+	align-items: center;
+	margin-left: auto;
+}

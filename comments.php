@@ -28,8 +28,8 @@ if ( post_password_required() ) {
 		?>
 		<h2 class="comments-title">
 			<?php
-			$wcuganda_comment_count = get_comments_number();
-			if ( '1' === $wcuganda_comment_count ) {
+			$wcu_comment_count = get_comments_number();
+			if ( '1' === $wcu_comment_count ) {
 				printf(
 					/* translators: 1: title. */
 					esc_html__( 'One thought on &ldquo;%1$s&rdquo;', 'wcuganda' ),
@@ -38,8 +38,8 @@ if ( post_password_required() ) {
 			} else {
 				printf( 
 					/* translators: 1: comment count number, 2: title. */
-					esc_html( _nx( '%1$s thought on &ldquo;%2$s&rdquo;', '%1$s thoughts on &ldquo;%2$s&rdquo;', $wcuganda_comment_count, 'comments title', 'wcuganda' ) ),
-					number_format_i18n( $wcuganda_comment_count ), // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+					esc_html( _nx( '%1$s thought on &ldquo;%2$s&rdquo;', '%1$s thoughts on &ldquo;%2$s&rdquo;', $wcu_comment_count, 'comments title', 'wcuganda' ) ),
+					number_format_i18n( $wcu_comment_count ), // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 					'<span>' . wp_kses_post( get_the_title() ) . '</span>'
 				);
 			}

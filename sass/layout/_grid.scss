@@ -1,0 +1,81 @@
+// =============================================================================
+// Reusable grid layout primitives.
+// =============================================================================
+
+@use '../abstracts' as *;
+
+.wcu-grid {
+	display: grid;
+	gap: $space-6;
+}
+
+.wcu-grid--2 {
+	@include breakpoint-up(sm) {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+.wcu-grid--3 {
+	@include breakpoint-up(sm) {
+		grid-template-columns: repeat(2, 1fr);
+	}
+
+	@include breakpoint-up(lg) {
+		grid-template-columns: repeat(3, 1fr);
+	}
+}
+
+.wcu-grid--4 {
+	@include breakpoint-up(sm) {
+		grid-template-columns: repeat(2, 1fr);
+	}
+
+	@include breakpoint-up(md) {
+		grid-template-columns: repeat(3, 1fr);
+	}
+
+	@include breakpoint-up(lg) {
+		grid-template-columns: repeat(4, 1fr);
+	}
+}
+
+.wcu-grid--auto {
+	grid-template-columns: repeat(auto-fit, minmax(16rem, 1fr));
+}
+
+// Content + sidebar 2-column.
+.wcu-grid--content-sidebar {
+	display: grid;
+	gap: $space-8;
+
+	@include breakpoint-up(lg) {
+		grid-template-columns: minmax(0, 1fr) 18rem;
+	}
+}
+
+.wcu-grid--sidebar-content {
+	display: grid;
+	gap: $space-8;
+
+	@include breakpoint-up(lg) {
+		grid-template-columns: 18rem minmax(0, 1fr);
+	}
+}
+
+// Stack utility (vertical flex spacing).
+.wcu-stack {
+	display: flex;
+	flex-direction: column;
+	gap: $space-4;
+}
+
+.wcu-stack--lg {
+	gap: $space-6;
+}
+
+.wcu-cluster {
+	display: flex;
+	flex-wrap: wrap;
+	gap: $space-3;
+	align-items: center;
+}

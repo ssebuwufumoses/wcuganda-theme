@@ -1,0 +1,62 @@
+// =============================================================================
+// Badges — chapter tags, sponsor tiers, member roles, status indicators.
+// =============================================================================
+
+@use '../abstracts' as *;
+
+.wcu-badge {
+	display: inline-flex;
+	align-items: center;
+	gap: $space-1;
+	padding: 0.25rem $space-2;
+	font-family: $font-heading;
+	font-size: $font-size-xs;
+	font-weight: $font-weight-semibold;
+	line-height: 1;
+	color: $color-white;
+	letter-spacing: 0.05em;
+	text-transform: uppercase;
+	white-space: nowrap;
+	background-color: $color-secondary;
+	border-radius: $radius-pill;
+}
+
+// Color variants
+.wcu-badge--primary  { background-color: $color-primary; }
+.wcu-badge--accent   { color: $color-dark; background-color: $color-accent; }
+.wcu-badge--dark     { background-color: $color-dark; }
+.wcu-badge--success  { background-color: $color-success; }
+.wcu-badge--error    { background-color: $color-error; }
+.wcu-badge--warning  { color: $color-dark; background-color: $color-warning; }
+.wcu-badge--info     { background-color: $color-info; }
+
+.wcu-badge--soft {
+	color: $color-secondary;
+	background-color: rgba($color-secondary, 0.12);
+}
+
+.wcu-badge--soft-primary {
+	color: $color-primary;
+	background-color: rgba($color-primary, 0.10);
+}
+
+// Sponsor tiers — shorthand utility classes for the wcu_sponsor_tier taxonomy.
+.wcu-badge--platinum {
+	color: $color-dark;
+	background: linear-gradient(135deg, #e5e4e2, #b3b3b3);
+}
+
+.wcu-badge--gold {
+	color: $color-dark;
+	background-color: $color-accent;
+}
+
+.wcu-badge--silver {
+	color: $color-dark;
+	background-color: #c0c0c0;
+}
+
+.wcu-badge--bronze {
+	color: $color-white;
+	background-color: #cd7f32;
+}

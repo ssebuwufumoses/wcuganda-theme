@@ -1,20 +1,25 @@
 <?php
 /**
- * Custom template tags for this theme
- *
- * Eventually, some of the functionality here could be replaced by core features.
+ * Custom template tags called from theme template files.
  *
  * @package WCUganda
  */
 
-if ( ! function_exists( 'wcuganda_posted_on' ) ) :
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+if ( ! function_exists( 'wcu_posted_on' ) ) :
 	/**
-	 * Prints HTML with meta information for the current post-date/time.
+	 * Print the post date for the current post inside the loop.
+	 *
+	 * @return void
 	 */
-	function wcuganda_posted_on() {
+	function wcu_posted_on() {
 		$time_string = '<time class="entry-date published updated" datetime="%1$s">%2$s</time>';
+
 		if ( get_the_time( 'U' ) !== get_the_modified_time( 'U' ) ) {
-			$time_string = '<time class="entry-date published" datetime="%1$s">%2$s</time><time class="updated" datetime="%3$s">%4$s</time>';
+			$time_string = '<time class="entry-date published" datetime="%1$s">%2$s</time><time class="entry-date updated" datetime="%3$s">%4$s</time>';
 		}
 
 		$time_string = sprintf(
@@ -25,52 +30,55 @@ if ( ! function_exists( 'wcuganda_posted_on' ) ) :
 			esc_html( get_the_modified_date() )
 		);
 
-		$posted_on = sprintf(
-			/* translators: %s: post date. */
-			esc_html_x( 'Posted on %s', 'post date', 'wcuganda' ),
-			'<a href="' . esc_url( get_permalink() ) . '" rel="bookmark">' . $time_string . '</a>'
+		printf(
+			'<span class="posted-on">%1$s <a href="%2$s" rel="bookmark">%3$s</a></span>',
+			esc_html_x( 'Posted on', 'post date', 'wcuganda' ),
+			esc_url( get_permalink() ),
+			$time_string // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Built from escaped components above.
 		);
-
-		echo '<span class="posted-on">' . $posted_on . '</span>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-
 	}
 endif;
 
-if ( ! function_exists( 'wcuganda_posted_by' ) ) :
+if ( ! function_exists( 'wcu_posted_by' ) ) :
 	/**
-	 * Prints HTML with meta information for the current author.
+	 * Print the post author for the current post inside the loop.
+	 *
+	 * @return void
 	 */
-	function wcuganda_posted_by() {
-		$byline = sprintf(
-			/* translators: %s: post author. */
-			esc_html_x( 'by %s', 'post author', 'wcuganda' ),
-			'<span class="author vcard"><a class="url fn n" href="' . esc_url( get_author_posts_url( get_the_author_meta( 'ID' ) ) ) . '">' . esc_html( get_the_author() ) . '</a></span>'
+	function wcu_posted_by() {
+		printf(
+			'<span class="byline">%1$s <span class="author vcard"><a class="url fn n" href="%2$s">%3$s</a></span></span>',
+			esc_html_x( 'by', 'post author', 'wcuganda' ),
+			esc_url( get_author_posts_url( get_the_author_meta( 'ID' ) ) ),
+			esc_html( get_the_author() )
 		);
-
-		echo '<span class="byline"> ' . $byline . '</span>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-
 	}
 endif;
 
-if ( ! function_exists( 'wcuganda_entry_footer' ) ) :
+if ( ! function_exists( 'wcu_entry_footer' ) ) :
 	/**
-	 * Prints HTML with meta information for the categories, tags and comments.
+	 * Print categories, tags, and a comments link for the current post.
+	 *
+	 * @return void
 	 */
-	function wcuganda_entry_footer() {
-		// Hide category and tag text for pages.
+	function wcu_entry_footer() {
 		if ( 'post' === get_post_type() ) {
-			/* translators: used between list items, there is a space after the comma */
 			$categories_list = get_the_category_list( esc_html__( ', ', 'wcuganda' ) );
 			if ( $categories_list ) {
-				/* translators: 1: list of categories. */
-				printf( '<span class="cat-links">' . esc_html__( 'Posted in %1$s', 'wcuganda' ) . '</span>', $categories_list ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				printf(
+					/* translators: 1: list of categories. */
+					'<span class="cat-links">' . esc_html__( 'Posted in %1$s', 'wcuganda' ) . '</span>',
+					$categories_list // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Output of get_the_category_list() is safe.
+				);
 			}
 
-			/* translators: used between list items, there is a space after the comma */
 			$tags_list = get_the_tag_list( '', esc_html_x( ', ', 'list item separator', 'wcuganda' ) );
 			if ( $tags_list ) {
-				/* translators: 1: list of tags. */
-				printf( '<span class="tags-links">' . esc_html__( 'Tagged %1$s', 'wcuganda' ) . '</span>', $tags_list ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				printf(
+					/* translators: 1: list of tags. */
+					'<span class="tags-links">' . esc_html__( 'Tagged %1$s', 'wcuganda' ) . '</span>',
+					$tags_list // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Output of get_the_tag_list() is safe.
+				);
 			}
 		}
 
@@ -79,13 +87,9 @@ if ( ! function_exists( 'wcuganda_entry_footer' ) ) :
 			comments_popup_link(
 				sprintf(
 					wp_kses(
-						/* translators: %s: post title */
-						__( 'Leave a Comment<span class="screen-reader-text"> on %s</span>', 'wcuganda' ),
-						array(
-							'span' => array(
-								'class' => array(),
-							),
-						)
+						/* translators: %s: post title. */
+						__( 'Leave a comment<span class="screen-reader-text"> on %s</span>', 'wcuganda' ),
+						array( 'span' => array( 'class' => array() ) )
 					),
 					wp_kses_post( get_the_title() )
 				)
@@ -96,13 +100,9 @@ if ( ! function_exists( 'wcuganda_entry_footer' ) ) :
 		edit_post_link(
 			sprintf(
 				wp_kses(
-					/* translators: %s: Name of current post. Only visible to screen readers */
+					/* translators: %s: post title. */
 					__( 'Edit <span class="screen-reader-text">%s</span>', 'wcuganda' ),
-					array(
-						'span' => array(
-							'class' => array(),
-						),
-					)
+					array( 'span' => array( 'class' => array() ) )
 				),
 				wp_kses_post( get_the_title() )
 			),
@@ -112,54 +112,40 @@ if ( ! function_exists( 'wcuganda_entry_footer' ) ) :
 	}
 endif;
 
-if ( ! function_exists( 'wcuganda_post_thumbnail' ) ) :
+if ( ! function_exists( 'wcu_post_thumbnail' ) ) :
 	/**
-	 * Displays an optional post thumbnail.
+	 * Output the featured image for the current post in a responsive wrapper.
 	 *
-	 * Wraps the post thumbnail in an anchor element on index views, or a div
-	 * element when on single views.
+	 * @return void
 	 */
-	function wcuganda_post_thumbnail() {
+	function wcu_post_thumbnail() {
 		if ( post_password_required() || is_attachment() || ! has_post_thumbnail() ) {
 			return;
 		}
 
 		if ( is_singular() ) :
 			?>
-
-			<div class="post-thumbnail">
-				<?php the_post_thumbnail(); ?>
-			</div><!-- .post-thumbnail -->
-
-		<?php else : ?>
-
+			<figure class="post-thumbnail">
+				<?php the_post_thumbnail( 'wcu-hero', array( 'loading' => 'eager' ) ); ?>
+			</figure>
+			<?php
+		else :
+			?>
 			<a class="post-thumbnail" href="<?php the_permalink(); ?>" aria-hidden="true" tabindex="-1">
 				<?php
-					the_post_thumbnail(
-						'post-thumbnail',
-						array(
-							'alt' => the_title_attribute(
-								array(
-									'echo' => false,
-								)
-							),
-						)
-					);
+				the_post_thumbnail(
+					'wcu-card',
+					array(
+						'alt' => the_title_attribute(
+							array(
+								'echo' => false,
+							)
+						),
+					)
+				);
 				?>
 			</a>
-
 			<?php
-		endif; // End is_singular().
-	}
-endif;
-
-if ( ! function_exists( 'wp_body_open' ) ) :
-	/**
-	 * Shim for sites older than 5.2.
-	 *
-	 * @link https://core.trac.wordpress.org/ticket/12563
-	 */
-	function wp_body_open() {
-		do_action( 'wp_body_open' );
+		endif;
 	}
 endif;

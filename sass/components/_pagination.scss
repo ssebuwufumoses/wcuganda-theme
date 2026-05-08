@@ -1,0 +1,104 @@
+// =============================================================================
+// Pagination — for archives, search, and post navigation.
+// =============================================================================
+
+@use '../abstracts' as *;
+
+.wcu-pagination,
+.navigation.pagination {
+	display: flex;
+	flex-wrap: wrap;
+	gap: $space-2;
+	align-items: center;
+	justify-content: center;
+	margin: $space-12 0;
+	font-family: $font-heading;
+
+	.nav-links {
+		display: flex;
+		flex-wrap: wrap;
+		gap: $space-2;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.page-numbers {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		min-width: 2.5rem;
+		min-height: 2.5rem;
+		padding: 0 $space-3;
+		font-size: $font-size-sm;
+		font-weight: $font-weight-semibold;
+		color: $color-dark;
+		text-decoration: none;
+		background-color: $color-white;
+		border: $border-width solid $color-border;
+		border-radius: $radius-md;
+		transition: color $transition-fast, background-color $transition-fast,
+			border-color $transition-fast;
+
+		&:hover,
+		&:focus-visible {
+			color: $color-white;
+			background-color: $color-primary;
+			border-color: $color-primary;
+		}
+
+		&.current {
+			color: $color-white;
+			background-color: $color-dark;
+			border-color: $color-dark;
+		}
+
+		&.dots {
+			background: none;
+			border-color: transparent;
+
+			&:hover {
+				color: $color-dark;
+				background: none;
+				border-color: transparent;
+			}
+		}
+	}
+}
+
+// -----------------------------------------------------------------------------
+// Single-post navigation (prev / next)
+// -----------------------------------------------------------------------------
+.post-navigation {
+	margin: $space-12 0;
+
+	.nav-links {
+		display: grid;
+		gap: $space-4;
+
+		@include breakpoint-up(md) {
+			grid-template-columns: 1fr 1fr;
+		}
+	}
+
+	.nav-previous,
+	.nav-next {
+		padding: $space-4 $space-5;
+		background-color: $color-bg-alt;
+		border-radius: $radius-md;
+
+		a {
+			display: block;
+			color: $color-dark;
+			text-decoration: none;
+
+			&:hover,
+			&:focus-visible {
+				color: $color-primary;
+			}
+		}
+	}
+
+	.nav-next {
+		text-align: right;
+	}
+}

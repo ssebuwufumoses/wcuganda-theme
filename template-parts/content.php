@@ -22,14 +22,14 @@
 			?>
 			<div class="entry-meta">
 				<?php
-				wcuganda_posted_on();
-				wcuganda_posted_by();
+				wcu_posted_on();
+				wcu_posted_by();
 				?>
 			</div><!-- .entry-meta -->
 		<?php endif; ?>
 	</header><!-- .entry-header -->
 
-	<?php wcuganda_post_thumbnail(); ?>
+	<?php wcu_post_thumbnail(); ?>
 
 	<div class="entry-content">
 		<?php
@@ -58,6 +58,6 @@
 	</div><!-- .entry-content -->
 
 	<footer class="entry-footer">
-		<?php wcuganda_entry_footer(); ?>
+		<?php wcu_entry_footer(); ?>
 	</footer><!-- .entry-footer -->
 </article><!-- #post-<?php the_ID(); ?> -->

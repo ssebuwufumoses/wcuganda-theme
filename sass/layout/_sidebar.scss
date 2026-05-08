@@ -1,0 +1,52 @@
+// =============================================================================
+// Sidebar / widget area styling.
+// =============================================================================
+
+@use '../abstracts' as *;
+
+.widget-area {
+	display: flex;
+	flex-direction: column;
+	gap: $space-8;
+}
+
+.widget {
+	display: flex;
+	flex-direction: column;
+	gap: $space-3;
+	padding: $space-5;
+	background-color: $color-bg-alt;
+	border-radius: $radius-lg;
+
+	&:last-child {
+		margin-bottom: 0;
+	}
+}
+
+.widget-title {
+	margin: 0 0 $space-2;
+	font-family: $font-heading;
+	font-size: $font-size-md;
+	font-weight: $font-weight-semibold;
+	color: $color-dark;
+	letter-spacing: 0.05em;
+	text-transform: uppercase;
+}
+
+.widget ul {
+	@include list-reset;
+
+	display: flex;
+	flex-direction: column;
+	gap: $space-2;
+
+	li a {
+		color: $color-text;
+		text-decoration: none;
+
+		&:hover,
+		&:focus-visible {
+			color: $color-primary;
+		}
+	}
+}

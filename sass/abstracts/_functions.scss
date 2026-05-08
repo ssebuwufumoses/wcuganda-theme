@@ -1,0 +1,64 @@
+// =============================================================================
+// SCSS functions for WCUganda.
+// =============================================================================
+
+@use 'sass:math';
+@use 'sass:map';
+@use 'variables' as *;
+
+// Strip the unit from a value — e.g. `strip-unit(16px) => 16`.
+@function strip-unit($value) {
+	@if math.is-unitless($value) {
+		@return $value;
+	}
+	@return math.div($value, ($value * 0 + 1));
+}
+
+// Convert px to rem against a 16px root.
+@function rem($px) {
+	@return math.div(strip-unit($px), 16) * 1rem;
+}
+
+// Convert px to em against a contextual font size.
+@function em($px, $context: 16) {
+	@return math.div(strip-unit($px), strip-unit($context)) * 1em;
+}
+
+// Type-safe color lookup against a palette map (extension point for tokens).
+$palette: (
+	primary:    $color-primary,
+	secondary:  $color-secondary,
+	accent:     $color-accent,
+	dark:       $color-dark,
+	light:      $color-light,
+	white:      $color-white,
+	border:     $color-border,
+	text:       $color-text,
+	text-muted: $color-text-muted,
+	success:    $color-success,
+	error:      $color-error,
+	warning:    $color-warning,
+	info:       $color-info,
+);
+
+@function brand($name) {
+	@if not map.has-key($palette, $name) {
+		@error 'Unknown brand color `#{$name}`. Available: #{map.keys($palette)}.';
+	}
+	@return map.get($palette, $name);
+}
+
+// Fluid clamp helper for type or spacing across breakpoints.
+@function fluid($min-px, $max-px, $min-vw: $bp-sm, $max-vw: $bp-xl) {
+	$min: strip-unit($min-px);
+	$max: strip-unit($max-px);
+	$min-w: strip-unit($min-vw);
+	$max-w: strip-unit($max-vw);
+	$slope: math.div($max - $min, $max-w - $min-w);
+	$intercept: $min - $slope * $min-w;
+	@return clamp(
+		#{rem($min-px)},
+		#{$intercept * 1px} + #{$slope * 100}vw,
+		#{rem($max-px)}
+	);
+}

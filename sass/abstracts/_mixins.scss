@@ -1,0 +1,188 @@
+// =============================================================================
+// Reusable SCSS mixins. Mobile-first.
+// =============================================================================
+
+@use 'sass:map';
+@use 'sass:math';
+@use 'variables' as *;
+
+// -----------------------------------------------------------------------------
+// Breakpoints
+// -----------------------------------------------------------------------------
+$breakpoints: (
+	xs:  $bp-xs,
+	sm:  $bp-sm,
+	md:  $bp-md,
+	lg:  $bp-lg,
+	xl:  $bp-xl,
+	2xl: $bp-2xl,
+);
+
+// Mobile-first: styles inside apply at the named breakpoint and above.
+@mixin breakpoint-up($name) {
+	$value: map.get($breakpoints, $name);
+	@if $value == null {
+		@error 'Unknown breakpoint `#{$name}`.';
+	}
+	@media screen and (min-width: $value) {
+		@content;
+	}
+}
+
+// Use sparingly — only when a mobile-first approach genuinely doesn't fit.
+@mixin breakpoint-down($name) {
+	$value: map.get($breakpoints, $name);
+	@if $value == null {
+		@error 'Unknown breakpoint `#{$name}`.';
+	}
+	@media screen and (max-width: ($value - 0.02px)) {
+		@content;
+	}
+}
+
+// -----------------------------------------------------------------------------
+// Layout helpers
+// -----------------------------------------------------------------------------
+@mixin container($max: $container-max) {
+	width: 100%;
+	max-width: $max;
+	margin-right: auto;
+	margin-left: auto;
+	padding-right: $gutter-mobile;
+	padding-left: $gutter-mobile;
+
+	@include breakpoint-up(md) {
+		padding-right: $gutter;
+		padding-left: $gutter;
+	}
+}
+
+@mixin clearfix {
+	&::after {
+		display: table;
+		clear: both;
+		content: '';
+	}
+}
+
+// Aspect ratio box. $width and $height are unitless.
+@mixin aspect-ratio($width, $height) {
+	position: relative;
+
+	&::before {
+		display: block;
+		width: 100%;
+		padding-top: math.div($height, $width) * 100%;
+		content: '';
+	}
+
+	> * {
+		position: absolute;
+		inset: 0;
+	}
+}
+
+// -----------------------------------------------------------------------------
+// Visibility / accessibility
+// -----------------------------------------------------------------------------
+@mixin visually-hidden {
+	position: absolute !important;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	clip-path: inset(50%);
+	white-space: nowrap;
+	border: 0;
+}
+
+@mixin visually-hidden-focusable {
+	@include visually-hidden;
+
+	&:focus,
+	&:active {
+		position: static !important;
+		width: auto;
+		height: auto;
+		margin: 0;
+		overflow: visible;
+		clip: auto;
+		clip-path: none;
+		white-space: normal;
+	}
+}
+
+// Visible focus ring — always pair interactive elements with this.
+@mixin focus-ring($color: $color-secondary) {
+	outline: 2px solid $color;
+	outline-offset: 2px;
+	box-shadow: 0 0 0 4px rgba($color, 0.2);
+}
+
+// -----------------------------------------------------------------------------
+// Typography helpers
+// -----------------------------------------------------------------------------
+@mixin heading {
+	font-family: $font-heading;
+	font-weight: $font-weight-bold;
+	line-height: $line-height-tight;
+	color: $color-dark;
+}
+
+@mixin body-text {
+	font-family: $font-body;
+	font-weight: $font-weight-regular;
+	line-height: $line-height-base;
+	color: $color-text;
+}
+
+@mixin truncate($lines: 1) {
+	@if $lines == 1 {
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	} @else {
+		display: -webkit-box;
+		-webkit-line-clamp: $lines;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
+	}
+}
+
+// -----------------------------------------------------------------------------
+// Component helpers
+// -----------------------------------------------------------------------------
+@mixin button-reset {
+	padding: 0;
+	font: inherit;
+	color: inherit;
+	cursor: pointer;
+	background: none;
+	border: 0;
+	appearance: none;
+}
+
+@mixin list-reset {
+	padding: 0;
+	margin: 0;
+	list-style: none;
+}
+
+@mixin card-base {
+	background: $color-white;
+	border: $border-width solid $color-border;
+	border-radius: $radius-lg;
+	box-shadow: $shadow-sm;
+	transition: box-shadow $transition-base, transform $transition-base;
+}
+
+// Smooth scrolling on the named element while respecting reduced-motion.
+@mixin smooth-scroll {
+	scroll-behavior: smooth;
+
+	@media (prefers-reduced-motion: reduce) {
+		scroll-behavior: auto;
+	}
+}

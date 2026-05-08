@@ -1,0 +1,139 @@
+// =============================================================================
+// Brand tokens, scale, and global SCSS variables for WCUganda.
+// =============================================================================
+
+// -----------------------------------------------------------------------------
+// Colors
+// -----------------------------------------------------------------------------
+$color-primary:    #D90000; // Uganda red
+$color-secondary:  #0073AA; // WordPress blue
+$color-accent:     #FCDC00; // Uganda gold
+$color-dark:       #1A1A1A;
+$color-light:      #F7F7F7;
+$color-white:      #FFFFFF;
+$color-black:      #000000;
+$color-border:     #E0E0E0;
+$color-text:       #333333;
+$color-text-muted: #666666;
+$color-success:    #00A32A;
+$color-error:      #D63638;
+$color-warning:    #DBA617;
+$color-info:       #2271B1;
+
+// Functional aliases
+$color-link:        $color-secondary;
+$color-link-hover:  $color-primary;
+$color-bg:          $color-white;
+$color-bg-alt:      $color-light;
+
+// -----------------------------------------------------------------------------
+// Typography
+// -----------------------------------------------------------------------------
+$font-heading: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+$font-body:    'Source Serif 4', Georgia, 'Times New Roman', serif;
+$font-mono:    'SFMono-Regular', Menlo, Consolas, 'Liberation Mono', monospace;
+
+$font-size-base:   1rem;       // 16px
+$font-size-xs:     0.75rem;    // 12px
+$font-size-sm:     0.875rem;   // 14px
+$font-size-md:     1rem;       // 16px
+$font-size-lg:     1.125rem;   // 18px
+$font-size-xl:     1.25rem;    // 20px
+$font-size-2xl:    1.5rem;     // 24px
+$font-size-3xl:    1.875rem;   // 30px
+$font-size-4xl:    2.25rem;    // 36px
+$font-size-5xl:    3rem;       // 48px
+$font-size-6xl:    3.75rem;    // 60px
+
+$line-height-tight:   1.2;
+$line-height-snug:    1.4;
+$line-height-base:    1.6;
+$line-height-relaxed: 1.75;
+
+$font-weight-light:    300;
+$font-weight-regular:  400;
+$font-weight-medium:   500;
+$font-weight-semibold: 600;
+$font-weight-bold:     700;
+$font-weight-black:    900;
+
+// -----------------------------------------------------------------------------
+// Spacing scale (4px base)
+// -----------------------------------------------------------------------------
+$space-0:  0;
+$space-1:  0.25rem;  //  4px
+$space-2:  0.5rem;   //  8px
+$space-3:  0.75rem;  // 12px
+$space-4:  1rem;     // 16px
+$space-5:  1.25rem;  // 20px
+$space-6:  1.5rem;   // 24px
+$space-8:  2rem;     // 32px
+$space-10: 2.5rem;   // 40px
+$space-12: 3rem;     // 48px
+$space-16: 4rem;     // 64px
+$space-20: 5rem;     // 80px
+$space-24: 6rem;     // 96px
+$space-32: 8rem;     // 128px
+
+// -----------------------------------------------------------------------------
+// Layout
+// -----------------------------------------------------------------------------
+$container-max:    1200px;
+$container-narrow: 800px;
+$container-wide:   1440px;
+$gutter:           $space-6;
+$gutter-mobile:    $space-4;
+
+// -----------------------------------------------------------------------------
+// Breakpoints (mobile-first min-width)
+// -----------------------------------------------------------------------------
+$bp-xs: 360px;
+$bp-sm: 576px;
+$bp-md: 768px;
+$bp-lg: 992px;
+$bp-xl: 1200px;
+$bp-2xl: 1440px;
+
+// -----------------------------------------------------------------------------
+// Borders & radius
+// -----------------------------------------------------------------------------
+$border-width:        1px;
+$border-width-thick:  2px;
+$border-color:        $color-border;
+
+$radius-none: 0;
+$radius-sm:   2px;
+$radius-md:   4px;
+$radius-lg:   8px;
+$radius-xl:   12px;
+$radius-pill: 999px;
+$radius-circle: 50%;
+
+// -----------------------------------------------------------------------------
+// Shadows
+// -----------------------------------------------------------------------------
+$shadow-sm:  0 1px 2px rgba(0, 0, 0, 0.05);
+$shadow-md:  0 4px 6px -1px rgba(0, 0, 0, 0.08), 0 2px 4px -2px rgba(0, 0, 0, 0.06);
+$shadow-lg:  0 10px 15px -3px rgba(0, 0, 0, 0.10), 0 4px 6px -4px rgba(0, 0, 0, 0.05);
+$shadow-xl:  0 20px 25px -5px rgba(0, 0, 0, 0.10), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+$shadow-focus: 0 0 0 3px rgba($color-secondary, 0.35);
+
+// -----------------------------------------------------------------------------
+// Z-index scale
+// -----------------------------------------------------------------------------
+$z-below:    -1;
+$z-base:      0;
+$z-content:   1;
+$z-sticky:   100;
+$z-overlay:  500;
+$z-header:   800;
+$z-dropdown: 900;
+$z-modal:   1000;
+$z-toast:   1100;
+
+// -----------------------------------------------------------------------------
+// Transitions
+// -----------------------------------------------------------------------------
+$transition-fast: 150ms ease-in-out;
+$transition-base: 250ms ease-in-out;
+$transition-slow: 400ms ease-in-out;

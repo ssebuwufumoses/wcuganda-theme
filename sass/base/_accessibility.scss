@@ -1,0 +1,81 @@
+// =============================================================================
+// Accessibility helpers: skip links, focus management, motion-safe.
+// =============================================================================
+
+@use '../abstracts' as *;
+
+// -----------------------------------------------------------------------------
+// Skip link — visible on keyboard focus only.
+// -----------------------------------------------------------------------------
+.skip-link {
+	position: absolute;
+	top: -100px;
+	left: $space-2;
+	z-index: $z-toast;
+	padding: $space-3 $space-5;
+	font-family: $font-heading;
+	font-size: $font-size-sm;
+	font-weight: $font-weight-semibold;
+	color: $color-white;
+	text-decoration: none;
+	background-color: $color-primary;
+	border-radius: $radius-md;
+	transition: top $transition-fast;
+
+	&:focus,
+	&:focus-visible {
+		top: $space-2;
+		color: $color-white;
+		outline: 2px solid $color-white;
+		outline-offset: 2px;
+	}
+}
+
+// -----------------------------------------------------------------------------
+// Focus visibility
+// -----------------------------------------------------------------------------
+:focus {
+	outline: 0;
+}
+
+:focus-visible {
+	@include focus-ring;
+}
+
+// Restore focus ring on form controls when keyboard-focused.
+button:focus-visible,
+[type='button']:focus-visible,
+[type='submit']:focus-visible,
+[type='reset']:focus-visible,
+[role='button']:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+	@include focus-ring;
+}
+
+// -----------------------------------------------------------------------------
+// Reduced motion
+// -----------------------------------------------------------------------------
+@media (prefers-reduced-motion: reduce) {
+	*,
+	*::before,
+	*::after {
+		animation-duration: 0.01ms !important;
+		animation-iteration-count: 1 !important;
+		transition-duration: 0.01ms !important;
+		scroll-behavior: auto !important;
+	}
+}
+
+// -----------------------------------------------------------------------------
+// High-contrast and forced-colors fallbacks
+// -----------------------------------------------------------------------------
+@media (forced-colors: active) {
+	.btn,
+	.button,
+	[type='submit'],
+	[type='button'] {
+		border: 1px solid currentColor;
+	}
+}

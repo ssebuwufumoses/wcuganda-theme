@@ -1,0 +1,159 @@
+// =============================================================================
+// Buttons. `.wcu-btn` is the canonical class; native button elements inherit it.
+// =============================================================================
+
+@use 'sass:color';
+@use '../abstracts' as *;
+
+%btn-base {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: $space-2;
+	min-height: 2.75rem; // 44px touch target
+	padding: $space-3 $space-6;
+	font-family: $font-heading;
+	font-size: $font-size-md;
+	font-weight: $font-weight-semibold;
+	line-height: 1;
+	color: $color-white;
+	text-align: center;
+	text-decoration: none;
+	cursor: pointer;
+	background-color: $color-primary;
+	border: $border-width-thick solid $color-primary;
+	border-radius: $radius-md;
+	transition: background-color $transition-fast, border-color $transition-fast,
+		color $transition-fast, transform $transition-fast,
+		box-shadow $transition-fast;
+
+	&:hover,
+	&:focus {
+		color: $color-white;
+		text-decoration: none;
+		background-color: color.adjust($color-primary, $lightness: -8%);
+		border-color: color.adjust($color-primary, $lightness: -8%);
+	}
+
+	&:active {
+		transform: translateY(1px);
+	}
+
+	&:disabled,
+	&[aria-disabled='true'] {
+		cursor: not-allowed;
+		opacity: 0.6;
+		pointer-events: none;
+	}
+}
+
+.wcu-btn {
+	@extend %btn-base;
+}
+
+// -----------------------------------------------------------------------------
+// Variants
+// -----------------------------------------------------------------------------
+.wcu-btn--secondary {
+	color: $color-white;
+	background-color: $color-secondary;
+	border-color: $color-secondary;
+
+	&:hover,
+	&:focus {
+		background-color: color.adjust($color-secondary, $lightness: -8%);
+		border-color: color.adjust($color-secondary, $lightness: -8%);
+	}
+}
+
+.wcu-btn--accent {
+	color: $color-dark;
+	background-color: $color-accent;
+	border-color: $color-accent;
+
+	&:hover,
+	&:focus {
+		color: $color-dark;
+		background-color: color.adjust($color-accent, $lightness: -8%);
+		border-color: color.adjust($color-accent, $lightness: -8%);
+	}
+}
+
+.wcu-btn--outline {
+	color: $color-primary;
+	background-color: transparent;
+
+	&:hover,
+	&:focus {
+		color: $color-white;
+		background-color: $color-primary;
+	}
+}
+
+.wcu-btn--outline-light {
+	color: $color-white;
+	background-color: transparent;
+	border-color: $color-white;
+
+	&:hover,
+	&:focus {
+		color: $color-dark;
+		background-color: $color-white;
+	}
+}
+
+.wcu-btn--ghost {
+	color: $color-text;
+	background-color: transparent;
+	border-color: transparent;
+
+	&:hover,
+	&:focus {
+		color: $color-primary;
+		background-color: rgba($color-primary, 0.08);
+		border-color: transparent;
+	}
+}
+
+.wcu-btn--link {
+	min-height: 0;
+	padding: 0;
+	color: $color-link;
+	background: none;
+	border: 0;
+
+	&:hover,
+	&:focus {
+		color: $color-link-hover;
+		background: none;
+		text-decoration: underline;
+	}
+}
+
+// -----------------------------------------------------------------------------
+// Sizes
+// -----------------------------------------------------------------------------
+.wcu-btn--sm {
+	min-height: 2.25rem;
+	padding: $space-2 $space-4;
+	font-size: $font-size-sm;
+}
+
+.wcu-btn--lg {
+	min-height: 3.25rem;
+	padding: $space-4 $space-8;
+	font-size: $font-size-lg;
+}
+
+.wcu-btn--block {
+	display: flex;
+	width: 100%;
+}
+
+// Apply base styles to native button-ish form controls so they inherit the look.
+button:not([class]),
+input[type='button']:not([class]),
+input[type='reset']:not([class]),
+input[type='submit']:not([class]) {
+	@extend %btn-base;
+}

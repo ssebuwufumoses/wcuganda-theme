@@ -1,0 +1,205 @@
+// =============================================================================
+// Typography. Heading scale uses Inter; body uses Source Serif 4.
+// =============================================================================
+
+@use '../abstracts' as *;
+
+html {
+	font-size: 100%; // 16px root
+}
+
+body {
+	@include body-text;
+
+	font-size: $font-size-base;
+	background-color: $color-bg;
+}
+
+// -----------------------------------------------------------------------------
+// Headings
+// -----------------------------------------------------------------------------
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	@include heading;
+
+	margin-bottom: $space-4;
+	letter-spacing: -0.01em;
+}
+
+h1,
+.h1 {
+	font-size: fluid(32, 56);
+	letter-spacing: -0.02em;
+}
+
+h2,
+.h2 {
+	font-size: fluid(28, 40);
+}
+
+h3,
+.h3 {
+	font-size: fluid(22, 30);
+}
+
+h4,
+.h4 {
+	font-size: fluid(20, 24);
+	font-weight: $font-weight-semibold;
+}
+
+h5,
+.h5 {
+	font-size: $font-size-lg;
+	font-weight: $font-weight-semibold;
+}
+
+h6,
+.h6 {
+	font-size: $font-size-md;
+	font-weight: $font-weight-semibold;
+	text-transform: uppercase;
+	letter-spacing: 0.05em;
+}
+
+// -----------------------------------------------------------------------------
+// Paragraphs and inline text
+// -----------------------------------------------------------------------------
+p {
+	margin-bottom: $space-4;
+
+	&:last-child {
+		margin-bottom: 0;
+	}
+}
+
+.lead {
+	font-size: $font-size-lg;
+	line-height: $line-height-relaxed;
+	color: $color-text;
+}
+
+small,
+.text-small {
+	font-size: $font-size-sm;
+}
+
+strong,
+b {
+	font-weight: $font-weight-bold;
+}
+
+em,
+i,
+dfn,
+cite {
+	font-style: italic;
+}
+
+mark {
+	padding: 0 $space-1;
+	color: $color-dark;
+	background-color: rgba($color-accent, 0.5);
+}
+
+abbr[title] {
+	text-decoration: underline dotted;
+	cursor: help;
+}
+
+// -----------------------------------------------------------------------------
+// Links
+// -----------------------------------------------------------------------------
+a {
+	color: $color-link;
+	text-decoration: underline;
+	text-decoration-thickness: 1px;
+	text-underline-offset: 0.2em;
+	transition: color $transition-fast;
+
+	&:hover,
+	&:focus {
+		color: $color-link-hover;
+	}
+
+	&:focus-visible {
+		@include focus-ring;
+	}
+}
+
+// -----------------------------------------------------------------------------
+// Lists
+// -----------------------------------------------------------------------------
+ul,
+ol {
+	padding-left: $space-6;
+	margin: 0 0 $space-4;
+}
+
+li {
+	margin-bottom: $space-2;
+}
+
+dl {
+	margin: 0 0 $space-4;
+}
+
+dt {
+	font-weight: $font-weight-semibold;
+}
+
+dd {
+	margin-left: $space-4;
+}
+
+// -----------------------------------------------------------------------------
+// Blockquotes & code
+// -----------------------------------------------------------------------------
+blockquote {
+	padding: $space-4 $space-6;
+	margin: 0 0 $space-6;
+	font-size: $font-size-lg;
+	font-style: italic;
+	color: $color-text-muted;
+	border-left: 4px solid $color-primary;
+}
+
+code,
+kbd,
+samp,
+pre {
+	font-family: $font-mono;
+	font-size: 0.9em;
+}
+
+code {
+	padding: 0.15em 0.4em;
+	color: $color-dark;
+	background-color: $color-light;
+	border-radius: $radius-sm;
+}
+
+pre {
+	padding: $space-4;
+	margin: 0 0 $space-4;
+	overflow-x: auto;
+	background-color: $color-light;
+	border-radius: $radius-md;
+
+	code {
+		padding: 0;
+		background: none;
+	}
+}
+
+// -----------------------------------------------------------------------------
+// Selection
+// -----------------------------------------------------------------------------
+::selection {
+	color: $color-white;
+	background-color: $color-primary;
+}

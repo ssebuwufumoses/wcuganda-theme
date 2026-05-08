@@ -1,0 +1,184 @@
+// =============================================================================
+// Primary navigation, mobile menu, and sub-menus.
+// =============================================================================
+
+@use '../abstracts' as *;
+
+.wcu-nav {
+	display: flex;
+	align-items: center;
+}
+
+// -----------------------------------------------------------------------------
+// Toggle button (hamburger / close)
+// -----------------------------------------------------------------------------
+.wcu-nav__toggle {
+	@include button-reset;
+
+	display: inline-flex;
+	gap: $space-2;
+	align-items: center;
+	justify-content: center;
+	width: 2.75rem;
+	height: 2.75rem;
+	color: $color-dark;
+	border-radius: $radius-md;
+
+	&:hover,
+	&:focus-visible {
+		color: $color-primary;
+		background-color: rgba($color-primary, 0.08);
+	}
+
+	@include breakpoint-up(lg) {
+		display: none;
+	}
+
+	.wcu-nav__icon-bar {
+		display: block;
+		width: 1.5rem;
+		height: 2px;
+		background-color: currentColor;
+		transition: transform $transition-base, opacity $transition-base;
+	}
+
+	.wcu-nav__icon-bar + .wcu-nav__icon-bar {
+		margin-top: 5px;
+	}
+
+	&[aria-expanded='true'] {
+		.wcu-nav__icon-bar:nth-child(1) {
+			transform: translateY(7px) rotate(45deg);
+		}
+		.wcu-nav__icon-bar:nth-child(2) {
+			opacity: 0;
+		}
+		.wcu-nav__icon-bar:nth-child(3) {
+			transform: translateY(-7px) rotate(-45deg);
+		}
+	}
+}
+
+// -----------------------------------------------------------------------------
+// Menu panel — off-canvas on mobile, inline on desktop.
+// -----------------------------------------------------------------------------
+.wcu-nav__menu {
+	@include list-reset;
+
+	position: fixed;
+	inset: 4rem 0 0 0; // sits below the header
+	z-index: $z-overlay;
+	display: flex;
+	flex-direction: column;
+	gap: $space-1;
+	padding: $space-6 $gutter-mobile;
+	overflow-y: auto;
+	background-color: $color-white;
+	border-top: $border-width solid $color-border;
+	transform: translateX(100%);
+	transition: transform $transition-base;
+
+	&[data-open='true'] {
+		transform: translateX(0);
+	}
+
+	@include breakpoint-up(lg) {
+		position: static;
+		inset: auto;
+		flex-direction: row;
+		align-items: center;
+		gap: $space-2;
+		padding: 0;
+		overflow: visible;
+		background: none;
+		border: 0;
+		transform: none;
+	}
+}
+
+// -----------------------------------------------------------------------------
+// Menu items
+// -----------------------------------------------------------------------------
+.wcu-nav__item {
+	position: relative;
+	margin: 0;
+	list-style: none;
+}
+
+.wcu-nav__link,
+.wcu-nav .menu-item > a {
+	display: flex;
+	align-items: center;
+	gap: $space-2;
+	padding: $space-3 $space-4;
+	font-family: $font-heading;
+	font-size: $font-size-md;
+	font-weight: $font-weight-medium;
+	color: $color-dark;
+	text-decoration: none;
+	border-radius: $radius-md;
+	transition: color $transition-fast, background-color $transition-fast;
+
+	&:hover,
+	&:focus-visible {
+		color: $color-primary;
+		background-color: rgba($color-primary, 0.06);
+	}
+}
+
+.wcu-nav .current-menu-item > a,
+.wcu-nav .current_page_item > a {
+	color: $color-primary;
+}
+
+// -----------------------------------------------------------------------------
+// Sub-menus
+// -----------------------------------------------------------------------------
+.wcu-nav .sub-menu {
+	@include list-reset;
+
+	display: none;
+	padding-left: $space-4;
+
+	@include breakpoint-up(lg) {
+		position: absolute;
+		top: 100%;
+		left: 0;
+		min-width: 14rem;
+		padding: $space-2;
+		background-color: $color-white;
+		border: $border-width solid $color-border;
+		border-radius: $radius-md;
+		box-shadow: $shadow-lg;
+	}
+}
+
+.wcu-nav .menu-item-has-children {
+	> a::after {
+		content: '';
+		display: inline-block;
+		width: 0.5rem;
+		height: 0.5rem;
+		margin-left: $space-2;
+		border: solid currentColor;
+		border-width: 0 2px 2px 0;
+		transform: rotate(45deg);
+	}
+
+	&.is-open > .sub-menu,
+	&:hover > .sub-menu,
+	&:focus-within > .sub-menu {
+		display: block;
+	}
+}
+
+// -----------------------------------------------------------------------------
+// Lock body scroll when mobile menu is open (helper class added by JS).
+// -----------------------------------------------------------------------------
+body.wcu-nav-open {
+	overflow: hidden;
+
+	@include breakpoint-up(lg) {
+		overflow: visible;
+	}
+}

@@ -1,0 +1,153 @@
+// =============================================================================
+// Site footer — multi-column top, copyright + social bottom.
+// =============================================================================
+
+@use '../abstracts' as *;
+
+.site-footer {
+	color: rgba($color-white, 0.85);
+	background-color: $color-dark;
+}
+
+.site-footer__top {
+	@include container;
+
+	display: grid;
+	gap: $space-8;
+	padding-top: $space-12;
+	padding-bottom: $space-12;
+
+	@include breakpoint-up(md) {
+		grid-template-columns: repeat(2, 1fr);
+		gap: $space-10;
+	}
+
+	@include breakpoint-up(lg) {
+		grid-template-columns: 1.5fr 1fr 1fr 1.25fr;
+	}
+}
+
+.site-footer__column {
+	display: flex;
+	flex-direction: column;
+	gap: $space-4;
+}
+
+.site-footer__heading {
+	margin: 0;
+	font-family: $font-heading;
+	font-size: $font-size-md;
+	font-weight: $font-weight-semibold;
+	color: $color-white;
+	letter-spacing: 0.05em;
+	text-transform: uppercase;
+}
+
+.site-footer__about {
+	font-size: $font-size-sm;
+	line-height: $line-height-relaxed;
+	color: rgba($color-white, 0.7);
+}
+
+.site-footer__brand {
+	display: flex;
+	gap: $space-3;
+	align-items: center;
+	color: $color-white;
+}
+
+.site-footer__brand-name {
+	margin: 0;
+	font-family: $font-heading;
+	font-size: $font-size-lg;
+	font-weight: $font-weight-bold;
+	color: $color-white;
+}
+
+.site-footer ul,
+.site-footer .menu {
+	@include list-reset;
+
+	display: flex;
+	flex-direction: column;
+	gap: $space-2;
+	font-size: $font-size-sm;
+
+	a {
+		color: rgba($color-white, 0.75);
+		text-decoration: none;
+		transition: color $transition-fast;
+
+		&:hover,
+		&:focus-visible {
+			color: $color-accent;
+		}
+	}
+}
+
+// -----------------------------------------------------------------------------
+// Bottom bar
+// -----------------------------------------------------------------------------
+.site-footer__bottom {
+	border-top: $border-width solid rgba($color-white, 0.12);
+}
+
+.site-footer__bottom-inner {
+	@include container;
+
+	display: flex;
+	flex-direction: column;
+	gap: $space-3;
+	align-items: center;
+	justify-content: space-between;
+	padding-top: $space-5;
+	padding-bottom: $space-5;
+	font-family: $font-heading;
+	font-size: $font-size-xs;
+	color: rgba($color-white, 0.6);
+	letter-spacing: 0.03em;
+
+	@include breakpoint-up(md) {
+		flex-direction: row;
+		gap: $space-6;
+	}
+}
+
+.site-footer__legal {
+	display: flex;
+	flex-wrap: wrap;
+	gap: $space-4;
+	align-items: center;
+}
+
+// -----------------------------------------------------------------------------
+// Social links
+// -----------------------------------------------------------------------------
+.site-footer__social {
+	display: flex;
+	gap: $space-2;
+	align-items: center;
+
+	a {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 2.25rem;
+		height: 2.25rem;
+		color: rgba($color-white, 0.85);
+		background-color: rgba($color-white, 0.08);
+		border-radius: $radius-circle;
+		transition: color $transition-fast, background-color $transition-fast;
+
+		&:hover,
+		&:focus-visible {
+			color: $color-dark;
+			background-color: $color-accent;
+		}
+
+		svg {
+			width: 1.125rem;
+			height: 1.125rem;
+		}
+	}
+}

@@ -1,0 +1,159 @@
+// =============================================================================
+// Form controls — inputs, textareas, selects, search forms.
+// =============================================================================
+
+@use 'sass:color';
+@use '../abstracts' as *;
+
+.wcu-form {
+	display: flex;
+	flex-direction: column;
+	gap: $space-4;
+}
+
+.wcu-form__row {
+	display: grid;
+	gap: $space-4;
+
+	@include breakpoint-up(md) {
+		grid-template-columns: repeat(2, 1fr);
+	}
+}
+
+.wcu-form__group {
+	display: flex;
+	flex-direction: column;
+	gap: $space-2;
+}
+
+.wcu-form__label,
+label {
+	font-family: $font-heading;
+	font-size: $font-size-sm;
+	font-weight: $font-weight-semibold;
+	color: $color-dark;
+}
+
+.wcu-form__hint {
+	font-size: $font-size-xs;
+	color: $color-text-muted;
+}
+
+.wcu-form__error {
+	font-size: $font-size-xs;
+	font-weight: $font-weight-semibold;
+	color: $color-error;
+}
+
+input[type='text'],
+input[type='email'],
+input[type='url'],
+input[type='password'],
+input[type='search'],
+input[type='number'],
+input[type='tel'],
+input[type='date'],
+input[type='time'],
+input[type='datetime-local'],
+input[type='month'],
+input[type='week'],
+input[type='color'],
+textarea,
+select {
+	width: 100%;
+	min-height: 2.75rem;
+	padding: $space-3 $space-4;
+	font-family: $font-body;
+	font-size: $font-size-md;
+	color: $color-text;
+	background-color: $color-white;
+	border: $border-width solid $color-border;
+	border-radius: $radius-md;
+	transition: border-color $transition-fast, box-shadow $transition-fast;
+	appearance: none;
+
+	&::placeholder {
+		color: color.adjust($color-text-muted, $lightness: 10%);
+	}
+
+	&:focus {
+		border-color: $color-secondary;
+		outline: 0;
+		box-shadow: $shadow-focus;
+	}
+
+	&[aria-invalid='true'] {
+		border-color: $color-error;
+	}
+
+	&:disabled,
+	&[readonly] {
+		color: $color-text-muted;
+		background-color: $color-bg-alt;
+	}
+}
+
+textarea {
+	min-height: 7.5rem;
+	resize: vertical;
+}
+
+select {
+	padding-right: $space-10;
+	background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path fill='%23333333' d='M6 8 0 0h12z'/></svg>");
+	background-repeat: no-repeat;
+	background-position: right $space-4 center;
+	background-size: 12px 8px;
+}
+
+// Checkbox / radio
+input[type='checkbox'],
+input[type='radio'] {
+	width: 1.125rem;
+	height: 1.125rem;
+	margin-right: $space-2;
+	vertical-align: middle;
+	accent-color: $color-primary;
+}
+
+// File input
+input[type='file'] {
+	font-family: $font-body;
+	font-size: $font-size-sm;
+}
+
+// -----------------------------------------------------------------------------
+// Search form
+// -----------------------------------------------------------------------------
+.search-form {
+	display: flex;
+	gap: $space-2;
+	align-items: stretch;
+}
+
+.search-form .search-field {
+	flex: 1;
+}
+
+.search-form .search-submit {
+	flex-shrink: 0;
+}
+
+// -----------------------------------------------------------------------------
+// Inline form (e.g. newsletter signup)
+// -----------------------------------------------------------------------------
+.wcu-form--inline {
+	display: flex;
+	flex-direction: column;
+	gap: $space-3;
+
+	@include breakpoint-up(sm) {
+		flex-direction: row;
+		align-items: stretch;
+	}
+
+	input,
+	.wcu-btn {
+		flex: 1;
+	}
+}

@@ -1,0 +1,125 @@
+// =============================================================================
+// Card components — used for events, members, sponsors, etc.
+// =============================================================================
+
+@use '../abstracts' as *;
+
+.wcu-card {
+	@include card-base;
+
+	display: flex;
+	flex-direction: column;
+	overflow: hidden;
+
+	&:hover {
+		box-shadow: $shadow-md;
+		transform: translateY(-2px);
+	}
+}
+
+.wcu-card__media {
+	@include aspect-ratio(16, 9);
+
+	background-color: $color-bg-alt;
+
+	img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+}
+
+.wcu-card__body {
+	display: flex;
+	flex: 1;
+	flex-direction: column;
+	gap: $space-3;
+	padding: $space-5;
+
+	@include breakpoint-up(md) {
+		padding: $space-6;
+	}
+}
+
+.wcu-card__eyebrow {
+	font-family: $font-heading;
+	font-size: $font-size-xs;
+	font-weight: $font-weight-semibold;
+	letter-spacing: 0.08em;
+	color: $color-primary;
+	text-transform: uppercase;
+}
+
+.wcu-card__title {
+	margin: 0;
+	font-size: $font-size-xl;
+	line-height: $line-height-snug;
+
+	a {
+		color: inherit;
+		text-decoration: none;
+
+		&:hover,
+		&:focus {
+			color: $color-primary;
+		}
+	}
+}
+
+.wcu-card__excerpt {
+	flex: 1;
+	font-size: $font-size-sm;
+	color: $color-text-muted;
+}
+
+.wcu-card__meta {
+	display: flex;
+	flex-wrap: wrap;
+	gap: $space-3;
+	font-family: $font-heading;
+	font-size: $font-size-sm;
+	color: $color-text-muted;
+}
+
+.wcu-card__footer {
+	display: flex;
+	flex-wrap: wrap;
+	gap: $space-3;
+	align-items: center;
+	justify-content: space-between;
+	padding: $space-4 $space-5;
+	border-top: $border-width solid $color-border;
+
+	@include breakpoint-up(md) {
+		padding: $space-4 $space-6;
+	}
+}
+
+// Variants
+.wcu-card--horizontal {
+	@include breakpoint-up(md) {
+		flex-direction: row;
+
+		.wcu-card__media {
+			flex: 0 0 40%;
+			padding-top: 0;
+
+			&::before {
+				display: none;
+			}
+		}
+	}
+}
+
+.wcu-card--bordered {
+	border-width: $border-width-thick;
+}
+
+.wcu-card--flat {
+	box-shadow: none;
+
+	&:hover {
+		box-shadow: none;
+		transform: none;
+	}
+}

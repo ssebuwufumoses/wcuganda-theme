@@ -5,8 +5,8 @@
   "author": "WordPress Community Uganda",
   "license": "GPL-2.0-or-later",
   "scripts": {
-    "sass": "sass sass/style.scss:style.css --style=expanded --watch --silence-deprecation=import",
-    "build": "sass sass/style.scss:style.css --style=compressed --silence-deprecation=import"
+    "sass": "sass sass/style.scss:assets/css/style.css --style=expanded --watch",
+    "build": "sass sass/style.scss:assets/css/style.css --style=compressed --no-source-map"
   },
   "devDependencies": {
     "sass": "^1.77.0"
