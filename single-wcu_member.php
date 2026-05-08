@@ -272,12 +272,6 @@ while ( have_posts() ) :
 								</a>
 							</li>
 						<?php endforeach; ?>
-						<?php if ( $wcu_is_organizer ) : ?>
-							<li><span class="wcu-folks-specialties__chip"><?php esc_html_e( 'Organizer', 'wcuganda' ); ?></span></li>
-						<?php endif; ?>
-						<?php if ( $wcu_is_speaker ) : ?>
-							<li><span class="wcu-folks-specialties__chip"><?php esc_html_e( 'Speaker', 'wcuganda' ); ?></span></li>
-						<?php endif; ?>
 					</ul>
 				</div>
 			<?php endif; ?>
