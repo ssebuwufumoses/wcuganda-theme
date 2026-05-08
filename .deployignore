@@ -1,0 +1,28 @@
+# Files excluded from Pressable deployments. Syntax matches .gitignore.
+# See: https://pressable.com/knowledgebase/deploy-from-github/
+
+# SCSS sources (compiled output ships in assets/css/style.css)
+sass/
+
+# npm tooling and dependencies
+node_modules/
+package.json
+package-lock.json
+
+# PHP tooling
+composer.json
+composer.lock
+phpcs.xml.dist
+
+# Project-level docs (not used at runtime)
+README.md
+readme.txt
+
+# Editor / Git metadata
+.editorconfig
+.gitignore
+.git/
+.github/
+
+# Deploy meta itself
+.deployignore
