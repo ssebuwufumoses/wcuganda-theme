@@ -21,7 +21,7 @@
 	cursor: pointer;
 	background-color: $color-primary;
 	border: $border-width-thick solid $color-primary;
-	border-radius: $radius-md;
+	border-radius: $radius-lg;
 	transition: background-color $transition-fast, border-color $transition-fast,
 		color $transition-fast, transform $transition-fast,
 		box-shadow $transition-fast;
