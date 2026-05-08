@@ -51,17 +51,10 @@ add_action( 'wp_enqueue_scripts', 'wcu_enqueue_assets' );
  * @return void
  */
 function wcu_preload_fonts() {
-	$fonts = array(
-		'inter-latin-wght-normal.woff2',
-		'source-serif-4-latin-wght-normal.woff2',
+	printf(
+		'<link rel="preload" href="%s" as="font" type="font/woff2" crossorigin>' . "\n",
+		esc_url( WCU_THEME_URI . '/assets/fonts/inter-latin-wght-normal.woff2' )
 	);
-
-	foreach ( $fonts as $font ) {
-		printf(
-			'<link rel="preload" href="%s" as="font" type="font/woff2" crossorigin>' . "\n",
-			esc_url( WCU_THEME_URI . '/assets/fonts/' . $font )
-		);
-	}
 }
 add_action( 'wp_head', 'wcu_preload_fonts', 2 );
 
