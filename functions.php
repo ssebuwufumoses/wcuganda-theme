@@ -42,7 +42,12 @@ $wcu_includes = array(
 	'/inc/template-functions.php',
 	'/inc/template-tags.php',
 	'/inc/customizer.php',
+	'/inc/custom-post-types.php',
+	'/inc/taxonomies.php',
 	'/inc/api/class-wporg-events.php',
+	'/inc/admin/class-meta-box.php',
+	'/inc/admin/meta-boxes.php',
+	'/inc/admin/admin-columns.php',
 );
 
 foreach ( $wcu_includes as $wcu_include ) {

@@ -64,6 +64,22 @@ function wcu_content_width() {
 add_action( 'after_setup_theme', 'wcu_content_width', 0 );
 
 /**
+ * Flush rewrite rules after CPTs/taxonomies first register, so the
+ * archive/single URLs (events/, members/, etc.) resolve cleanly.
+ * Idempotent — runs once and stores a flag.
+ *
+ * @return void
+ */
+function wcu_maybe_flush_rewrites() {
+	if ( get_option( 'wcu_rewrites_flushed_v1' ) ) {
+		return;
+	}
+	flush_rewrite_rules();
+	update_option( 'wcu_rewrites_flushed_v1', 1 );
+}
+add_action( 'init', 'wcu_maybe_flush_rewrites', 999 );
+
+/**
  * Slim down `wp_head` output for performance and tidiness.
  *
  * @return void
