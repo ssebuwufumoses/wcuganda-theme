@@ -738,20 +738,38 @@
 	text-transform: uppercase;
 }
 
+// `Contribution History` reads as a primary section heading on wp.org —
+// not an eyebrow. Use the canonical h3 token + body color for that weight.
+.wcu-folks-credentials__group-heading--lg {
+	font-size: $h3;
+	font-weight: $font-weight-bold;
+	color: var(--wcu-text);
+	letter-spacing: -0.01em;
+	text-transform: none;
+}
+
 // -----------------------------------------------------------------------------
 // Badges
 // -----------------------------------------------------------------------------
 // -----------------------------------------------------------------------------
-// Badges — match WordPress.org's visual treatment: a circular colored
-// dashicon disc next to the badge name. Uses the `dashicons` font that
-// wp_enqueue_style('dashicons') loads on member singles.
+// Badges — exactly the wp.org "Contribution History" treatment: a 3-up
+// grid of icon-row entries. Each row is a large circular colored dashicon
+// disc next to the badge name (no pill, no border).
 // -----------------------------------------------------------------------------
 .wcu-folks-badges {
 	@include list-reset;
 
-	display: flex;
-	flex-wrap: wrap;
-	gap: $space-3;
+	display: grid;
+	gap: $space-4 $space-6;
+	grid-template-columns: 1fr;
+
+	@include breakpoint-up(sm) {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	@include breakpoint-up(md) {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
 
 	li {
 		margin: 0;
@@ -759,17 +777,13 @@
 }
 
 .wcu-folks-badge {
-	display: inline-flex;
-	gap: $space-2;
+	display: flex;
+	gap: $space-3;
 	align-items: center;
-	padding: $space-1 $space-3 $space-1 $space-1;
 	font-family: $font-heading;
-	font-size: $font-size-sm;
+	font-size: $font-size-md;
 	font-weight: $font-weight-medium;
 	color: var(--wcu-text);
-	background-color: var(--wcu-bg-alt);
-	border: $border-width solid var(--wcu-border);
-	border-radius: $radius-pill;
 }
 
 .wcu-folks-badge__icon {
@@ -777,20 +791,19 @@
 	flex-shrink: 0;
 	align-items: center;
 	justify-content: center;
-	width: 1.75rem;
-	height: 1.75rem;
-	font-size: 1rem;
+	width: 2.5rem;
+	height: 2.5rem;
 	color: $color-white;
-	// Dashicons font ships at 20px line-height — re-center inside our 1.75rem disc.
 	line-height: 1;
-	background-color: #2271B1; // wp.org default badge blue (overridden per slug below).
+	background-color: #2271B1;
+	border: 2px solid currentColor;
 	border-radius: $radius-circle;
 
 	&.dashicons,
 	&.dashicons::before {
-		width: 1rem;
-		height: 1rem;
-		font-size: 1rem;
+		width: 1.25rem;
+		height: 1.25rem;
+		font-size: 1.25rem;
 		line-height: 1;
 	}
 }
@@ -930,34 +943,103 @@
 }
 
 // -----------------------------------------------------------------------------
-// Recent activity feed (scraped from wp.org profile HTML)
+// Activity feed — wp.org-style sidebar tabs + scrollable feed.
+// Tabs filter the feed by data-wcu-activity-cat (handled in JS).
 // -----------------------------------------------------------------------------
+.wcu-folks-activity-wrap {
+	display: grid;
+	gap: $space-6;
+	border-top: $border-width solid var(--wcu-border);
+	padding-top: $space-6;
+	grid-template-columns: 1fr;
+
+	@include breakpoint-up(md) {
+		grid-template-columns: minmax(10rem, 13rem) minmax(0, 1fr);
+		gap: $space-8;
+	}
+}
+
+.wcu-folks-activity__tabs {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	gap: $space-1 $space-3;
+	align-items: flex-start;
+
+	@include breakpoint-up(md) {
+		flex-direction: column;
+		flex-wrap: nowrap;
+		gap: 0;
+		border-right: $border-width solid var(--wcu-border);
+	}
+}
+
+.wcu-folks-activity__tab {
+	@include button-reset;
+
+	display: inline-flex;
+	gap: $space-2;
+	align-items: center;
+	justify-content: space-between;
+	width: auto;
+	padding: $space-2 0;
+	font-family: $font-heading;
+	font-size: $font-size-sm;
+	font-weight: $font-weight-medium;
+	color: $color-primary;
+	text-decoration: underline;
+	text-decoration-color: transparent;
+	text-underline-offset: 4px;
+	transition: color $transition-fast, text-decoration-color $transition-fast;
+
+	&:hover {
+		text-decoration-color: currentColor;
+	}
+
+	&.is-active {
+		color: var(--wcu-text);
+		font-weight: $font-weight-semibold;
+		text-decoration-color: var(--wcu-text);
+		text-decoration-thickness: 2px;
+	}
+
+	@include breakpoint-up(md) {
+		justify-content: space-between;
+		width: 100%;
+		padding: $space-3 $space-4 $space-3 0;
+		text-decoration: none;
+		border-right: 2px solid transparent;
+		margin-right: -1px; // overlap the tabs column border so the active line aligns
+
+		&.is-active {
+			text-decoration: none;
+			border-right-color: var(--wcu-text);
+		}
+	}
+}
+
+.wcu-folks-activity__tab-count {
+	font-family: $font-mono;
+	font-size: $font-size-xs;
+	font-weight: $font-weight-medium;
+	color: var(--wcu-text-muted);
+	font-variant-numeric: tabular-nums;
+}
+
 .wcu-folks-activity {
 	@include list-reset;
 
 	display: flex;
 	flex-direction: column;
-	gap: 0;
-	border: $border-width solid var(--wcu-border);
-	border-radius: $radius-lg;
-	overflow: hidden;
+	gap: $space-5;
 }
 
 .wcu-folks-activity__item {
 	display: flex;
 	gap: $space-3;
-	padding: $space-4 $space-5;
-	background-color: var(--wcu-bg);
-	border-bottom: $border-width solid var(--wcu-border-muted);
-	transition: background-color $transition-fast;
-
-	&:last-child {
-		border-bottom: 0;
-	}
-
-	&:hover {
-		background-color: var(--wcu-bg-alt);
-	}
+	padding: 0;
+	background: transparent;
+	border: 0;
 }
 
 .wcu-folks-activity__icon {
@@ -965,56 +1047,75 @@
 	flex-shrink: 0;
 	align-items: center;
 	justify-content: center;
-	width: 1.75rem;
-	height: 1.75rem;
-	color: $color-primary;
-	background-color: rgba($color-primary, 0.12);
-	border-radius: $radius-circle;
+	width: 1.5rem;
+	height: 1.5rem;
+	color: var(--wcu-text-muted);
+	background: transparent;
+	border-radius: 0;
+
+	.dashicons,
+	.dashicons::before {
+		width: 1.125rem;
+		height: 1.125rem;
+		font-size: 1.125rem;
+		line-height: 1;
+	}
 }
 
 .wcu-folks-activity__body {
 	display: flex;
 	flex-direction: column;
-	gap: $space-2;
+	gap: $space-1;
 	min-width: 0;
+	flex: 1;
 }
 
 .wcu-folks-activity__action {
 	margin: 0;
-	font-size: $font-size-sm;
-	line-height: $line-height-snug;
+	font-size: $font-size-md;
+	line-height: $line-height-base;
 	color: var(--wcu-text);
 
 	a {
 		color: $color-primary;
-		text-decoration: none;
-		font-weight: $font-weight-semibold;
+		text-decoration: underline;
+		text-underline-offset: 2px;
 
 		&:hover,
 		&:focus-visible {
-			text-decoration: underline;
+			color: $color-primary-dark;
 		}
+	}
+
+	i {
+		font-style: italic;
 	}
 }
 
 .wcu-folks-activity__excerpt {
 	margin: 0;
-	padding: $space-2 $space-3;
-	font-family: $font-body;
-	font-size: $font-size-sm;
-	font-style: normal;
-	line-height: $line-height-base;
-	color: var(--wcu-text-muted);
-	background-color: var(--wcu-bg-alt);
-	border-left: 2px solid var(--wcu-border-strong);
-	border-radius: 0 $radius-sm $radius-sm 0;
+	font-size: $font-size-md;
+	font-weight: $font-weight-semibold;
+	line-height: $line-height-snug;
+	color: var(--wcu-text);
 }
 
 .wcu-folks-activity__time {
-	font-family: $font-mono;
-	font-size: $font-size-xs;
+	margin-top: $space-1;
+	font-family: $font-heading;
+	font-size: $font-size-sm;
+	font-style: italic;
 	color: var(--wcu-text-muted);
-	letter-spacing: 0;
+}
+
+.wcu-folks-activity__empty {
+	padding: $space-6;
+	font-size: $font-size-sm;
+	color: var(--wcu-text-muted);
+	text-align: center;
+	border: $border-width dashed var(--wcu-border);
+	border-radius: $radius-md;
+	list-style: none;
 }
 
 .wcu-folks-credentials__empty {

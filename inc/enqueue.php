@@ -58,6 +58,13 @@ function wcu_enqueue_assets() {
 			$version,
 			true
 		);
+		wp_enqueue_script(
+			'wcu-member-activity-tabs',
+			$theme_uri . '/assets/js/src/member-activity-tabs.js',
+			array(),
+			$version,
+			true
+		);
 		wp_enqueue_style( 'dashicons' );
 	}
 

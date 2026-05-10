@@ -184,13 +184,18 @@ class WCU_WPOrg_Profiles {
 				$time = trim( wp_strip_all_tags( $ts[1] ) );
 			}
 
-			// Activity type — for icon selection. Pull the second wporgactivity-*
-			// class (the action), or fall back to the row class for tracplugins.
-			$type = 'activity';
+			// Activity category (drives sidebar tabs) + specific action type
+			// (drives icon choice). The first wporgactivity-* class is the
+			// category bucket (blogs / learn / glotpress / wordcamp / etc.);
+			// the second is the granular action (blog_post_create, etc.).
+			$category = 'activity';
+			$type     = 'activity';
 			if ( preg_match( '/wporgactivity-([a-z0-9_-]+)\s+wporgactivity-([a-z0-9_-]+)/i', $row, $tm ) ) {
-				$type = $tm[2];
+				$category = $tm[1];
+				$type     = $tm[2];
 			} elseif ( false !== strpos( $row, 'tracplugins' ) ) {
-				$type = 'plugin_commit';
+				$category = 'plugins';
+				$type     = 'plugin_commit';
 			}
 
 			if ( '' === $action_html ) {
@@ -198,10 +203,11 @@ class WCU_WPOrg_Profiles {
 			}
 
 			$items[] = array(
-				'type'    => sanitize_html_class( $type ),
-				'action'  => $action_html,
-				'excerpt' => sanitize_text_field( $excerpt ),
-				'time'    => sanitize_text_field( $time ),
+				'category' => sanitize_html_class( $category ),
+				'type'     => sanitize_html_class( $type ),
+				'action'   => $action_html,
+				'excerpt'  => sanitize_text_field( $excerpt ),
+				'time'     => sanitize_text_field( $time ),
 			);
 		}
 
