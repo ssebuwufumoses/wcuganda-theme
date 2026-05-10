@@ -1,0 +1,180 @@
+// =============================================================================
+// WordCamp archive + single styles. Reuses .wcu-event-meta and the body
+// geometry patterns from _events.scss / _members.scss / _chapters.scss.
+// =============================================================================
+
+@use '../abstracts' as *;
+
+// -----------------------------------------------------------------------------
+// Archive
+// -----------------------------------------------------------------------------
+.wcu-wordcamps-archive__header {
+	padding-top: $space-12;
+	padding-bottom: $space-8;
+	background-color: $color-bg-alt;
+
+	@include breakpoint-up(md) {
+		padding-top: $space-16;
+		padding-bottom: $space-10;
+	}
+}
+
+.wcu-wordcamps-archive__title {
+	margin: 0 0 $space-3;
+	font-size: fluid(36, 56);
+	letter-spacing: -0.02em;
+}
+
+.wcu-wordcamps-archive__lead {
+	max-width: 60ch;
+	margin: 0;
+	font-size: $font-size-lg;
+	line-height: $line-height-relaxed;
+	color: $color-text-muted;
+}
+
+.wcu-wordcamps-archive__section {
+	padding-top: $space-10;
+
+	&:last-child {
+		padding-bottom: $space-16;
+	}
+
+	@include breakpoint-up(md) {
+		padding-top: $space-12;
+	}
+}
+
+.wcu-wordcamps-archive__section-title {
+	margin: 0 0 $space-6;
+	font-size: fluid(22, 28);
+	letter-spacing: -0.01em;
+}
+
+.wcu-wordcamps-archive__section--past {
+	padding-top: $space-12;
+	margin-top: $space-12;
+	border-top: $border-width solid $color-border;
+}
+
+// -----------------------------------------------------------------------------
+// Card variant — slight visual de-emphasis on past editions
+// -----------------------------------------------------------------------------
+.wcu-wordcamp-card--past {
+	opacity: 0.85;
+	filter: saturate(0.85);
+	transition: opacity $transition-fast, filter $transition-fast;
+
+	&:hover,
+	&:focus-within {
+		opacity: 1;
+		filter: none;
+	}
+}
+
+// -----------------------------------------------------------------------------
+// Single WordCamp hero
+// -----------------------------------------------------------------------------
+.wcu-wordcamp-hero {
+	padding: $space-12 0;
+	color: $color-text;
+	background-color: $color-primary;
+
+	@include breakpoint-up(md) {
+		padding: $space-16 0;
+	}
+}
+
+.wcu-wordcamp-hero__year {
+	margin: 0 0 $space-2;
+	font-family: $font-mono;
+	font-size: $font-size-md;
+	font-weight: $font-weight-medium;
+	color: rgba($color-text, 0.7);
+	letter-spacing: 0;
+}
+
+.wcu-wordcamp-hero__title {
+	margin: 0 0 $space-3;
+	font-size: fluid(36, 64);
+	line-height: 1.05;
+	color: $color-text;
+	letter-spacing: -0.02em;
+}
+
+.wcu-wordcamp-hero__past-badge {
+	display: inline-block;
+	margin: 0 0 $space-3;
+	padding: 0.25rem $space-3;
+	font-family: $font-mono;
+	font-size: $font-size-xs;
+	font-weight: $font-weight-medium;
+	color: rgba($color-text, 0.7);
+	background-color: rgba($color-text, 0.1);
+	border-radius: $radius-pill;
+	text-transform: uppercase;
+}
+
+.wcu-wordcamp-hero__meta {
+	@include list-reset;
+
+	display: flex;
+	flex-wrap: wrap;
+	gap: $space-4;
+	margin: $space-4 0 0;
+	font-family: $font-heading;
+	font-size: $font-size-md;
+
+	li {
+		display: flex;
+		gap: $space-2;
+		align-items: center;
+		margin: 0;
+		color: rgba($color-text, 0.85);
+
+		svg {
+			color: rgba($color-text, 0.6);
+			flex-shrink: 0;
+		}
+	}
+}
+
+.wcu-wordcamp-hero__cta {
+	margin-top: $space-6;
+}
+
+// -----------------------------------------------------------------------------
+// Single WordCamp body
+// -----------------------------------------------------------------------------
+.wcu-wordcamp-single__media {
+	margin: $space-8 0 0;
+	overflow: hidden;
+	border-radius: $radius-lg;
+
+	img {
+		display: block;
+		width: 100%;
+		height: auto;
+	}
+}
+
+.wcu-wordcamp-single__content {
+	padding-top: $space-10;
+	padding-bottom: $space-10;
+	font-size: fluid(16, 18);
+	line-height: $line-height-relaxed;
+
+	h2,
+	h3 {
+		margin-top: $space-8;
+	}
+}
+
+// -----------------------------------------------------------------------------
+// Speakers + Sponsors sections (compose .section / .section--alt utilities)
+// -----------------------------------------------------------------------------
+.wcu-wordcamp-speakers__cta,
+.wcu-wordcamp-sponsors__cta {
+	margin-top: $space-10;
+	text-align: center;
+}
