@@ -100,9 +100,12 @@ if ( post_type_exists( 'wcu_sponsor' ) && taxonomy_exists( 'wcu_sponsor_tier' ) 
 				</div>
 			<?php endforeach; ?>
 		<?php else : ?>
-			<p class="wcu-sponsors__empty">
-				<?php esc_html_e( 'Sponsors are coming soon.', 'wcuganda' ); ?>
-			</p>
+			<div class="wcu-sponsors__empty">
+				<p class="wcu-empty__title"><?php esc_html_e( 'No sponsors yet', 'wcuganda' ); ?></p>
+				<p class="wcu-empty__desc">
+					<?php esc_html_e( 'Be the first to back the community.', 'wcuganda' ); ?>
+				</p>
+			</div>
 		<?php endif; ?>
 
 		<p class="wcu-sponsors__cta">

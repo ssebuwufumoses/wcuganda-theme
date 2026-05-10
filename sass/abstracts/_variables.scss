@@ -11,21 +11,37 @@
 $color-primary:        #3ECF8E; // Supabase emerald (vibrant; pair with dark text on top)
 $color-primary-dark:   #166534; // Deep green for body text / button hover (AAA on white, 7.46:1)
 
-// Surfaces
-$color-bg:             #FFFFFF;
-$color-bg-alt:         #F8F8F8; // Slightly warmer light surface (Supabase-leaning)
-$color-bg-dark:        #1C1C1C; // Supabase dark surface (warmer than pure black)
-$color-bg-darker:      #121212; // Page bg under cards on dark sections
+// Surfaces — Supabase-style layered scale.
+// On light pages: bg-alt for cards/sections, surface-100 slight elevation.
+// On dark pages: bg-dark base, surface-100/200 for layered cards.
+$color-bg:                 #FFFFFF;
+$color-bg-alt:             #F8F8F8; // Cards on light, alt sections
+$color-bg-surface-100:     #FAFAFA; // Slight elevation above bg-alt on light
+$color-bg-surface-200:     #F2F2F2; // More elevation, e.g. nested cards
+$color-bg-dark:            #1C1C1C; // Supabase dark surface (warmer than pure black)
+$color-bg-darker:          #121212; // Page bg under cards on dark sections
+$color-bg-surface-100-dark: #232323; // Slight elevation above bg-dark
+$color-bg-surface-200-dark: #2A2A2A; // More elevation on dark
 
-// Text
-$color-text:                #1A1A1A; // AAA on white (16.4:1)
-$color-text-muted:          #525252; // AAA on white (7.66:1)
-$color-text-on-dark:        #EDEDED; // AAA on bg-dark
-$color-text-muted-on-dark:  #A1A1A1; // Subdued muted on dark, AAA-passing
+// Text — three-step softness scale on each background, Supabase pattern.
+$color-text:                  #1A1A1A; // AAA on white (16.4:1) — body
+$color-text-light:            #404040; // 1 step softer (AAA on white)
+$color-text-lighter:          #525252; // 2 steps softer = current muted alias
+$color-text-muted:            #525252; // (alias of lighter for backwards compat)
+$color-text-subtle:           #737373; // 3 steps softer, AA only — for fine print
+$color-text-on-dark:          #EDEDED; // AAA on bg-dark
+$color-text-light-on-dark:    #C4C4C4; // 1 step softer on dark (AAA)
+$color-text-lighter-on-dark:  #A1A1A1; // 2 steps softer on dark (AAA)
+$color-text-muted-on-dark:    #A1A1A1; // (alias of lighter-on-dark for backwards compat)
 
-// Borders / dividers
-$color-border:           #EAEAEA; // 1px divider on light
-$color-border-on-dark:   #2A2A2A; // Subtle 1px divider on dark surfaces
+// Borders / dividers — Supabase weight scale.
+$color-border:                  #EAEAEA; // Default 1px divider on light
+$color-border-muted:            #F0F0F0; // Subtler than default, decorative dividers
+$color-border-strong:           #D4D4D4; // Hover, focus, more prominent
+$color-border-stronger:         #A1A1A1; // Highlighted / strongest
+$color-border-on-dark:          #2A2A2A; // Default 1px divider on dark
+$color-border-muted-on-dark:    #232323; // Subtler on dark
+$color-border-strong-on-dark:   #404040; // Hover/focus on dark
 
 // Constants
 $color-white:          #FFFFFF;

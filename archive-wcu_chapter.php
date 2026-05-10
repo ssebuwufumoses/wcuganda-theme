@@ -55,9 +55,12 @@ get_header();
 		<?php else : ?>
 
 			<section class="wcu-chapters-archive__section">
-				<p class="wcu-events-archive__empty">
-					<?php esc_html_e( 'No chapters published yet — check back soon.', 'wcuganda' ); ?>
-				</p>
+				<div class="wcu-events-archive__empty">
+					<p class="wcu-empty__title"><?php esc_html_e( 'No chapters yet', 'wcuganda' ); ?></p>
+					<p class="wcu-empty__desc">
+						<?php esc_html_e( 'New chapters launch a few times a year. Want to start one in your city? Get in touch.', 'wcuganda' ); ?>
+					</p>
+				</div>
 			</section>
 
 		<?php endif; ?>

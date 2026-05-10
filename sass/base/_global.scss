@@ -86,8 +86,77 @@
 	font-size: $font-size-sm;
 	font-weight: $font-weight-semibold;
 	letter-spacing: 0.1em;
-	color: $color-primary;
+	// Supabase brand-link green for legibility on white (was bright primary).
+	color: $color-primary-dark;
 	text-transform: uppercase;
+}
+
+// -----------------------------------------------------------------------------
+// Empty state pattern (Supabase) — title (specific) + desc (action). Used by
+// homepage events / sponsors empty blocks and archive zero-results blocks.
+// -----------------------------------------------------------------------------
+.wcu-empty {
+	display: flex;
+	flex-direction: column;
+	gap: $space-2;
+	align-items: center;
+	max-width: 32rem;
+	margin: 0 auto;
+	padding: $space-10 $space-4;
+	text-align: center;
+	background-color: $color-bg-alt;
+	border: $border-width solid $color-border;
+	border-radius: $radius-lg;
+}
+
+.wcu-empty__title {
+	margin: 0;
+	font-family: $font-heading;
+	font-size: $font-size-md;
+	font-weight: $font-weight-semibold;
+	color: $color-text;
+}
+
+.wcu-empty__desc {
+	margin: 0;
+	font-size: $font-size-sm;
+	line-height: $line-height-relaxed;
+	color: $color-text-muted;
+}
+
+// Existing empty wrappers compose the same compact pattern.
+.wcu-events-archive__empty,
+.wcu-events-preview__empty,
+.wcu-sponsors__empty {
+	@extend .wcu-empty;
+}
+
+// -----------------------------------------------------------------------------
+// Typography helper classes (Supabase shorthand pattern)
+// -----------------------------------------------------------------------------
+.text-code-inline {
+	display: inline-block;
+	padding: 0.1em 0.4em;
+	font-family: $font-mono;
+	font-size: 0.875em;
+	color: $color-text;
+	background-color: $color-bg-alt;
+	border: $border-width solid $color-border;
+	border-radius: $radius-sm;
+}
+
+.text-brand-link {
+	color: $color-primary-dark;
+	font-weight: $font-weight-semibold;
+	text-decoration: none;
+	transition: color $transition-fast;
+
+	&:hover,
+	&:focus-visible {
+		color: $color-primary;
+		text-decoration: underline;
+		text-decoration-thickness: 2px;
+	}
 }
 
 // Embedded media wrapper (for iframes).

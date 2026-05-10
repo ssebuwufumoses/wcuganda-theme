@@ -57,9 +57,12 @@ get_header();
 				?>
 
 			<?php else : ?>
-				<p class="wcu-events-archive__empty">
-					<?php esc_html_e( 'No members match the current filters.', 'wcuganda' ); ?>
-				</p>
+				<div class="wcu-events-archive__empty">
+					<p class="wcu-empty__title"><?php esc_html_e( 'No matching members', 'wcuganda' ); ?></p>
+					<p class="wcu-empty__desc">
+						<?php esc_html_e( 'Try clearing the filters or browse all chapters.', 'wcuganda' ); ?>
+					</p>
+				</div>
 			<?php endif; ?>
 
 		</section>

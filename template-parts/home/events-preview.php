@@ -77,9 +77,12 @@ if ( empty( $wcu_event_cards ) && class_exists( 'WCU_WPOrg_Events' ) ) {
 			</p>
 
 		<?php else : ?>
-			<p class="wcu-events-preview__empty">
-				<?php esc_html_e( 'No upcoming events yet — check back soon, or follow us to be the first to know.', 'wcuganda' ); ?>
-			</p>
+			<div class="wcu-events-preview__empty">
+				<p class="wcu-empty__title"><?php esc_html_e( 'No upcoming events', 'wcuganda' ); ?></p>
+				<p class="wcu-empty__desc">
+					<?php esc_html_e( 'Subscribe to be notified when the next one is announced.', 'wcuganda' ); ?>
+				</p>
+			</div>
 		<?php endif; ?>
 
 	</div>
