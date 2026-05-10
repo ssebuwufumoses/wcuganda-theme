@@ -99,6 +99,7 @@ function wcu_customize_register( $wp_customize ) {
 	wcu_register_newsletter_section( $wp_customize );
 	wcu_register_map_section( $wp_customize );
 	wcu_register_footer_section( $wp_customize );
+	wcu_register_sponsors_section( $wp_customize );
 }
 add_action( 'customize_register', 'wcu_customize_register' );
 
@@ -408,6 +409,75 @@ function wcu_register_footer_section( $wp_customize ) {
 			),
 		)
 	);
+}
+
+/**
+ * Sponsors page section: intro, impact stats (4 metrics), inquiry destination.
+ *
+ * @param WP_Customize_Manager $wp_customize Customizer.
+ * @return void
+ */
+function wcu_register_sponsors_section( $wp_customize ) {
+	$wp_customize->add_section(
+		'wcu_sponsors_page',
+		array(
+			'title'       => esc_html__( 'Sponsors page', 'wcuganda' ),
+			'description' => esc_html__( 'Content for the /sponsors/ archive page: intro copy, impact stats, and where the "Become a sponsor" CTA points.', 'wcuganda' ),
+			'panel'       => 'wcu_homepage',
+		)
+	);
+
+	$wcu_sponsor_controls = array(
+		'wcu_sponsors_intro_eyebrow' => array(
+			'label'    => __( 'Intro eyebrow', 'wcuganda' ),
+			'default'  => __( 'Backed by', 'wcuganda' ),
+			'type'     => 'text',
+			'sanitize' => 'sanitize_text_field',
+		),
+		'wcu_sponsors_intro_heading' => array(
+			'label'    => __( 'Intro heading', 'wcuganda' ),
+			'default'  => __( 'Sponsors who power the community', 'wcuganda' ),
+			'type'     => 'text',
+			'sanitize' => 'sanitize_text_field',
+		),
+		'wcu_sponsors_intro_lead'    => array(
+			'label'    => __( 'Intro lead text', 'wcuganda' ),
+			'default'  => __( 'Every meetup, WordCamp, and contributor day on this calendar is made possible by the companies and individuals listed below.', 'wcuganda' ),
+			'type'     => 'textarea',
+			'sanitize' => 'wp_kses_post',
+		),
+		'wcu_sponsors_inquiry_email' => array(
+			'label'       => __( 'Inquiry email address', 'wcuganda' ),
+			'description' => __( 'Where the "Become a sponsor" mailto links go. Defaults to the WP admin email if blank.', 'wcuganda' ),
+			'default'     => '',
+			'type'        => 'text',
+			'sanitize'    => 'sanitize_email',
+		),
+	);
+
+	$wcu_stat_defaults = array(
+		1 => array( '60+', __( 'Events sponsored', 'wcuganda' ) ),
+		2 => array( '500+', __( 'Members enabled', 'wcuganda' ) ),
+		3 => array( '3', __( 'Active chapters', 'wcuganda' ) ),
+		4 => array( '8', __( 'Years of impact', 'wcuganda' ) ),
+	);
+
+	foreach ( $wcu_stat_defaults as $i => $pair ) {
+		$wcu_sponsor_controls[ "wcu_sponsors_stat_{$i}_value" ] = array(
+			'label'    => sprintf( esc_html__( 'Impact stat %d — number', 'wcuganda' ), $i ),
+			'default'  => $pair[0],
+			'type'     => 'text',
+			'sanitize' => 'sanitize_text_field',
+		);
+		$wcu_sponsor_controls[ "wcu_sponsors_stat_{$i}_label" ] = array(
+			'label'    => sprintf( esc_html__( 'Impact stat %d — label', 'wcuganda' ), $i ),
+			'default'  => $pair[1],
+			'type'     => 'text',
+			'sanitize' => 'sanitize_text_field',
+		);
+	}
+
+	wcu_add_customizer_controls( $wp_customize, 'wcu_sponsors_page', $wcu_sponsor_controls );
 }
 
 /**
