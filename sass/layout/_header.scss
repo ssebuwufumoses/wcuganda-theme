@@ -111,7 +111,7 @@
 	font-size: $font-size-md;
 	font-weight: $font-weight-semibold;
 	line-height: 1.1;
-	color: $color-text-on-dark;
+	color: var(--wcu-text);
 	letter-spacing: -0.01em;
 
 	a {
@@ -129,7 +129,7 @@
 	margin: 0;
 	font-family: $font-heading;
 	font-size: $font-size-xs;
-	color: $color-text-muted;
+	color: var(--wcu-text-muted);
 
 	@include breakpoint-down(md) {
 		display: none;

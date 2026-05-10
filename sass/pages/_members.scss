@@ -245,6 +245,11 @@
 
 .wcu-folks-hero__name {
 	margin: 0;
+	// Person names use the h2 scale (20→30px), not the full hero h1
+	// (30→48px). Matches Supabase's profile-page heading rhythm where the
+	// name reads as a strong subhead, not a marketing display title.
+	font-size: $h2;
+	line-height: $line-height-tight;
 	color: $color-text-on-dark;
 }
 

@@ -15,7 +15,7 @@
 	flex-direction: column;
 	gap: $space-3;
 	padding: $space-5;
-	background-color: $color-bg-alt;
+	background-color: var(--wcu-bg-alt);
 	border-radius: $radius-lg;
 
 	&:last-child {
@@ -28,7 +28,7 @@
 	font-family: $font-heading;
 	font-size: $font-size-md;
 	font-weight: $font-weight-semibold;
-	color: $color-text;
+	color: var(--wcu-text);
 	letter-spacing: 0.05em;
 	text-transform: uppercase;
 }
@@ -41,7 +41,7 @@
 	gap: $space-2;
 
 	li a {
-		color: $color-text;
+		color: var(--wcu-text);
 		text-decoration: none;
 
 		&:hover,

@@ -48,9 +48,10 @@ body .section--alt {
 	background-color: var(--wcu-bg-alt);
 }
 
-body .section--dark {
-	background-color: var(--wcu-bg-deep);
-}
+// .section--dark is intentionally NOT theme-aware — it stays a dark band in
+// both modes (Supabase CTA pattern: a strong dark callout sitting between
+// light surfaces). The bg + text colors are set on the .section--dark rule
+// below and on the components that opt in (newsletter, etc.).
 
 body .wcu-card {
 	background-color: var(--wcu-bg-alt);
@@ -106,8 +107,21 @@ body .site-header {
 	background-color: $color-bg-surface-100-dark;
 }
 
+// Always-dark callout band (Supabase CTA pattern). Bg + text are both
+// hardcoded to dark-canvas tokens so the section reads as a strong
+// dark beat in both light and dark themes.
 .section--dark {
+	color: $color-text-on-dark;
 	background-color: $color-bg-darker;
+
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		color: $color-text-on-dark;
+	}
 }
 
 // Explicit light-surface variant for the rare section that wants a true
@@ -160,8 +174,8 @@ body .site-header {
 	margin: 0 auto;
 	padding: $space-10 $space-4;
 	text-align: center;
-	background-color: $color-bg-alt;
-	border: $border-width solid $color-border;
+	background-color: var(--wcu-bg-alt);
+	border: $border-width solid var(--wcu-border);
 	border-radius: $radius-lg;
 }
 
@@ -170,14 +184,14 @@ body .site-header {
 	font-family: $font-heading;
 	font-size: $font-size-md;
 	font-weight: $font-weight-semibold;
-	color: $color-text;
+	color: var(--wcu-text);
 }
 
 .wcu-empty__desc {
 	margin: 0;
 	font-size: $font-size-sm;
 	line-height: $line-height-relaxed;
-	color: $color-text-muted;
+	color: var(--wcu-text-muted);
 }
 
 // Existing empty wrappers compose the same compact pattern.
@@ -195,9 +209,9 @@ body .site-header {
 	padding: 0.1em 0.4em;
 	font-family: $font-mono;
 	font-size: 0.875em;
-	color: $color-text;
-	background-color: $color-bg-alt;
-	border: $border-width solid $color-border;
+	color: var(--wcu-text);
+	background-color: var(--wcu-bg-alt);
+	border: $border-width solid var(--wcu-border);
 	border-radius: $radius-sm;
 }
 

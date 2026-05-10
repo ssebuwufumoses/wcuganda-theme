@@ -177,7 +177,7 @@ blockquote {
 	margin: 0 0 $space-6;
 	font-size: $font-size-lg;
 	font-style: italic;
-	color: $color-text-muted;
+	color: var(--wcu-text-muted);
 	border-left: 4px solid $color-primary;
 }
 
@@ -191,8 +191,8 @@ pre {
 
 code {
 	padding: 0.15em 0.4em;
-	color: $color-text;
-	background-color: $color-bg-alt;
+	color: var(--wcu-text);
+	background-color: var(--wcu-bg-alt);
 	border-radius: $radius-sm;
 }
 
@@ -200,7 +200,7 @@ pre {
 	padding: $space-4;
 	margin: 0 0 $space-4;
 	overflow-x: auto;
-	background-color: $color-bg-alt;
+	background-color: var(--wcu-bg-alt);
 	border-radius: $radius-md;
 
 	code {
