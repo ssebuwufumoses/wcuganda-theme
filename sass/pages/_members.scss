@@ -792,21 +792,27 @@
 // copied verbatim from github.com/WordPress/dashicons). Single `color`
 // property tints both the disc border and the dashicon fill, since
 // the SVG uses fill="currentColor".
+// Exact measurements from profiles.wordpress.org's .badge rule:
+// 32px disc, 2px border, 24px glyph. The glyph is intentionally larger
+// than the inner area so it visually fills the disc (the dashicons
+// font character extends slightly past the inner edge — that's how
+// wp.org's badges read as solid icon-in-ring).
 .wcu-folks-badge__icon {
 	display: inline-flex;
 	flex-shrink: 0;
 	align-items: center;
 	justify-content: center;
-	width: 3rem;
-	height: 3rem;
+	width: 2rem;    // 32px — wp.org default.
+	height: 2rem;
 	color: #2271B1; // default brand blue, overridden per slug below.
 	background: transparent;
 	border: 2px solid currentColor;
 	border-radius: $radius-circle;
+	box-sizing: border-box;
 
 	svg {
-		width: 1.375rem;
-		height: 1.375rem;
+		width: 1.5rem;  // 24px — wp.org's font-size for the glyph.
+		height: 1.5rem;
 		fill: currentColor;
 	}
 }
