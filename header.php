@@ -65,7 +65,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<button
 						class="wcu-nav__toggle"
 						type="button"
-						aria-controls="wcu-primary-menu"
+						aria-controls="wcu-nav-panel"
 						aria-expanded="false"
 						aria-label="<?php esc_attr_e( 'Toggle primary menu', 'wcuganda' ); ?>"
 					>
@@ -75,7 +75,37 @@ if ( ! defined( 'ABSPATH' ) ) {
 						<span class="screen-reader-text"><?php esc_html_e( 'Menu', 'wcuganda' ); ?></span>
 					</button>
 
-					<?php wcu_render_primary_menu(); ?>
+					<button
+						class="wcu-nav__backdrop"
+						type="button"
+						tabindex="-1"
+						aria-hidden="true"
+						data-open="false"
+					></button>
+
+					<div id="wcu-nav-panel" class="wcu-nav__panel" data-open="false" role="dialog" aria-modal="true" aria-label="<?php esc_attr_e( 'Site menu', 'wcuganda' ); ?>">
+						<div class="wcu-nav__panel-header">
+							<span class="wcu-nav__panel-title"><?php esc_html_e( 'Menu', 'wcuganda' ); ?></span>
+							<button class="wcu-nav__close" type="button" aria-label="<?php esc_attr_e( 'Close menu', 'wcuganda' ); ?>">
+								<?php wcu_svg_icon( 'close', array( 'width' => 18, 'height' => 18 ) ); ?>
+							</button>
+						</div>
+
+						<div class="wcu-nav__panel-body">
+							<?php wcu_render_primary_menu(); ?>
+						</div>
+
+						<?php
+						$wcu_panel_cta = get_theme_mod( 'wcu_join_url', '' );
+						if ( ! empty( $wcu_panel_cta ) ) :
+							?>
+							<div class="wcu-nav__panel-footer">
+								<a class="wcu-btn" href="<?php echo esc_url( $wcu_panel_cta ); ?>">
+									<?php esc_html_e( 'Join Us', 'wcuganda' ); ?>
+								</a>
+							</div>
+						<?php endif; ?>
+					</div>
 				</nav>
 
 				<button type="button"

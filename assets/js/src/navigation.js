@@ -1,9 +1,9 @@
 /**
  * Primary navigation behavior.
  *
- * Handles toggling the mobile menu, ARIA state, focus management, ESC-to-close,
- * outside-click dismissal, sub-menu accordions on mobile, and a header
- * shadow when the page is scrolled.
+ * Mobile: a slide-in drawer from the right with a close button, backdrop,
+ * focus trap, body-scroll lock, ESC dismissal, and accordion sub-menus.
+ * Desktop: inline nav with hover/focus sub-menu disclosure (handled in CSS).
  */
 ( function () {
 	'use strict';
@@ -11,6 +11,14 @@
 	const NAV_ID = 'site-navigation';
 	const BREAKPOINT_PX = 992; // matches $bp-lg
 	const BODY_OPEN_CLASS = 'wcu-nav-open';
+	const FOCUSABLE_SELECTOR = [
+		'a[href]',
+		'button:not([disabled])',
+		'input:not([disabled])',
+		'select:not([disabled])',
+		'textarea:not([disabled])',
+		'[tabindex]:not([tabindex="-1"])',
+	].join( ',' );
 
 	const nav = document.getElementById( NAV_ID );
 	if ( ! nav ) {
@@ -18,64 +26,103 @@
 	}
 
 	const toggle = nav.querySelector( '.wcu-nav__toggle' );
+	const panel = nav.querySelector( '.wcu-nav__panel' );
 	const menu = nav.querySelector( '.wcu-nav__menu' );
+	const closeBtn = nav.querySelector( '.wcu-nav__close' );
+	const backdrop = nav.querySelector( '.wcu-nav__backdrop' );
 
-	if ( ! toggle || ! menu ) {
+	if ( ! toggle || ! panel || ! menu ) {
 		if ( toggle ) {
 			toggle.style.display = 'none';
 		}
 		return;
 	}
 
-	/**
-	 * Whether the viewport is currently desktop-width.
-	 */
 	const isDesktop = () => window.matchMedia( `(min-width: ${ BREAKPOINT_PX }px)` ).matches;
 
-	/**
-	 * Open or close the mobile menu.
-	 *
-	 * @param {boolean} open Whether the menu should be open.
-	 */
+	let lastFocused = null;
+
 	const setOpen = ( open ) => {
 		toggle.setAttribute( 'aria-expanded', open ? 'true' : 'false' );
-		menu.setAttribute( 'data-open', open ? 'true' : 'false' );
+		panel.setAttribute( 'data-open', open ? 'true' : 'false' );
+		if ( backdrop ) {
+			backdrop.setAttribute( 'data-open', open ? 'true' : 'false' );
+		}
 		document.body.classList.toggle( BODY_OPEN_CLASS, open );
+
+		if ( open ) {
+			lastFocused = document.activeElement;
+			// Defer so the panel transition can begin before focus shift.
+			requestAnimationFrame( () => {
+				const target = closeBtn || menu.querySelector( 'a' );
+				if ( target ) {
+					target.focus();
+				}
+			} );
+		} else if ( lastFocused && typeof lastFocused.focus === 'function' ) {
+			lastFocused.focus();
+			lastFocused = null;
+		}
 	};
 
-	// Initialize closed.
 	setOpen( false );
 
-	// Toggle on button click.
 	toggle.addEventListener( 'click', ( event ) => {
 		event.preventDefault();
 		const open = toggle.getAttribute( 'aria-expanded' ) !== 'true';
 		setOpen( open );
-		if ( open ) {
-			const firstLink = menu.querySelector( 'a' );
-			if ( firstLink ) {
-				firstLink.focus();
-			}
-		}
 	} );
 
-	// Close on ESC.
+	if ( closeBtn ) {
+		closeBtn.addEventListener( 'click', ( event ) => {
+			event.preventDefault();
+			setOpen( false );
+		} );
+	}
+
+	if ( backdrop ) {
+		backdrop.addEventListener( 'click', () => setOpen( false ) );
+	}
+
+	// ESC closes the drawer.
 	document.addEventListener( 'keydown', ( event ) => {
 		if ( event.key === 'Escape' && toggle.getAttribute( 'aria-expanded' ) === 'true' ) {
 			setOpen( false );
-			toggle.focus();
 		}
 	} );
 
-	// Close on outside click (mobile only).
-	document.addEventListener( 'click', ( event ) => {
-		if ( isDesktop() ) {
+	// Focus trap: when the drawer is open, keep TAB cycling inside the panel.
+	panel.addEventListener( 'keydown', ( event ) => {
+		if ( event.key !== 'Tab' || isDesktop() ) {
 			return;
 		}
 		if ( toggle.getAttribute( 'aria-expanded' ) !== 'true' ) {
 			return;
 		}
-		if ( ! nav.contains( event.target ) ) {
+		const focusables = Array.from( panel.querySelectorAll( FOCUSABLE_SELECTOR ) ).filter(
+			( el ) => el.offsetParent !== null
+		);
+		if ( focusables.length === 0 ) {
+			return;
+		}
+		const first = focusables[ 0 ];
+		const last = focusables[ focusables.length - 1 ];
+		if ( event.shiftKey && document.activeElement === first ) {
+			event.preventDefault();
+			last.focus();
+		} else if ( ! event.shiftKey && document.activeElement === last ) {
+			event.preventDefault();
+			first.focus();
+		}
+	} );
+
+	// Tapping a real navigation link closes the drawer (not the chevron toggle).
+	menu.addEventListener( 'click', ( event ) => {
+		if ( isDesktop() ) {
+			return;
+		}
+		const link = event.target.closest( 'a' );
+		if ( link && panel.contains( link ) ) {
 			setOpen( false );
 		}
 	} );
@@ -90,11 +137,10 @@
 	if ( typeof mq.addEventListener === 'function' ) {
 		mq.addEventListener( 'change', handleBreakpointChange );
 	} else if ( typeof mq.addListener === 'function' ) {
-		// Safari < 14 fallback.
 		mq.addListener( handleBreakpointChange );
 	}
 
-	// Sub-menu accordions on mobile, hover/focus on desktop (handled in CSS).
+	// Sub-menu accordions on mobile (chevron toggles the children list).
 	const subMenuParents = menu.querySelectorAll( '.menu-item-has-children, .page_item_has_children' );
 	subMenuParents.forEach( ( item ) => {
 		const link = item.querySelector( ':scope > a' );
@@ -103,8 +149,6 @@
 			return;
 		}
 
-		// Inject a dedicated toggle button so the parent link still navigates
-		// while the chevron triggers the sub-menu on mobile.
 		const subToggle = document.createElement( 'button' );
 		subToggle.type = 'button';
 		subToggle.className = 'wcu-nav__sub-toggle';
@@ -118,10 +162,10 @@
 				return;
 			}
 			event.preventDefault();
+			event.stopPropagation();
 			const open = subToggle.getAttribute( 'aria-expanded' ) !== 'true';
 			subToggle.setAttribute( 'aria-expanded', open ? 'true' : 'false' );
 			item.classList.toggle( 'is-open', open );
-			submenu.style.display = open ? 'block' : 'none';
 		} );
 	} );
 

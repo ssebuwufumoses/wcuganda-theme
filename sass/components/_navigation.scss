@@ -1,5 +1,7 @@
 // =============================================================================
-// Primary navigation, mobile menu, and sub-menus.
+// Primary navigation — Supabase-style slide-in drawer on mobile, inline nav
+// on desktop. Drawer has its own header (close button) and a pinned footer
+// (primary CTA). Backdrop covers the rest of the page.
 // =============================================================================
 
 @use '../abstracts' as *;
@@ -10,7 +12,7 @@
 }
 
 // -----------------------------------------------------------------------------
-// Toggle button (hamburger / close)
+// Hamburger toggle (mobile only)
 // -----------------------------------------------------------------------------
 .wcu-nav__toggle {
 	@include button-reset;
@@ -19,15 +21,18 @@
 	gap: $space-2;
 	align-items: center;
 	justify-content: center;
-	width: 2.75rem;
-	height: 2.75rem;
-	color: $color-text;
+	width: 2.5rem;
+	height: 2.5rem;
+	color: var(--wcu-text);
+	border: $border-width solid var(--wcu-border);
 	border-radius: $radius-md;
+	transition: color $transition-fast, border-color $transition-fast,
+		background-color $transition-fast;
 
 	&:hover,
 	&:focus-visible {
 		color: $color-primary;
-		background-color: rgba($color-primary, 0.08);
+		border-color: var(--wcu-border-strong);
 	}
 
 	@include breakpoint-up(lg) {
@@ -36,45 +41,73 @@
 
 	.wcu-nav__icon-bar {
 		display: block;
-		width: 1.5rem;
-		height: 2px;
+		width: 1.125rem;
+		height: 1.5px;
 		background-color: currentColor;
 		transition: transform $transition-base, opacity $transition-base;
 	}
 
 	.wcu-nav__icon-bar + .wcu-nav__icon-bar {
-		margin-top: 5px;
+		margin-top: 4px;
 	}
 
 	&[aria-expanded='true'] {
 		.wcu-nav__icon-bar:nth-child(1) {
-			transform: translateY(7px) rotate(45deg);
+			transform: translateY(5.5px) rotate(45deg);
 		}
 		.wcu-nav__icon-bar:nth-child(2) {
 			opacity: 0;
 		}
 		.wcu-nav__icon-bar:nth-child(3) {
-			transform: translateY(-7px) rotate(-45deg);
+			transform: translateY(-5.5px) rotate(-45deg);
 		}
 	}
 }
 
 // -----------------------------------------------------------------------------
-// Menu panel — off-canvas on mobile, inline on desktop.
+// Backdrop — sits between the page and the drawer on mobile.
 // -----------------------------------------------------------------------------
-.wcu-nav__menu {
-	@include list-reset;
+.wcu-nav__backdrop {
+	@include button-reset;
 
 	position: fixed;
-	inset: 4rem 0 0 0; // sits below the header
+	inset: 0;
 	z-index: $z-overlay;
+	display: block;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.45);
+	opacity: 0;
+	visibility: hidden;
+	cursor: pointer;
+	transition: opacity $transition-base, visibility $transition-base;
+
+	&[data-open='true'] {
+		opacity: 1;
+		visibility: visible;
+	}
+
+	@include breakpoint-up(lg) {
+		display: none;
+	}
+}
+
+// -----------------------------------------------------------------------------
+// Drawer panel — the slide-in container that holds the menu, header, footer.
+// On desktop, it becomes inline and visually transparent.
+// -----------------------------------------------------------------------------
+.wcu-nav__panel {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	z-index: $z-overlay + 1;
 	display: flex;
 	flex-direction: column;
-	gap: $space-1;
-	padding: $space-6 $gutter-mobile;
-	overflow-y: auto;
-	background-color: $color-white;
-	border-top: $border-width solid $color-border;
+	width: min(20rem, 88vw);
+	background-color: var(--wcu-bg);
+	border-left: $border-width solid var(--wcu-border);
+	box-shadow: $shadow-xl;
 	transform: translateX(100%);
 	transition: transform $transition-base;
 
@@ -84,21 +117,106 @@
 
 	@include breakpoint-up(lg) {
 		position: static;
-		inset: auto;
 		flex-direction: row;
 		align-items: center;
-		gap: $space-2;
-		padding: 0;
-		overflow: visible;
+		width: auto;
 		background: none;
 		border: 0;
+		box-shadow: none;
 		transform: none;
 	}
 }
 
+// Drawer header (mobile only) — close button anchored to the right.
+.wcu-nav__panel-header {
+	display: flex;
+	gap: $space-2;
+	align-items: center;
+	justify-content: space-between;
+	min-height: 4rem;
+	padding: 0 $space-4;
+	border-bottom: $border-width solid var(--wcu-border-muted);
+
+	@include breakpoint-up(lg) {
+		display: none;
+	}
+}
+
+.wcu-nav__panel-title {
+	font-family: $font-mono;
+	font-size: $font-size-xs;
+	font-weight: $font-weight-medium;
+	color: var(--wcu-text-muted);
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+}
+
+.wcu-nav__close {
+	@include button-reset;
+
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 2.25rem;
+	height: 2.25rem;
+	color: var(--wcu-text);
+	border: $border-width solid var(--wcu-border);
+	border-radius: $radius-md;
+	transition: color $transition-fast, border-color $transition-fast;
+
+	&:hover,
+	&:focus-visible {
+		color: $color-primary;
+		border-color: var(--wcu-border-strong);
+	}
+}
+
+// Drawer body — scrollable region between header and footer.
+.wcu-nav__panel-body {
+	flex: 1 1 auto;
+	padding: $space-4 $space-3;
+	overflow-y: auto;
+	-webkit-overflow-scrolling: touch;
+
+	@include breakpoint-up(lg) {
+		padding: 0;
+		overflow: visible;
+	}
+}
+
+// Drawer footer (mobile only) — pinned primary CTA.
+.wcu-nav__panel-footer {
+	padding: $space-4;
+	border-top: $border-width solid var(--wcu-border-muted);
+
+	@include breakpoint-up(lg) {
+		display: none;
+	}
+
+	.wcu-btn {
+		display: inline-flex;
+		justify-content: center;
+		width: 100%;
+	}
+}
+
 // -----------------------------------------------------------------------------
-// Menu items
+// Menu list
 // -----------------------------------------------------------------------------
+.wcu-nav__menu {
+	@include list-reset;
+
+	display: flex;
+	flex-direction: column;
+	gap: $space-1;
+
+	@include breakpoint-up(lg) {
+		flex-direction: row;
+		align-items: center;
+		gap: $space-2;
+	}
+}
+
 .wcu-nav__item {
 	position: relative;
 	margin: 0;
@@ -114,15 +232,20 @@
 	font-family: $font-heading;
 	font-size: $font-size-md;
 	font-weight: $font-weight-medium;
-	color: $color-text;
+	color: var(--wcu-text);
 	text-decoration: none;
 	border-radius: $radius-md;
 	transition: color $transition-fast, background-color $transition-fast;
 
+	@include breakpoint-up(lg) {
+		padding: $space-2 $space-3;
+		font-size: $font-size-sm;
+	}
+
 	&:hover,
 	&:focus-visible {
 		color: $color-primary;
-		background-color: rgba($color-primary, 0.06);
+		background-color: rgba($color-primary, 0.08);
 	}
 }
 
@@ -134,46 +257,110 @@
 // -----------------------------------------------------------------------------
 // Sub-menus
 // -----------------------------------------------------------------------------
+.wcu-nav .menu-item-has-children {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+
+	> a {
+		flex: 1 1 auto;
+	}
+
+	@include breakpoint-up(lg) {
+		display: block;
+	}
+}
+
+// Mobile: dedicated chevron toggle injected by JS so the parent link can
+// still navigate while the chevron expands/collapses children.
+.wcu-nav__sub-toggle {
+	@include button-reset;
+
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	flex-shrink: 0;
+	width: 2.25rem;
+	height: 2.25rem;
+	color: var(--wcu-text-muted);
+	border-radius: $radius-md;
+	transition: color $transition-fast, background-color $transition-fast,
+		transform $transition-fast;
+
+	&::after {
+		content: '';
+		display: inline-block;
+		width: 0.5rem;
+		height: 0.5rem;
+		border: solid currentColor;
+		border-width: 0 1.5px 1.5px 0;
+		transform: rotate(45deg);
+		transition: transform $transition-fast;
+	}
+
+	&:hover,
+	&:focus-visible {
+		color: var(--wcu-text);
+		background-color: rgba($color-primary, 0.08);
+	}
+
+	&[aria-expanded='true']::after {
+		transform: rotate(-135deg);
+	}
+
+	@include breakpoint-up(lg) {
+		display: none;
+	}
+}
+
 .wcu-nav .sub-menu {
 	@include list-reset;
 
+	flex: 1 0 100%;
 	display: none;
 	padding-left: $space-4;
+	margin-top: $space-1;
+
+	.menu-item-has-children.is-open > & {
+		display: block;
+	}
 
 	@include breakpoint-up(lg) {
 		position: absolute;
 		top: 100%;
 		left: 0;
+		flex: none;
 		min-width: 14rem;
 		padding: $space-2;
-		background-color: $color-white;
-		border: $border-width solid $color-border;
+		margin-top: 0;
+		background-color: var(--wcu-bg-alt);
+		border: $border-width solid var(--wcu-border);
 		border-radius: $radius-md;
 		box-shadow: $shadow-lg;
+
+		.menu-item-has-children:hover > &,
+		.menu-item-has-children:focus-within > & {
+			display: block;
+		}
 	}
 }
 
-.wcu-nav .menu-item-has-children {
-	> a::after {
+// Desktop: parent shows a small chevron after the label.
+@include breakpoint-up(lg) {
+	.wcu-nav .menu-item-has-children > a::after {
 		content: '';
 		display: inline-block;
-		width: 0.5rem;
-		height: 0.5rem;
+		width: 0.4rem;
+		height: 0.4rem;
 		margin-left: $space-2;
 		border: solid currentColor;
-		border-width: 0 2px 2px 0;
+		border-width: 0 1.5px 1.5px 0;
 		transform: rotate(45deg);
-	}
-
-	&.is-open > .sub-menu,
-	&:hover > .sub-menu,
-	&:focus-within > .sub-menu {
-		display: block;
 	}
 }
 
 // -----------------------------------------------------------------------------
-// Lock body scroll when mobile menu is open (helper class added by JS).
+// Lock body scroll when drawer is open.
 // -----------------------------------------------------------------------------
 body.wcu-nav-open {
 	overflow: hidden;
