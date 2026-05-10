@@ -50,6 +50,7 @@ $wcu_includes = array(
 	'/inc/admin/class-meta-box.php',
 	'/inc/admin/meta-boxes.php',
 	'/inc/admin/admin-columns.php',
+	'/inc/applications.php',
 );
 
 foreach ( $wcu_includes as $wcu_include ) {

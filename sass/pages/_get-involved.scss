@@ -1,0 +1,235 @@
+// =============================================================================
+// Get Involved overview page + Volunteer / Speaker form pages.
+// =============================================================================
+
+@use '../abstracts' as *;
+
+// -----------------------------------------------------------------------------
+// Get Involved overview
+// -----------------------------------------------------------------------------
+.wcu-get-involved__header {
+	padding-top: $space-12;
+	padding-bottom: $space-8;
+	background-color: $color-bg-alt;
+
+	@include breakpoint-up(md) {
+		padding-top: $space-16;
+		padding-bottom: $space-10;
+	}
+}
+
+.wcu-get-involved__title {
+	margin: 0 0 $space-3;
+	font-size: fluid(36, 56);
+	letter-spacing: -0.02em;
+}
+
+.wcu-get-involved__lead {
+	max-width: 56ch;
+	margin: 0;
+	font-size: $font-size-lg;
+	line-height: $line-height-relaxed;
+	color: $color-text-muted;
+}
+
+.wcu-get-involved__intro {
+	padding-top: $space-8;
+	font-size: $font-size-lg;
+	line-height: $line-height-relaxed;
+}
+
+.wcu-get-involved__paths {
+	padding-top: $space-10;
+	padding-bottom: $space-16;
+
+	@include breakpoint-up(md) {
+		padding-top: $space-12;
+	}
+}
+
+.wcu-get-involved__list {
+	@include list-reset;
+
+	li {
+		margin: 0;
+	}
+}
+
+// Cards on the overview behave as full-block links, no media area, larger
+// title, action-style meta line at the bottom.
+.wcu-get-involved__card {
+	display: flex;
+	flex-direction: column;
+	height: 100%;
+	color: inherit;
+	text-decoration: none;
+	transition: border-color $transition-fast, transform $transition-fast;
+
+	&:hover,
+	&:focus-visible {
+		border-color: $color-primary;
+
+		.wcu-blog-card__meta {
+			color: $color-primary-dark;
+		}
+	}
+
+	.wcu-card__title {
+		margin: $space-1 0 $space-2;
+		font-size: fluid(22, 28);
+	}
+
+	.wcu-card__excerpt {
+		flex: 1;
+		font-size: $font-size-md;
+		color: $color-text-muted;
+	}
+
+	.wcu-blog-card__meta {
+		display: inline-flex;
+		gap: $space-2;
+		align-items: center;
+		margin-top: $space-4;
+		color: $color-primary-dark;
+		text-transform: uppercase;
+		letter-spacing: 0.04em;
+
+		svg {
+			transition: transform $transition-fast;
+		}
+	}
+
+	&:hover .wcu-blog-card__meta svg,
+	&:focus-visible .wcu-blog-card__meta svg {
+		transform: translateX(2px);
+	}
+}
+
+// -----------------------------------------------------------------------------
+// Volunteer / Speaker form pages — shared layout
+// -----------------------------------------------------------------------------
+.wcu-app-page__header {
+	padding: $space-10 0 $space-8;
+	background-color: $color-bg-alt;
+
+	@include breakpoint-up(md) {
+		padding: $space-12 0 $space-10;
+	}
+}
+
+.wcu-app-page__title {
+	margin: $space-4 0 $space-3;
+	font-size: fluid(32, 48);
+	letter-spacing: -0.02em;
+}
+
+.wcu-app-page__lead {
+	max-width: 56ch;
+	margin: 0;
+	font-size: fluid(15, 17);
+	line-height: $line-height-relaxed;
+	color: $color-text-muted;
+}
+
+.wcu-app-page__body {
+	padding-top: $space-10;
+	padding-bottom: $space-16;
+}
+
+.wcu-app-page__intro {
+	margin-bottom: $space-8;
+	font-size: $font-size-lg;
+	line-height: $line-height-relaxed;
+}
+
+// -----------------------------------------------------------------------------
+// Application form — visual treatment
+// -----------------------------------------------------------------------------
+.wcu-app-form__form {
+	padding: $space-6;
+	background-color: $color-bg-alt;
+	border: $border-width solid $color-border-muted;
+	border-radius: $radius-lg;
+
+	@include breakpoint-up(md) {
+		padding: $space-8;
+	}
+}
+
+.wcu-app-form__notice {
+	margin-bottom: $space-6;
+	padding: $space-5 $space-6;
+	border: $border-width solid;
+	border-radius: $radius-lg;
+
+	.wcu-empty__title {
+		margin: 0 0 $space-1;
+	}
+
+	.wcu-empty__desc {
+		margin: 0;
+	}
+}
+
+.wcu-app-form__notice--success {
+	color: #166534;
+	background-color: rgba(#16A34A, 0.08);
+	border-color: rgba(#16A34A, 0.25);
+
+	.wcu-empty__title {
+		color: #166534;
+	}
+
+	.wcu-empty__desc {
+		color: $color-text;
+	}
+}
+
+.wcu-app-form__notice--error {
+	color: #991B1B;
+	background-color: rgba(#DC2626, 0.06);
+	border-color: rgba(#DC2626, 0.25);
+
+	.wcu-empty__title {
+		color: #991B1B;
+	}
+
+	.wcu-empty__desc {
+		color: $color-text;
+	}
+}
+
+// Honeypot field — visually hidden but reachable to bots that fill in
+// every input. Not aria-hidden (we want screen readers to skip it via
+// the aria-hidden on the parent, not our own SR-text).
+.wcu-app-form__honeypot {
+	position: absolute;
+	left: -9999px;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+}
+
+.wcu-app-form__actions {
+	display: flex;
+	flex-direction: column;
+	gap: $space-3;
+	align-items: flex-start;
+	margin-top: $space-6;
+	padding-top: $space-6;
+	border-top: $border-width solid $color-border-muted;
+
+	@include breakpoint-up(sm) {
+		flex-direction: row;
+		gap: $space-5;
+		align-items: center;
+	}
+}
+
+.wcu-app-form__hint {
+	margin: 0;
+	font-family: $font-mono;
+	font-size: $font-size-xs;
+	color: $color-text-muted;
+	letter-spacing: 0;
+}
