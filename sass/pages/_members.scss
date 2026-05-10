@@ -586,38 +586,140 @@
 .wcu-folks-credentials__header {
 	display: flex;
 	flex-direction: column;
-	gap: $space-2;
+	gap: $space-3;
 	align-items: flex-start;
 	justify-content: space-between;
 	padding-bottom: $space-5;
-	border-bottom: $border-width solid $color-border;
+	border-bottom: $border-width solid var(--wcu-border);
 
 	@include breakpoint-up(sm) {
 		flex-direction: row;
 		gap: $space-4;
-		align-items: baseline;
+		align-items: flex-end;
 	}
+}
+
+.wcu-folks-credentials__title-wrap {
+	display: flex;
+	flex-direction: column;
+	gap: $space-1;
+	min-width: 0;
 }
 
 .wcu-folks-credentials__heading {
 	margin: 0;
+	font-size: $h3;
+}
+
+.wcu-folks-credentials__lead {
+	margin: 0;
+	font-size: $font-size-sm;
+	color: var(--wcu-text-muted);
+
+	a {
+		font-family: $font-mono;
+		color: $color-primary;
+		text-decoration: none;
+
+		&:hover,
+		&:focus-visible {
+			text-decoration: underline;
+		}
+	}
 }
 
 .wcu-folks-credentials__profile-link {
 	display: inline-flex;
 	gap: $space-2;
 	align-items: center;
+	flex-shrink: 0;
+	padding: 0.45rem $space-3;
 	font-family: $font-heading;
 	font-size: $font-size-sm;
 	font-weight: $font-weight-semibold;
 	color: $color-primary;
 	text-decoration: none;
+	background-color: rgba($color-primary, 0.08);
+	border: $border-width solid rgba($color-primary, 0.2);
+	border-radius: $radius-md;
+	transition: color $transition-fast, background-color $transition-fast,
+		border-color $transition-fast;
 
 	&:hover,
 	&:focus-visible {
-		color: $color-primary-dark;
-		text-decoration: underline;
+		color: $color-text-on-light;
+		background-color: $color-primary;
+		border-color: $color-primary;
 	}
+}
+
+// -----------------------------------------------------------------------------
+// Stats tile row — at-a-glance numeric summary (Supabase data-tile pattern).
+// Mono numerals so the row reads as data, hairline dividers between tiles.
+// -----------------------------------------------------------------------------
+.wcu-folks-stats {
+	@include list-reset;
+
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: 0;
+	margin: 0;
+	overflow: hidden;
+	border: $border-width solid var(--wcu-border);
+	border-radius: $radius-lg;
+
+	@include breakpoint-up(md) {
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+	}
+}
+
+.wcu-folks-stat {
+	display: flex;
+	flex-direction: column;
+	gap: $space-1;
+	padding: $space-4 $space-5;
+	background-color: var(--wcu-bg);
+	border-right: $border-width solid var(--wcu-border);
+	border-bottom: $border-width solid var(--wcu-border);
+
+	&:nth-child(2n) {
+		border-right: 0;
+	}
+
+	&:nth-last-child(-n + 2) {
+		border-bottom: 0;
+	}
+
+	@include breakpoint-up(md) {
+		border-bottom: 0;
+
+		&:nth-child(2n) {
+			border-right: $border-width solid var(--wcu-border);
+		}
+
+		&:last-child {
+			border-right: 0;
+		}
+	}
+}
+
+.wcu-folks-stat__value {
+	font-family: $font-mono;
+	font-size: $h2;
+	font-weight: $font-weight-bold;
+	line-height: 1;
+	color: var(--wcu-text);
+	letter-spacing: -0.02em;
+	font-variant-numeric: tabular-nums;
+}
+
+.wcu-folks-stat__label {
+	font-family: $font-heading;
+	font-size: $font-size-xs;
+	font-weight: $font-weight-medium;
+	color: var(--wcu-text-muted);
+	letter-spacing: 0.06em;
+	text-transform: uppercase;
 }
 
 .wcu-folks-credentials__group {
@@ -800,4 +902,104 @@
 	font-family: $font-heading;
 	font-size: $font-size-xs;
 	color: var(--wcu-text-muted);
+}
+
+// -----------------------------------------------------------------------------
+// Recent activity feed (scraped from wp.org profile HTML)
+// -----------------------------------------------------------------------------
+.wcu-folks-activity {
+	@include list-reset;
+
+	display: flex;
+	flex-direction: column;
+	gap: 0;
+	border: $border-width solid var(--wcu-border);
+	border-radius: $radius-lg;
+	overflow: hidden;
+}
+
+.wcu-folks-activity__item {
+	display: flex;
+	gap: $space-3;
+	padding: $space-4 $space-5;
+	background-color: var(--wcu-bg);
+	border-bottom: $border-width solid var(--wcu-border-muted);
+	transition: background-color $transition-fast;
+
+	&:last-child {
+		border-bottom: 0;
+	}
+
+	&:hover {
+		background-color: var(--wcu-bg-alt);
+	}
+}
+
+.wcu-folks-activity__icon {
+	display: inline-flex;
+	flex-shrink: 0;
+	align-items: center;
+	justify-content: center;
+	width: 1.75rem;
+	height: 1.75rem;
+	color: $color-primary;
+	background-color: rgba($color-primary, 0.12);
+	border-radius: $radius-circle;
+}
+
+.wcu-folks-activity__body {
+	display: flex;
+	flex-direction: column;
+	gap: $space-2;
+	min-width: 0;
+}
+
+.wcu-folks-activity__action {
+	margin: 0;
+	font-size: $font-size-sm;
+	line-height: $line-height-snug;
+	color: var(--wcu-text);
+
+	a {
+		color: $color-primary;
+		text-decoration: none;
+		font-weight: $font-weight-semibold;
+
+		&:hover,
+		&:focus-visible {
+			text-decoration: underline;
+		}
+	}
+}
+
+.wcu-folks-activity__excerpt {
+	margin: 0;
+	padding: $space-2 $space-3;
+	font-family: $font-body;
+	font-size: $font-size-sm;
+	font-style: normal;
+	line-height: $line-height-base;
+	color: var(--wcu-text-muted);
+	background-color: var(--wcu-bg-alt);
+	border-left: 2px solid var(--wcu-border-strong);
+	border-radius: 0 $radius-sm $radius-sm 0;
+}
+
+.wcu-folks-activity__time {
+	font-family: $font-mono;
+	font-size: $font-size-xs;
+	color: var(--wcu-text-muted);
+	letter-spacing: 0;
+}
+
+.wcu-folks-credentials__empty {
+	margin: 0;
+	padding: $space-6;
+	font-size: $font-size-sm;
+	line-height: $line-height-relaxed;
+	color: var(--wcu-text-muted);
+	text-align: center;
+	background-color: var(--wcu-bg);
+	border: $border-width dashed var(--wcu-border-strong);
+	border-radius: $radius-lg;
 }

@@ -28,6 +28,8 @@ class WCU_WPOrg_Profiles {
 	const CACHE_NEGATIVE   = 30 * MINUTE_IN_SECONDS;
 	const CACHE_PREFIX     = 'wcu_wporg_badges_';
 	const AVATAR_PREFIX    = 'wcu_wporg_avatar_';
+	const ACTIVITY_PREFIX  = 'wcu_wporg_activity_';
+	const ACTIVITY_TTL     = 6 * HOUR_IN_SECONDS;
 
 	/**
 	 * Get badges for a wp.org username.
@@ -71,7 +73,157 @@ class WCU_WPOrg_Profiles {
 		if ( '' !== $username ) {
 			delete_transient( self::CACHE_PREFIX . md5( $username ) );
 			delete_transient( self::AVATAR_PREFIX . md5( $username ) );
+			delete_transient( self::ACTIVITY_PREFIX . md5( $username ) );
 		}
+	}
+
+	/**
+	 * Get recent activity items for a wp.org username.
+	 *
+	 * Scrapes the public profile HTML because there's no documented JSON
+	 * endpoint for the BuddyPress activity stream. Defensive: any parse
+	 * mismatch returns an empty array (and gets cached as a negative
+	 * result so we don't hammer the upstream on every page view).
+	 *
+	 * @param string $username Username.
+	 * @param int    $limit    Max items to return.
+	 * @return array<int,array<string,string>> List of {type, html, time, url, excerpt} pairs.
+	 */
+	public static function get_activity( $username, $limit = 6 ) {
+		$username = self::sanitize_username( $username );
+		if ( '' === $username ) {
+			return array();
+		}
+
+		$limit = max( 1, min( 20, (int) $limit ) );
+
+		$cache_key = self::ACTIVITY_PREFIX . md5( $username );
+		$cached    = get_transient( $cache_key );
+
+		if ( false !== $cached && is_array( $cached ) ) {
+			return array_slice( $cached, 0, $limit );
+		}
+
+		$response = wp_remote_get(
+			self::PROFILE_URL_BASE . rawurlencode( $username ) . '/',
+			array(
+				'timeout'    => 6,
+				'user-agent' => 'WCUganda/' . WCU_THEME_VERSION . '; ' . home_url(),
+			)
+		);
+
+		if ( is_wp_error( $response ) || 200 !== (int) wp_remote_retrieve_response_code( $response ) ) {
+			set_transient( $cache_key, array(), self::CACHE_NEGATIVE );
+			return array();
+		}
+
+		$html = (string) wp_remote_retrieve_body( $response );
+		if ( '' === $html ) {
+			set_transient( $cache_key, array(), self::CACHE_NEGATIVE );
+			return array();
+		}
+
+		$items = self::parse_activity_html( $html );
+
+		$lifetime = empty( $items ) ? self::CACHE_NEGATIVE : self::ACTIVITY_TTL;
+		set_transient( $cache_key, $items, $lifetime );
+
+		return array_slice( $items, 0, $limit );
+	}
+
+	/**
+	 * Parse activity items out of a wp.org profile HTML page.
+	 *
+	 * The profile page renders a BuddyPress activity stream as `<li class="activity-item">`
+	 * rows. Each row carries a header (action description with linked names),
+	 * an inner excerpt, and a "X ago" timestamp.
+	 *
+	 * @param string $html Page HTML.
+	 * @return array<int,array<string,string>>
+	 */
+	private static function parse_activity_html( $html ) {
+		// Each activity row.
+		if ( ! preg_match_all( '/<li[^>]+class="[^"]*activity-item[^"]*"[^>]*>(.*?)<\/li>/is', $html, $matches ) ) {
+			return array();
+		}
+
+		$items = array();
+		foreach ( $matches[1] as $row ) {
+			// Action description ("Reacted to a post by Foo Bar").
+			$action_html = '';
+			if ( preg_match( '/<div[^>]+class="[^"]*activity-header[^"]*"[^>]*>(.*?)<\/div>/is', $row, $head ) ) {
+				$action_html = self::clean_inline_html( $head[1] );
+			} elseif ( preg_match( '/<p[^>]+class="[^"]*activity-header[^"]*"[^>]*>(.*?)<\/p>/is', $row, $head ) ) {
+				$action_html = self::clean_inline_html( $head[1] );
+			}
+
+			// Excerpt body, if any.
+			$excerpt = '';
+			if ( preg_match( '/<div[^>]+class="[^"]*activity-inner[^"]*"[^>]*>(.*?)<\/div>/is', $row, $inner ) ) {
+				$excerpt = trim( wp_strip_all_tags( $inner[1] ) );
+				$excerpt = preg_replace( '/\s+/', ' ', $excerpt );
+				if ( mb_strlen( $excerpt ) > 220 ) {
+					$excerpt = mb_substr( $excerpt, 0, 217 ) . '…';
+				}
+			}
+
+			// "2 hours ago" timestamp.
+			$time = '';
+			if ( preg_match( '/class="[^"]*time-since[^"]*"[^>]*>([^<]+)<\/a>/i', $row, $ts ) ) {
+				$time = trim( wp_strip_all_tags( $ts[1] ) );
+			} elseif ( preg_match( '/<time[^>]*>([^<]+)<\/time>/i', $row, $ts ) ) {
+				$time = trim( wp_strip_all_tags( $ts[1] ) );
+			}
+
+			// Activity type — derived from the row's class list.
+			$type = 'activity';
+			if ( preg_match( '/class="[^"]*activity-item[^"]*"/i', $row, $cls ) ) {
+				if ( preg_match( '/\b(reaction|favorite|new_blog_post|new_plugin|new_theme|wp_org_meeting|new_member|added_plugin|updated_plugin|added_theme|updated_theme)\b/', $cls[0], $tm ) ) {
+					$type = $tm[1];
+				}
+			}
+
+			if ( '' === $action_html ) {
+				continue;
+			}
+
+			$items[] = array(
+				'type'    => $type,
+				'action'  => $action_html,
+				'excerpt' => $excerpt,
+				'time'    => $time,
+			);
+		}
+
+		return $items;
+	}
+
+	/**
+	 * Strip block tags + scripts but keep links and basic inline emphasis.
+	 *
+	 * @param string $html Raw chunk.
+	 * @return string Sanitized HTML safe to render with wp_kses.
+	 */
+	private static function clean_inline_html( $html ) {
+		$html = preg_replace( '/<script\b[^>]*>.*?<\/script>/is', '', $html );
+		$html = trim( wp_kses(
+			$html,
+			array(
+				'a'      => array( 'href' => array(), 'title' => array() ),
+				'strong' => array(),
+				'em'     => array(),
+				'span'   => array(),
+			)
+		) );
+		// Collapse the link href to absolute (wp.org links may be relative).
+		$html = preg_replace_callback(
+			'/href="(\/[^"]*)"/i',
+			static function ( $m ) {
+				return 'href="' . esc_url( self::PROFILE_URL_BASE . ltrim( $m[1], '/' ) ) . '"';
+			},
+			$html
+		);
+		return preg_replace( '/\s+/', ' ', $html );
 	}
 
 	/**

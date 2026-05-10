@@ -306,125 +306,226 @@ while ( have_posts() ) :
 
 			<?php
 			// =========================================================
-			// WordPress.org credentials — badges + authored plugins/themes
+			// WordPress.org credentials — badges, plugins, themes, activity.
+			// Section ALWAYS renders when a wp.org username is set (even with
+			// no fetched data) so the visitor sees the connection + a clear
+			// link to the upstream profile.
 			// =========================================================
 			if ( ! empty( $wcu_wporg_username ) ) :
-				$wcu_badges  = class_exists( 'WCU_WPOrg_Profiles' ) ? WCU_WPOrg_Profiles::get_badges( $wcu_wporg_username ) : array();
-				$wcu_plugins = class_exists( 'WCU_WPOrg_Repo' ) ? WCU_WPOrg_Repo::get_plugins( $wcu_wporg_username, 12 ) : array();
-				$wcu_themes  = class_exists( 'WCU_WPOrg_Repo' ) ? WCU_WPOrg_Repo::get_themes( $wcu_wporg_username, 12 ) : array();
+				$wcu_badges   = class_exists( 'WCU_WPOrg_Profiles' ) ? WCU_WPOrg_Profiles::get_badges( $wcu_wporg_username ) : array();
+				$wcu_plugins  = class_exists( 'WCU_WPOrg_Repo' ) ? WCU_WPOrg_Repo::get_plugins( $wcu_wporg_username, 12 ) : array();
+				$wcu_themes   = class_exists( 'WCU_WPOrg_Repo' ) ? WCU_WPOrg_Repo::get_themes( $wcu_wporg_username, 12 ) : array();
+				$wcu_activity = class_exists( 'WCU_WPOrg_Profiles' ) ? WCU_WPOrg_Profiles::get_activity( $wcu_wporg_username, 6 ) : array();
 
-				if ( ! empty( $wcu_badges ) || ! empty( $wcu_plugins ) || ! empty( $wcu_themes ) ) :
-					?>
-					<section class="wcu-folks-credentials">
+				$wcu_total_installs = 0;
+				foreach ( $wcu_plugins as $wcu_p ) {
+					$wcu_total_installs += isset( $wcu_p['active_installs'] ) ? (int) $wcu_p['active_installs'] : 0;
+				}
+				$wcu_has_any = ! empty( $wcu_badges ) || ! empty( $wcu_plugins ) || ! empty( $wcu_themes ) || ! empty( $wcu_activity );
+				$wcu_profile_url = 'https://profiles.wordpress.org/' . rawurlencode( $wcu_wporg_username ) . '/';
+				?>
 
-						<header class="wcu-folks-credentials__header">
+				<section class="wcu-folks-credentials">
+
+					<header class="wcu-folks-credentials__header">
+						<div class="wcu-folks-credentials__title-wrap">
 							<h2 class="wcu-folks-credentials__heading"><?php esc_html_e( 'On WordPress.org', 'wcuganda' ); ?></h2>
-							<a class="wcu-folks-credentials__profile-link" href="<?php echo esc_url( 'https://profiles.wordpress.org/' . rawurlencode( $wcu_wporg_username ) . '/' ); ?>" rel="noopener" target="_blank">
-								@<?php echo esc_html( $wcu_wporg_username ); ?>
-								<?php wcu_svg_icon( 'arrow-right', array( 'width' => 14, 'height' => 14 ) ); ?>
-							</a>
-						</header>
+							<p class="wcu-folks-credentials__lead">
+								<?php
+								printf(
+									/* translators: %s: linked wp.org handle. */
+									esc_html__( 'Live data pulled from %s.', 'wcuganda' ),
+									'<a href="' . esc_url( $wcu_profile_url ) . '" rel="noopener" target="_blank">@' . esc_html( $wcu_wporg_username ) . '</a>'
+								);
+								?>
+							</p>
+						</div>
+						<a class="wcu-folks-credentials__profile-link" href="<?php echo esc_url( $wcu_profile_url ); ?>" rel="noopener" target="_blank">
+							<?php esc_html_e( 'View full profile', 'wcuganda' ); ?>
+							<?php wcu_svg_icon( 'arrow-right', array( 'width' => 14, 'height' => 14 ) ); ?>
+						</a>
+					</header>
 
-						<?php if ( ! empty( $wcu_badges ) ) : ?>
-							<div class="wcu-folks-credentials__group">
-								<h3 class="wcu-folks-credentials__group-heading"><?php esc_html_e( 'Contributor badges', 'wcuganda' ); ?></h3>
-								<ul class="wcu-folks-badges">
-									<?php foreach ( $wcu_badges as $wcu_badge ) : ?>
-										<li>
-											<span class="wcu-folks-badge wcu-folks-badge--<?php echo esc_attr( $wcu_badge['slug'] ); ?>">
-												<span class="wcu-folks-badge__dot" aria-hidden="true"></span>
-												<span class="wcu-folks-badge__name"><?php echo esc_html( $wcu_badge['name'] ); ?></span>
+					<ul class="wcu-folks-stats" aria-label="<?php esc_attr_e( 'WordPress.org summary', 'wcuganda' ); ?>">
+						<li class="wcu-folks-stat">
+							<span class="wcu-folks-stat__value"><?php echo esc_html( number_format_i18n( count( $wcu_badges ) ) ); ?></span>
+							<span class="wcu-folks-stat__label"><?php esc_html_e( 'Badges', 'wcuganda' ); ?></span>
+						</li>
+						<li class="wcu-folks-stat">
+							<span class="wcu-folks-stat__value"><?php echo esc_html( number_format_i18n( count( $wcu_plugins ) ) ); ?></span>
+							<span class="wcu-folks-stat__label"><?php esc_html_e( 'Plugins', 'wcuganda' ); ?></span>
+						</li>
+						<li class="wcu-folks-stat">
+							<span class="wcu-folks-stat__value"><?php echo esc_html( number_format_i18n( count( $wcu_themes ) ) ); ?></span>
+							<span class="wcu-folks-stat__label"><?php esc_html_e( 'Themes', 'wcuganda' ); ?></span>
+						</li>
+						<li class="wcu-folks-stat">
+							<span class="wcu-folks-stat__value">
+								<?php echo esc_html( $wcu_total_installs >= 1000 ? number_format_i18n( $wcu_total_installs ) . '+' : number_format_i18n( $wcu_total_installs ) ); ?>
+							</span>
+							<span class="wcu-folks-stat__label"><?php esc_html_e( 'Active installs', 'wcuganda' ); ?></span>
+						</li>
+					</ul>
+
+					<?php if ( ! empty( $wcu_badges ) ) : ?>
+						<div class="wcu-folks-credentials__group">
+							<h3 class="wcu-folks-credentials__group-heading"><?php esc_html_e( 'Contributor badges', 'wcuganda' ); ?></h3>
+							<ul class="wcu-folks-badges">
+								<?php foreach ( $wcu_badges as $wcu_badge ) : ?>
+									<li>
+										<span class="wcu-folks-badge wcu-folks-badge--<?php echo esc_attr( $wcu_badge['slug'] ); ?>">
+											<span class="wcu-folks-badge__dot" aria-hidden="true"></span>
+											<span class="wcu-folks-badge__name"><?php echo esc_html( $wcu_badge['name'] ); ?></span>
+										</span>
+									</li>
+								<?php endforeach; ?>
+							</ul>
+						</div>
+					<?php endif; ?>
+
+					<?php if ( ! empty( $wcu_plugins ) ) : ?>
+						<div class="wcu-folks-credentials__group">
+							<h3 class="wcu-folks-credentials__group-heading">
+								<?php
+								printf(
+									/* translators: %d: count. */
+									esc_html( _n( 'Plugin authored (%d)', 'Plugins authored (%d)', count( $wcu_plugins ), 'wcuganda' ) ),
+									(int) count( $wcu_plugins )
+								);
+								?>
+							</h3>
+							<ul class="wcu-folks-projects">
+								<?php foreach ( $wcu_plugins as $wcu_plugin ) : ?>
+									<li class="wcu-folks-project">
+										<a class="wcu-folks-project__link" href="<?php echo esc_url( $wcu_plugin['url'] ); ?>" rel="noopener" target="_blank">
+											<?php if ( ! empty( $wcu_plugin['icon'] ) ) : ?>
+												<img class="wcu-folks-project__icon" src="<?php echo esc_url( $wcu_plugin['icon'] ); ?>" alt="" loading="lazy">
+											<?php else : ?>
+												<span class="wcu-folks-project__icon wcu-folks-project__icon--placeholder" aria-hidden="true">
+													<?php echo esc_html( strtoupper( mb_substr( $wcu_plugin['name'], 0, 1 ) ) ); ?>
+												</span>
+											<?php endif; ?>
+											<span class="wcu-folks-project__body">
+												<span class="wcu-folks-project__name"><?php echo esc_html( $wcu_plugin['name'] ); ?></span>
+												<?php if ( ! empty( $wcu_plugin['description'] ) ) : ?>
+													<span class="wcu-folks-project__desc"><?php echo esc_html( wp_trim_words( $wcu_plugin['description'], 18 ) ); ?></span>
+												<?php endif; ?>
+												<?php if ( $wcu_plugin['active_installs'] > 0 ) : ?>
+													<span class="wcu-folks-project__meta">
+														<?php
+														printf(
+															/* translators: %s: install count, e.g. "1,000+". */
+															esc_html__( '%s+ active installs', 'wcuganda' ),
+															esc_html( number_format_i18n( $wcu_plugin['active_installs'] ) )
+														);
+														?>
+													</span>
+												<?php endif; ?>
 											</span>
-										</li>
-									<?php endforeach; ?>
-								</ul>
-							</div>
-						<?php endif; ?>
+										</a>
+									</li>
+								<?php endforeach; ?>
+							</ul>
+						</div>
+					<?php endif; ?>
 
-						<?php if ( ! empty( $wcu_plugins ) ) : ?>
-							<div class="wcu-folks-credentials__group">
-								<h3 class="wcu-folks-credentials__group-heading">
-									<?php
-									printf(
-										/* translators: %d: count. */
-										esc_html( _n( 'Plugin authored (%d)', 'Plugins authored (%d)', count( $wcu_plugins ), 'wcuganda' ) ),
-										(int) count( $wcu_plugins )
-									);
-									?>
-								</h3>
-								<ul class="wcu-folks-projects">
-									<?php foreach ( $wcu_plugins as $wcu_plugin ) : ?>
-										<li class="wcu-folks-project">
-											<a class="wcu-folks-project__link" href="<?php echo esc_url( $wcu_plugin['url'] ); ?>" rel="noopener" target="_blank">
-												<?php if ( ! empty( $wcu_plugin['icon'] ) ) : ?>
-													<img class="wcu-folks-project__icon" src="<?php echo esc_url( $wcu_plugin['icon'] ); ?>" alt="" loading="lazy">
-												<?php else : ?>
-													<span class="wcu-folks-project__icon wcu-folks-project__icon--placeholder" aria-hidden="true">
-														<?php echo esc_html( strtoupper( mb_substr( $wcu_plugin['name'], 0, 1 ) ) ); ?>
-													</span>
-												<?php endif; ?>
-												<span class="wcu-folks-project__body">
-													<span class="wcu-folks-project__name"><?php echo esc_html( $wcu_plugin['name'] ); ?></span>
-													<?php if ( ! empty( $wcu_plugin['description'] ) ) : ?>
-														<span class="wcu-folks-project__desc"><?php echo esc_html( wp_trim_words( $wcu_plugin['description'], 18 ) ); ?></span>
-													<?php endif; ?>
-													<?php if ( $wcu_plugin['active_installs'] > 0 ) : ?>
-														<span class="wcu-folks-project__meta">
-															<?php
-															printf(
-																/* translators: %s: install count, e.g. "1,000+". */
-																esc_html__( '%s+ active installs', 'wcuganda' ),
-																esc_html( number_format_i18n( $wcu_plugin['active_installs'] ) )
-															);
-															?>
-														</span>
-													<?php endif; ?>
+					<?php if ( ! empty( $wcu_themes ) ) : ?>
+						<div class="wcu-folks-credentials__group">
+							<h3 class="wcu-folks-credentials__group-heading">
+								<?php
+								printf(
+									/* translators: %d: count. */
+									esc_html( _n( 'Theme authored (%d)', 'Themes authored (%d)', count( $wcu_themes ), 'wcuganda' ) ),
+									(int) count( $wcu_themes )
+								);
+								?>
+							</h3>
+							<ul class="wcu-folks-projects wcu-folks-projects--themes">
+								<?php foreach ( $wcu_themes as $wcu_theme ) : ?>
+									<li class="wcu-folks-project">
+										<a class="wcu-folks-project__link" href="<?php echo esc_url( $wcu_theme['url'] ); ?>" rel="noopener" target="_blank">
+											<?php if ( ! empty( $wcu_theme['icon'] ) ) : ?>
+												<img class="wcu-folks-project__icon wcu-folks-project__icon--theme" src="<?php echo esc_url( $wcu_theme['icon'] ); ?>" alt="" loading="lazy">
+											<?php else : ?>
+												<span class="wcu-folks-project__icon wcu-folks-project__icon--placeholder" aria-hidden="true">
+													<?php echo esc_html( strtoupper( mb_substr( $wcu_theme['name'], 0, 1 ) ) ); ?>
 												</span>
-											</a>
-										</li>
-									<?php endforeach; ?>
-								</ul>
-							</div>
-						<?php endif; ?>
-
-						<?php if ( ! empty( $wcu_themes ) ) : ?>
-							<div class="wcu-folks-credentials__group">
-								<h3 class="wcu-folks-credentials__group-heading">
-									<?php
-									printf(
-										/* translators: %d: count. */
-										esc_html( _n( 'Theme authored (%d)', 'Themes authored (%d)', count( $wcu_themes ), 'wcuganda' ) ),
-										(int) count( $wcu_themes )
-									);
-									?>
-								</h3>
-								<ul class="wcu-folks-projects wcu-folks-projects--themes">
-									<?php foreach ( $wcu_themes as $wcu_theme ) : ?>
-										<li class="wcu-folks-project">
-											<a class="wcu-folks-project__link" href="<?php echo esc_url( $wcu_theme['url'] ); ?>" rel="noopener" target="_blank">
-												<?php if ( ! empty( $wcu_theme['icon'] ) ) : ?>
-													<img class="wcu-folks-project__icon wcu-folks-project__icon--theme" src="<?php echo esc_url( $wcu_theme['icon'] ); ?>" alt="" loading="lazy">
-												<?php else : ?>
-													<span class="wcu-folks-project__icon wcu-folks-project__icon--placeholder" aria-hidden="true">
-														<?php echo esc_html( strtoupper( mb_substr( $wcu_theme['name'], 0, 1 ) ) ); ?>
-													</span>
+											<?php endif; ?>
+											<span class="wcu-folks-project__body">
+												<span class="wcu-folks-project__name"><?php echo esc_html( $wcu_theme['name'] ); ?></span>
+												<?php if ( ! empty( $wcu_theme['description'] ) ) : ?>
+													<span class="wcu-folks-project__desc"><?php echo esc_html( wp_trim_words( $wcu_theme['description'], 18 ) ); ?></span>
 												<?php endif; ?>
-												<span class="wcu-folks-project__body">
-													<span class="wcu-folks-project__name"><?php echo esc_html( $wcu_theme['name'] ); ?></span>
-													<?php if ( ! empty( $wcu_theme['description'] ) ) : ?>
-														<span class="wcu-folks-project__desc"><?php echo esc_html( wp_trim_words( $wcu_theme['description'], 18 ) ); ?></span>
-													<?php endif; ?>
-												</span>
-											</a>
-										</li>
-									<?php endforeach; ?>
-								</ul>
-							</div>
-						<?php endif; ?>
+											</span>
+										</a>
+									</li>
+								<?php endforeach; ?>
+							</ul>
+						</div>
+					<?php endif; ?>
 
-					</section>
-					<?php
-				endif;
+					<?php if ( ! empty( $wcu_activity ) ) : ?>
+						<div class="wcu-folks-credentials__group">
+							<h3 class="wcu-folks-credentials__group-heading"><?php esc_html_e( 'Recent activity', 'wcuganda' ); ?></h3>
+							<ul class="wcu-folks-activity">
+								<?php foreach ( $wcu_activity as $wcu_act ) : ?>
+									<li class="wcu-folks-activity__item wcu-folks-activity__item--<?php echo esc_attr( sanitize_html_class( $wcu_act['type'] ) ); ?>">
+										<span class="wcu-folks-activity__icon" aria-hidden="true">
+											<?php
+											$wcu_act_icon = 'arrow-right';
+											if ( false !== strpos( $wcu_act['type'], 'plugin' ) ) {
+												$wcu_act_icon = 'wordpress';
+											} elseif ( false !== strpos( $wcu_act['type'], 'theme' ) ) {
+												$wcu_act_icon = 'wordpress';
+											} elseif ( false !== strpos( $wcu_act['type'], 'reaction' ) || false !== strpos( $wcu_act['type'], 'favorite' ) ) {
+												$wcu_act_icon = 'arrow-right';
+											} elseif ( false !== strpos( $wcu_act['type'], 'post' ) ) {
+												$wcu_act_icon = 'mail';
+											}
+											wcu_svg_icon( $wcu_act_icon, array( 'width' => 14, 'height' => 14 ) );
+											?>
+										</span>
+										<div class="wcu-folks-activity__body">
+											<p class="wcu-folks-activity__action">
+												<?php
+												echo wp_kses(
+													$wcu_act['action'],
+													array(
+														'a'      => array( 'href' => array(), 'title' => array() ),
+														'strong' => array(),
+														'em'     => array(),
+														'span'   => array(),
+													)
+												);
+												?>
+											</p>
+											<?php if ( ! empty( $wcu_act['excerpt'] ) ) : ?>
+												<blockquote class="wcu-folks-activity__excerpt"><?php echo esc_html( $wcu_act['excerpt'] ); ?></blockquote>
+											<?php endif; ?>
+											<?php if ( ! empty( $wcu_act['time'] ) ) : ?>
+												<span class="wcu-folks-activity__time"><?php echo esc_html( $wcu_act['time'] ); ?></span>
+											<?php endif; ?>
+										</div>
+									</li>
+								<?php endforeach; ?>
+							</ul>
+						</div>
+					<?php endif; ?>
+
+					<?php if ( ! $wcu_has_any ) : ?>
+						<p class="wcu-folks-credentials__empty">
+							<?php
+							printf(
+								/* translators: %s: linked wp.org profile URL. */
+								esc_html__( 'No public WordPress.org contributions yet for this username. %s to see the live profile.', 'wcuganda' ),
+								'<a class="text-brand-link" href="' . esc_url( $wcu_profile_url ) . '" rel="noopener" target="_blank">' . esc_html__( 'Open the profile', 'wcuganda' ) . '</a>'
+							);
+							?>
+						</p>
+					<?php endif; ?>
+
+				</section>
+				<?php
 			endif;
 			?>
 
