@@ -317,10 +317,6 @@ while ( have_posts() ) :
 				$wcu_themes   = class_exists( 'WCU_WPOrg_Repo' ) ? WCU_WPOrg_Repo::get_themes( $wcu_wporg_username, 12 ) : array();
 				$wcu_activity = class_exists( 'WCU_WPOrg_Profiles' ) ? WCU_WPOrg_Profiles::get_activity( $wcu_wporg_username, 6 ) : array();
 
-				$wcu_total_installs = 0;
-				foreach ( $wcu_plugins as $wcu_p ) {
-					$wcu_total_installs += isset( $wcu_p['active_installs'] ) ? (int) $wcu_p['active_installs'] : 0;
-				}
 				$wcu_has_any = ! empty( $wcu_badges ) || ! empty( $wcu_plugins ) || ! empty( $wcu_themes ) || ! empty( $wcu_activity );
 				$wcu_profile_url = 'https://profiles.wordpress.org/' . rawurlencode( $wcu_wporg_username ) . '/';
 				?>
@@ -345,27 +341,6 @@ while ( have_posts() ) :
 							<?php wcu_svg_icon( 'arrow-right', array( 'width' => 14, 'height' => 14 ) ); ?>
 						</a>
 					</header>
-
-					<ul class="wcu-folks-stats" aria-label="<?php esc_attr_e( 'WordPress.org summary', 'wcuganda' ); ?>">
-						<li class="wcu-folks-stat">
-							<span class="wcu-folks-stat__value"><?php echo esc_html( number_format_i18n( count( $wcu_badges ) ) ); ?></span>
-							<span class="wcu-folks-stat__label"><?php esc_html_e( 'Badges', 'wcuganda' ); ?></span>
-						</li>
-						<li class="wcu-folks-stat">
-							<span class="wcu-folks-stat__value"><?php echo esc_html( number_format_i18n( count( $wcu_plugins ) ) ); ?></span>
-							<span class="wcu-folks-stat__label"><?php esc_html_e( 'Plugins', 'wcuganda' ); ?></span>
-						</li>
-						<li class="wcu-folks-stat">
-							<span class="wcu-folks-stat__value"><?php echo esc_html( number_format_i18n( count( $wcu_themes ) ) ); ?></span>
-							<span class="wcu-folks-stat__label"><?php esc_html_e( 'Themes', 'wcuganda' ); ?></span>
-						</li>
-						<li class="wcu-folks-stat">
-							<span class="wcu-folks-stat__value">
-								<?php echo esc_html( $wcu_total_installs >= 1000 ? number_format_i18n( $wcu_total_installs ) . '+' : number_format_i18n( $wcu_total_installs ) ); ?>
-							</span>
-							<span class="wcu-folks-stat__label"><?php esc_html_e( 'Active installs', 'wcuganda' ); ?></span>
-						</li>
-					</ul>
 
 					<?php if ( ! empty( $wcu_badges ) ) : ?>
 						<div class="wcu-folks-credentials__group">
