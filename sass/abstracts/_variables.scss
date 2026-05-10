@@ -72,14 +72,15 @@ $font-size-5xl:    3rem;       // 48px
 $font-size-6xl:    3.75rem;    // 60px
 
 // Canonical heading scale — single source of truth for h1..h6 across the
-// entire site. Matches Supabase marketing typography (h1 hero ~36–60px;
-// h2 section ~26–40px; h3 card ~20–24px). Per-page overrides should be
-// the rare exception, not the rule.
-$h1: clamp(2.25rem, 4vw + 1rem, 3.75rem);   // 36 → 60px (page titles, hero)
-$h2: clamp(1.625rem, 2vw + 1rem, 2.5rem);   // 26 → 40px (section headings, banners)
-$h3: clamp(1.25rem, 0.5vw + 1rem, 1.5rem);  // 20 → 24px (card titles, sub-section)
-$h4: 1.125rem;                              // 18px (sub-headings)
-$h5: 1rem;                                  // 16px
+// entire site. Matched to Supabase marketing typography after a downsize
+// pass: h1 ~28-44px, h2 ~22-30px, h3 ~18-20px. Reads tight and editorial,
+// not billboard. Per-page overrides should be the rare exception, not
+// the rule.
+$h1: clamp(1.75rem, 2vw + 1rem, 2.75rem);   // 28 → 44px (page titles, hero)
+$h2: clamp(1.375rem, 1vw + 0.875rem, 1.875rem); // 22 → 30px (section headings, banners)
+$h3: clamp(1.125rem, 0.25vw + 1rem, 1.25rem);   // 18 → 20px (card titles, sub-section)
+$h4: 1rem;                                  // 16px (sub-headings)
+$h5: 0.9375rem;                             // 15px
 $h6: 0.875rem;                              // 14px
 
 $line-height-tight:   1.1;
