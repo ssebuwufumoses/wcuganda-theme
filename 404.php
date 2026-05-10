@@ -1,60 +1,84 @@
 <?php
 /**
- * The template for displaying 404 pages (not found)
- *
- * @link https://codex.wordpress.org/Creating_an_Error_404_Page
+ * 404 — page not found.
  *
  * @package WCUganda
  */
 
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 get_header();
 ?>
 
-	<main id="primary" class="site-main">
+<main id="primary" class="site-main wcu-misc-page">
 
-		<section class="error-404 not-found">
-			<header class="page-header">
-				<h1 class="page-title"><?php esc_html_e( 'Oops! That page can&rsquo;t be found.', 'wcuganda' ); ?></h1>
-			</header><!-- .page-header -->
+	<div class="container container--narrow wcu-misc-page__inner">
 
-			<div class="page-content">
-				<p><?php esc_html_e( 'It looks like nothing was found at this location. Maybe try one of the links below or a search?', 'wcuganda' ); ?></p>
+		<header class="wcu-misc-page__header">
+			<p class="section-eyebrow wcu-misc-page__code">404</p>
+			<h1 class="wcu-misc-page__title"><?php esc_html_e( 'Page not found', 'wcuganda' ); ?></h1>
+			<p class="wcu-misc-page__lead">
+				<?php esc_html_e( 'The page you tried to reach is missing or has moved. Try the links below, or search the site.', 'wcuganda' ); ?>
+			</p>
+		</header>
 
-					<?php
-					get_search_form();
+		<div class="wcu-misc-page__search">
+			<?php get_search_form(); ?>
+		</div>
 
-					the_widget( 'WP_Widget_Recent_Posts' );
-					?>
+		<section class="wcu-misc-page__shortcuts" aria-label="<?php esc_attr_e( 'Quick links', 'wcuganda' ); ?>">
+			<h2 class="wcu-misc-page__shortcuts-heading">
+				<?php esc_html_e( 'Or jump to', 'wcuganda' ); ?>
+			</h2>
+			<ul class="wcu-misc-page__shortcuts-list">
+				<li>
+					<a href="<?php echo esc_url( home_url( '/' ) ); ?>">
+						<?php esc_html_e( 'Home', 'wcuganda' ); ?>
+					</a>
+				</li>
+				<?php if ( post_type_exists( 'wcu_event' ) ) : ?>
+					<li>
+						<a href="<?php echo esc_url( get_post_type_archive_link( 'wcu_event' ) ); ?>">
+							<?php esc_html_e( 'Events', 'wcuganda' ); ?>
+						</a>
+					</li>
+				<?php endif; ?>
+				<?php if ( post_type_exists( 'wcu_chapter' ) ) : ?>
+					<li>
+						<a href="<?php echo esc_url( get_post_type_archive_link( 'wcu_chapter' ) ); ?>">
+							<?php esc_html_e( 'Chapters', 'wcuganda' ); ?>
+						</a>
+					</li>
+				<?php endif; ?>
+				<?php if ( post_type_exists( 'wcu_member' ) ) : ?>
+					<li>
+						<a href="<?php echo esc_url( get_post_type_archive_link( 'wcu_member' ) ); ?>">
+							<?php esc_html_e( 'Members', 'wcuganda' ); ?>
+						</a>
+					</li>
+				<?php endif; ?>
+				<?php if ( post_type_exists( 'wcu_wordcamp' ) ) : ?>
+					<li>
+						<a href="<?php echo esc_url( get_post_type_archive_link( 'wcu_wordcamp' ) ); ?>">
+							<?php esc_html_e( 'WordCamps', 'wcuganda' ); ?>
+						</a>
+					</li>
+				<?php endif; ?>
+				<?php if ( post_type_exists( 'wcu_sponsor' ) ) : ?>
+					<li>
+						<a href="<?php echo esc_url( get_post_type_archive_link( 'wcu_sponsor' ) ); ?>">
+							<?php esc_html_e( 'Sponsors', 'wcuganda' ); ?>
+						</a>
+					</li>
+				<?php endif; ?>
+			</ul>
+		</section>
 
-					<div class="widget widget_categories">
-						<h2 class="widget-title"><?php esc_html_e( 'Most Used Categories', 'wcuganda' ); ?></h2>
-						<ul>
-							<?php
-							wp_list_categories(
-								array(
-									'orderby'    => 'count',
-									'order'      => 'DESC',
-									'show_count' => 1,
-									'title_li'   => '',
-									'number'     => 10,
-								)
-							);
-							?>
-						</ul>
-					</div><!-- .widget -->
+	</div>
 
-					<?php
-					/* translators: %1$s: smiley */
-					$wcu_archive_content = '<p>' . sprintf( esc_html__( 'Try looking in the monthly archives. %1$s', 'wcuganda' ), convert_smilies( ':)' ) ) . '</p>';
-					the_widget( 'WP_Widget_Archives', 'dropdown=1', "after_title=</h2>$wcu_archive_content" );
-
-					the_widget( 'WP_Widget_Tag_Cloud' );
-					?>
-
-			</div><!-- .page-content -->
-		</section><!-- .error-404 -->
-
-	</main><!-- #main -->
+</main>
 
 <?php
 get_footer();

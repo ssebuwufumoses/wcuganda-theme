@@ -1,0 +1,190 @@
+// =============================================================================
+// 404, search, breadcrumbs — small misc/system pages and components.
+// =============================================================================
+
+@use '../abstracts' as *;
+
+// -----------------------------------------------------------------------------
+// 404 + Search shared header pattern
+// -----------------------------------------------------------------------------
+.wcu-misc-page {
+	padding-top: $space-12;
+	padding-bottom: $space-16;
+	background-color: $color-bg-alt;
+	min-height: calc(100vh - 6rem);
+
+	@include breakpoint-up(md) {
+		padding-top: $space-16;
+	}
+}
+
+.wcu-misc-page__inner {
+	display: flex;
+	flex-direction: column;
+	gap: $space-8;
+}
+
+.wcu-misc-page__header {
+	display: flex;
+	flex-direction: column;
+	gap: $space-3;
+}
+
+.wcu-misc-page__code {
+	font-family: $font-mono;
+	font-size: $font-size-md;
+	color: $color-text-muted;
+	letter-spacing: 0;
+	text-transform: uppercase;
+}
+
+.wcu-misc-page__title {
+	margin: 0;
+	font-size: fluid(32, 48);
+	letter-spacing: -0.02em;
+}
+
+.wcu-misc-page__lead {
+	max-width: 56ch;
+	margin: 0;
+	font-size: $font-size-lg;
+	line-height: $line-height-relaxed;
+	color: $color-text-muted;
+}
+
+.wcu-misc-page__search {
+	max-width: 32rem;
+
+	form,
+	.search-form {
+		display: flex;
+		gap: $space-2;
+	}
+
+	input[type='search'] {
+		flex: 1;
+	}
+}
+
+// -----------------------------------------------------------------------------
+// 404 shortcuts
+// -----------------------------------------------------------------------------
+.wcu-misc-page__shortcuts {
+	margin-top: $space-3;
+	padding-top: $space-6;
+	border-top: $border-width solid $color-border-muted;
+}
+
+.wcu-misc-page__shortcuts-heading {
+	margin: 0 0 $space-3;
+	font-family: $font-mono;
+	font-size: $font-size-xs;
+	font-weight: $font-weight-medium;
+	color: $color-text-muted;
+	letter-spacing: 0;
+	text-transform: uppercase;
+}
+
+.wcu-misc-page__shortcuts-list {
+	@include list-reset;
+
+	display: flex;
+	flex-wrap: wrap;
+	gap: $space-2;
+
+	li {
+		margin: 0;
+	}
+
+	a {
+		display: inline-flex;
+		align-items: center;
+		padding: 0.4rem $space-3;
+		font-family: $font-mono;
+		font-size: $font-size-sm;
+		font-weight: $font-weight-medium;
+		color: $color-text;
+		text-decoration: none;
+		background-color: $color-white;
+		border: $border-width solid $color-border-muted;
+		border-radius: $radius-pill;
+		transition: border-color $transition-fast, color $transition-fast;
+
+		&:hover,
+		&:focus-visible {
+			color: $color-primary-dark;
+			border-color: $color-primary;
+		}
+	}
+}
+
+// -----------------------------------------------------------------------------
+// Search page extras
+// -----------------------------------------------------------------------------
+.wcu-misc-page__header--block {
+	padding-bottom: $space-8;
+}
+
+.wcu-search-page__query {
+	color: $color-primary-dark;
+}
+
+.wcu-search-page__count {
+	margin: 0 0 $space-6;
+	font-family: $font-mono;
+	font-size: $font-size-xs;
+	color: $color-text-muted;
+	letter-spacing: 0;
+	text-transform: uppercase;
+}
+
+// -----------------------------------------------------------------------------
+// Breadcrumbs (template-parts/global/breadcrumbs.php)
+// -----------------------------------------------------------------------------
+.wcu-breadcrumbs {
+	padding: $space-3 0;
+	font-family: $font-mono;
+	font-size: $font-size-xs;
+	color: $color-text-muted;
+}
+
+.wcu-breadcrumbs__list {
+	@include list-reset;
+
+	display: flex;
+	flex-wrap: wrap;
+	gap: $space-1;
+
+	li {
+		display: inline-flex;
+		gap: $space-1;
+		align-items: center;
+		margin: 0;
+
+		&::after {
+			content: '/';
+			margin-left: $space-1;
+			color: $color-text-subtle;
+		}
+
+		&:last-child::after {
+			content: '';
+			margin: 0;
+		}
+	}
+
+	a {
+		color: $color-text-muted;
+		text-decoration: none;
+
+		&:hover,
+		&:focus-visible {
+			color: $color-primary-dark;
+			text-decoration: underline;
+		}
+	}
+
+	[aria-current='page'] {
+		color: $color-text;
+	}
+}
