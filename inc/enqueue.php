@@ -47,9 +47,9 @@ function wcu_enqueue_assets() {
 		);
 	}
 
-	// Member profile Share button (Web Share API + clipboard fallback) +
-	// Dashicons (used by the wp.org contributor-badges block to render
-	// the same icon glyphs that profiles.wordpress.org uses).
+	// Member profile Share button (Web Share API + clipboard fallback)
+	// + activity-tab filter. Badge icons are rendered as inline SVG via
+	// wcu_svg_icon(), so we no longer need to enqueue the dashicons font.
 	if ( is_singular( 'wcu_member' ) ) {
 		wp_enqueue_script(
 			'wcu-member-share',
@@ -65,7 +65,6 @@ function wcu_enqueue_assets() {
 			$version,
 			true
 		);
-		wp_enqueue_style( 'dashicons' );
 	}
 
 	// Threaded comments support.

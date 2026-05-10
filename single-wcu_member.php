@@ -374,7 +374,7 @@ while ( have_posts() ) :
 								<?php foreach ( $wcu_badges as $wcu_badge ) : ?>
 									<li>
 										<span class="wcu-folks-badge wcu-folks-badge--<?php echo esc_attr( $wcu_badge['slug'] ); ?>">
-											<span class="wcu-folks-badge__icon dashicons dashicons-<?php echo esc_attr( ! empty( $wcu_badge['icon'] ) ? $wcu_badge['icon'] : "awards" ); ?>" aria-hidden="true"></span>
+											<span class="wcu-folks-badge__icon" aria-hidden="true"><?php wcu_svg_icon( wcu_badge_dashicon_to_svg( $wcu_badge["icon"] ?? "" ), array( "width" => 22, "height" => 22 ) ); ?></span>
 											<span class="wcu-folks-badge__name"><?php echo esc_html( $wcu_badge['name'] ); ?></span>
 										</span>
 									</li>
@@ -511,19 +511,19 @@ while ( have_posts() ) :
 											data-wcu-activity-cat="<?php echo esc_attr( $wcu_act['category'] ); ?>">
 											<span class="wcu-folks-activity__icon" aria-hidden="true">
 												<?php
-												$wcu_act_dashicon = 'admin-comments';
+												$wcu_act_svg = 'wordpress';
 												switch ( $wcu_act['category'] ) {
-													case 'blogs':     $wcu_act_dashicon = 'edit'; break;
-													case 'plugins':   $wcu_act_dashicon = 'admin-plugins'; break;
-													case 'themes':    $wcu_act_dashicon = 'admin-appearance'; break;
-													case 'photos':    $wcu_act_dashicon = 'camera'; break;
-													case 'learn':     $wcu_act_dashicon = 'welcome-learn-more'; break;
-													case 'glotpress': $wcu_act_dashicon = 'translation'; break;
-													case 'wordcamp':  $wcu_act_dashicon = 'tickets-alt'; break;
-													case 'favorites': $wcu_act_dashicon = 'star-filled'; break;
+													case 'blogs':     $wcu_act_svg = 'badge-pencil'; break;
+													case 'plugins':   $wcu_act_svg = 'badge-plug'; break;
+													case 'themes':    $wcu_act_svg = 'badge-paintbrush'; break;
+													case 'photos':    $wcu_act_svg = 'badge-camera'; break;
+													case 'learn':     $wcu_act_svg = 'badge-graduation'; break;
+													case 'glotpress': $wcu_act_svg = 'badge-translation'; break;
+													case 'wordcamp':  $wcu_act_svg = 'badge-tickets'; break;
+													case 'favorites': $wcu_act_svg = 'badge-sparkles'; break;
 												}
 												?>
-												<span class="dashicons dashicons-<?php echo esc_attr( $wcu_act_dashicon ); ?>"></span>
+												<?php wcu_svg_icon( $wcu_act_svg, array( "width" => 16, "height" => 16 ) ); ?>
 											</span>
 											<div class="wcu-folks-activity__body">
 												<p class="wcu-folks-activity__action">

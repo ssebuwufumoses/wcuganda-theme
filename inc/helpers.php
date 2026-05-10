@@ -58,6 +58,33 @@ function wcu_get_svg_icon( $name, $args = array() ) {
 		'github' => '<path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>',
 		'youtube' => '<path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"/><polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"/>',
 		'wordpress' => '<circle cx="12" cy="12" r="10"/><path d="M5 8.5l4.5 12L12 13l2.5 7.5 4.5-12"/>',
+
+		// -------------------------------------------------------------------
+		// Badge icons — match the dashicons used by profiles.wordpress.org's
+		// contribution-history block. Lucide-equivalent SVG paths so the
+		// badge disc renders crisply at any size without depending on the
+		// dashicons font being loaded.
+		// -------------------------------------------------------------------
+		'badge-nametag' => '<rect x="3" y="6" width="18" height="14" rx="2"/><circle cx="12" cy="11" r="2"/><path d="M9 17h6"/><path d="M9 4l3-2 3 2"/>',
+		'badge-camera' => '<path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/>',
+		'badge-plug' => '<path d="M9 7V2"/><path d="M15 7V2"/><path d="M6 13V8h12v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4z"/><path d="M12 17v5"/>',
+		'badge-translation' => '<path d="m5 8 6 6"/><path d="m4 14 6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="m22 22-5-10-5 10"/><path d="M14 18h6"/>',
+		'badge-tickets' => '<path d="M21 12a3 3 0 0 0 0 6v2a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-2a3 3 0 0 0 0-6V8a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M9 6v12"/>',
+		'badge-megaphone' => '<path d="M3 11l18-5v12L3 14v-3z"/><path d="M11.6 16.8a3 3 0 1 1-5.8-1.6"/>',
+		'badge-hammer' => '<path d="M15 12l-8.5 8.5a2.12 2.12 0 0 1-3-3L12 9"/><path d="M17.64 15 22 10.64"/><path d="m20.91 11.7-1.25-1.25c-.6-.6-.93-1.4-.93-2.25v-.86L16.01 4.6a5.56 5.56 0 0 0-3.94-1.64H9l.92.82A6.18 6.18 0 0 1 12 8.4v1.56l2 2h2.47l2.26 1.91"/>',
+		'badge-code' => '<polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/>',
+		'badge-cloud' => '<path d="M17.5 19a4.5 4.5 0 1 0-1.41-8.775A6 6 0 0 0 4 13.5a4.5 4.5 0 0 0 4.5 4.5h9z"/>',
+		'badge-graduation' => '<path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>',
+		'badge-eye' => '<path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/>',
+		'badge-accessibility' => '<circle cx="12" cy="4" r="2"/><path d="M5 7h14"/><path d="m9 22 3-7 3 7"/><path d="M12 7v8"/>',
+		'badge-users' => '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+		'badge-paintbrush' => '<path d="M9.06 11.9l8.07-8.06a2.85 2.85 0 1 1 4.03 4.03l-8.06 8.08"/><path d="M7.07 14.94c-1.66 0-3 1.35-3 3.02 0 1.33-2.5 1.52-2 2.02 1.08 1.1 2.49 2.02 4 2.02 2.2 0 4-1.8 4-4.04a3.01 3.01 0 0 0-3-3.02z"/>',
+		'badge-book' => '<path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1 0-5H20"/>',
+		'badge-pencil' => '<path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/>',
+		'badge-grid' => '<rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/>',
+		'badge-sparkles' => '<path d="M12 3l1.9 5.8a2 2 0 0 0 1.3 1.3L21 12l-5.8 1.9a2 2 0 0 0-1.3 1.3L12 21l-1.9-5.8a2 2 0 0 0-1.3-1.3L3 12l5.8-1.9a2 2 0 0 0 1.3-1.3z"/>',
+		'badge-video' => '<polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>',
+		'badge-globe' => '<circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>',
 	);
 
 	if ( ! isset( $icons[ $name ] ) ) {
@@ -115,6 +142,54 @@ function wcu_get_svg_icon( $name, $args = array() ) {
  */
 function wcu_svg_icon( $name, $args = array() ) {
 	echo wcu_get_svg_icon( $name, $args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Safe SVG built from a fixed lookup table.
+}
+
+/**
+ * Map a wp.org dashicon name (as scraped from a profile page badge) to one
+ * of our `badge-*` inline SVG icons. Falls back to the brand mark when no
+ * mapping is known so the badge still has *something* visible.
+ *
+ * @param string $dashicon The `dashicons-{name}` suffix (no `dashicons-` prefix).
+ * @return string Our SVG icon key.
+ */
+function wcu_badge_dashicon_to_svg( $dashicon ) {
+	$map = array(
+		'nametag'                 => 'badge-nametag',
+		'tickets'                 => 'badge-tickets',
+		'tickets-alt'             => 'badge-tickets',
+		'megaphone'               => 'badge-megaphone',
+		'hammer'                  => 'badge-hammer',
+		'camera'                  => 'badge-camera',
+		'camera-alt'              => 'badge-camera',
+		'admin-plugins'           => 'badge-plug',
+		'translation'             => 'badge-translation',
+		'editor-code'             => 'badge-code',
+		'cloud'                   => 'badge-cloud',
+		'welcome-learn-more'      => 'badge-graduation',
+		'welcome-write-blog'      => 'badge-pencil',
+		'edit'                    => 'badge-pencil',
+		'visibility'              => 'badge-eye',
+		'universal-access'        => 'badge-accessibility',
+		'universal-access-alt'    => 'badge-accessibility',
+		'buddicons-buddypress-logo' => 'badge-users',
+		'buddicons-community'     => 'badge-users',
+		'buddicons-groups'        => 'badge-users',
+		'art'                     => 'badge-paintbrush',
+		'admin-appearance'        => 'badge-paintbrush',
+		'book'                    => 'badge-book',
+		'book-alt'                => 'badge-book',
+		'admin-customizer'        => 'badge-paintbrush',
+		'video-alt2'              => 'badge-video',
+		'video-alt3'              => 'badge-video',
+		'admin-site'              => 'badge-globe',
+		'star-filled'             => 'badge-sparkles',
+		'star-half'               => 'badge-sparkles',
+		'admin-network'           => 'badge-grid',
+		'screenoptions'           => 'badge-grid',
+	);
+
+	$dashicon = sanitize_html_class( $dashicon );
+	return isset( $map[ $dashicon ] ) ? $map[ $dashicon ] : 'wordpress';
 }
 
 /**
