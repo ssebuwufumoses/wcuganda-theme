@@ -1,54 +1,48 @@
 /**
- * Member profile activity tabs.
+ * Member profile WordPress.org tabs.
  *
- * Filters the wp.org-scraped activity feed by category. Tabs are rendered
- * server-side (only categories with items are emitted), so this script
- * only handles selection state + show/hide of the rows.
+ * Each tab in the sidebar (Activity / Courses / Photos / Favorites /
+ * Translations) reveals a dedicated panel with that section's full
+ * data — same layout pattern as wp.org's profile tabs. Tabs and
+ * panels are rendered server-side; this script only handles the
+ * show/hide + active-state toggling.
  */
 ( function () {
 	'use strict';
 
-	const wraps = document.querySelectorAll( '[data-wcu-activity-tabs]' );
+	const wraps = document.querySelectorAll( '[data-wcu-folks-tabs]' );
 	if ( ! wraps.length ) {
 		return;
 	}
 
 	wraps.forEach( ( wrap ) => {
-		const tabs = wrap.querySelectorAll( '.wcu-folks-activity__tab' );
-		const items = wrap.querySelectorAll( '.wcu-folks-activity__item' );
-		const empty = wrap.querySelector( '.wcu-folks-activity__empty' );
+		const tabs = wrap.querySelectorAll( '.wcu-folks-tabs__tab' );
+		const panels = wrap.querySelectorAll( '[data-wcu-tab-panel]' );
 
-		if ( ! tabs.length || ! items.length ) {
+		if ( ! tabs.length || ! panels.length ) {
 			return;
 		}
 
-		const apply = ( category ) => {
-			let shown = 0;
-			items.forEach( ( item ) => {
-				const matches = category === 'all' || item.getAttribute( 'data-wcu-activity-cat' ) === category;
-				item.hidden = ! matches;
-				if ( matches ) {
-					shown++;
-				}
+		const showPanel = ( target ) => {
+			tabs.forEach( ( tab ) => {
+				const isActive = tab.getAttribute( 'data-wcu-tab' ) === target;
+				tab.classList.toggle( 'is-active', isActive );
+				tab.setAttribute( 'aria-selected', isActive ? 'true' : 'false' );
 			} );
-			if ( empty ) {
-				empty.hidden = shown !== 0;
-			}
+			panels.forEach( ( panel ) => {
+				const isActive = panel.getAttribute( 'data-wcu-tab-panel' ) === target;
+				panel.hidden = ! isActive;
+				panel.classList.toggle( 'is-active', isActive );
+			} );
 		};
 
 		tabs.forEach( ( tab ) => {
 			tab.addEventListener( 'click', ( event ) => {
 				event.preventDefault();
 				const target = tab.getAttribute( 'data-wcu-tab' );
-				if ( ! target ) {
-					return;
+				if ( target ) {
+					showPanel( target );
 				}
-				tabs.forEach( ( other ) => {
-					const isActive = other === tab;
-					other.classList.toggle( 'is-active', isActive );
-					other.setAttribute( 'aria-selected', isActive ? 'true' : 'false' );
-				} );
-				apply( target );
 			} );
 		} );
 	} );

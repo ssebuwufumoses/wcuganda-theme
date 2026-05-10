@@ -928,10 +928,12 @@
 }
 
 // -----------------------------------------------------------------------------
-// Activity feed — wp.org-style sidebar tabs + scrollable feed.
-// Tabs filter the feed by data-wcu-activity-cat (handled in JS).
+// Tab panels — wp.org profile pattern. Sidebar nav on the left, panel
+// content on the right. Each panel is a different data view (Activity
+// stream, Completed Courses, Photo Grid, Favorites, Translations).
+// Server-side renders all panels; JS toggles which one is visible.
 // -----------------------------------------------------------------------------
-.wcu-folks-activity-wrap {
+.wcu-folks-tabs-wrap {
 	display: grid;
 	gap: $space-6;
 	border-top: $border-width solid var(--wcu-border);
@@ -944,7 +946,7 @@
 	}
 }
 
-.wcu-folks-activity__tabs {
+.wcu-folks-tabs__nav {
 	display: flex;
 	flex-direction: row;
 	flex-wrap: wrap;
@@ -959,7 +961,7 @@
 	}
 }
 
-.wcu-folks-activity__tab {
+.wcu-folks-tabs__tab {
 	@include button-reset;
 
 	display: inline-flex;
@@ -1003,12 +1005,261 @@
 	}
 }
 
-.wcu-folks-activity__tab-count {
+.wcu-folks-tabs__count {
 	font-family: $font-mono;
 	font-size: $font-size-xs;
 	font-weight: $font-weight-medium;
 	color: var(--wcu-text-muted);
 	font-variant-numeric: tabular-nums;
+}
+
+.wcu-folks-tabs__content {
+	min-width: 0;
+}
+
+.wcu-folks-tabs__panel[hidden] {
+	display: none;
+}
+
+// -----------------------------------------------------------------------------
+// Panel header (used by Courses / Photos / Favorites / Translations panels)
+// -----------------------------------------------------------------------------
+.wcu-folks-panel__header {
+	display: flex;
+	flex-direction: column;
+	gap: $space-1;
+	margin-bottom: $space-4;
+
+	&:not(:first-child) {
+		margin-top: $space-6;
+	}
+}
+
+.wcu-folks-panel__heading {
+	margin: 0;
+	font-size: $font-size-md;
+	font-weight: $font-weight-semibold;
+	color: var(--wcu-text);
+}
+
+.wcu-folks-panel__meta {
+	margin: 0;
+	font-size: $font-size-sm;
+	color: var(--wcu-text-muted);
+
+	strong {
+		color: var(--wcu-text);
+	}
+}
+
+// -----------------------------------------------------------------------------
+// Completed Courses list
+// -----------------------------------------------------------------------------
+.wcu-folks-courses {
+	@include list-reset;
+
+	display: flex;
+	flex-direction: column;
+	gap: 0;
+}
+
+.wcu-folks-course {
+	display: flex;
+	flex-wrap: wrap;
+	gap: $space-2 $space-4;
+	align-items: baseline;
+	justify-content: space-between;
+	padding: $space-3 0;
+	border-bottom: $border-width solid var(--wcu-border-muted);
+	font-size: $font-size-md;
+
+	&:last-child {
+		border-bottom: 0;
+	}
+
+	&.is-unavailable .wcu-folks-course__name {
+		color: var(--wcu-text);
+
+		sup {
+			color: var(--wcu-text-muted);
+			margin-left: 2px;
+		}
+	}
+}
+
+.wcu-folks-course__name {
+	flex: 1 1 auto;
+	min-width: 0;
+	color: var(--wcu-text);
+
+	a {
+		color: $color-primary;
+		text-decoration: underline;
+		text-underline-offset: 2px;
+
+		&:hover,
+		&:focus-visible {
+			color: $color-primary-dark;
+		}
+	}
+}
+
+.wcu-folks-course__date {
+	flex-shrink: 0;
+	font-family: $font-heading;
+	font-size: $font-size-sm;
+	color: var(--wcu-text-muted);
+}
+
+// -----------------------------------------------------------------------------
+// Photo grid
+// -----------------------------------------------------------------------------
+.wcu-folks-photos {
+	@include list-reset;
+
+	display: grid;
+	gap: $space-3;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+
+	@include breakpoint-up(sm) {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+
+	@include breakpoint-up(md) {
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+	}
+}
+
+.wcu-folks-photo {
+	margin: 0;
+
+	a {
+		display: block;
+		overflow: hidden;
+		border-radius: $radius-md;
+		border: $border-width solid var(--wcu-border);
+		transition: border-color $transition-fast, transform $transition-fast;
+
+		&:hover,
+		&:focus-visible {
+			border-color: $color-primary;
+			transform: translateY(-1px);
+		}
+	}
+
+	img {
+		display: block;
+		width: 100%;
+		height: auto;
+		aspect-ratio: 4 / 3;
+		object-fit: cover;
+	}
+}
+
+// -----------------------------------------------------------------------------
+// Favorites
+// -----------------------------------------------------------------------------
+.wcu-folks-favorites {
+	@include list-reset;
+
+	display: grid;
+	gap: $space-3;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+
+	@include breakpoint-up(md) {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+}
+
+.wcu-folks-favorite {
+	margin: 0;
+
+	a {
+		display: flex;
+		flex-direction: column;
+		gap: $space-2;
+		padding: $space-3;
+		color: var(--wcu-text);
+		text-decoration: none;
+		border: $border-width solid var(--wcu-border);
+		border-radius: $radius-md;
+		transition: border-color $transition-fast;
+
+		&:hover,
+		&:focus-visible {
+			border-color: $color-primary;
+		}
+	}
+
+	img {
+		display: block;
+		width: 100%;
+		height: auto;
+		aspect-ratio: 4 / 3;
+		object-fit: cover;
+		border-radius: $radius-sm;
+	}
+}
+
+.wcu-folks-favorite__name {
+	font-family: $font-heading;
+	font-size: $font-size-sm;
+	font-weight: $font-weight-semibold;
+	color: var(--wcu-text);
+}
+
+// -----------------------------------------------------------------------------
+// Translations (grouped by locale)
+// -----------------------------------------------------------------------------
+.wcu-folks-translation-locale {
+	display: flex;
+	flex-direction: column;
+	gap: $space-2;
+	padding: $space-4 0;
+	border-bottom: $border-width solid var(--wcu-border-muted);
+
+	&:last-child {
+		border-bottom: 0;
+	}
+}
+
+.wcu-folks-translation-locale__code {
+	font-family: $font-mono;
+	font-size: $font-size-xs;
+	font-weight: $font-weight-medium;
+	color: var(--wcu-text-muted);
+	margin-left: $space-2;
+}
+
+.wcu-folks-translation-projects {
+	@include list-reset;
+
+	display: flex;
+	flex-wrap: wrap;
+	gap: $space-2 $space-3;
+
+	li {
+		margin: 0;
+	}
+
+	a {
+		display: inline-flex;
+		padding: 0.25rem $space-2;
+		font-family: $font-mono;
+		font-size: $font-size-xs;
+		color: $color-primary;
+		text-decoration: none;
+		background-color: rgba($color-primary, 0.08);
+		border: $border-width solid rgba($color-primary, 0.2);
+		border-radius: $radius-md;
+		transition: color $transition-fast, background-color $transition-fast;
+
+		&:hover,
+		&:focus-visible {
+			color: $color-text-on-light;
+			background-color: $color-primary;
+		}
+	}
 }
 
 .wcu-folks-activity {

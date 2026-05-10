@@ -315,9 +315,16 @@ while ( have_posts() ) :
 				$wcu_badges   = class_exists( 'WCU_WPOrg_Profiles' ) ? WCU_WPOrg_Profiles::get_badges( $wcu_wporg_username ) : array();
 				$wcu_plugins  = class_exists( 'WCU_WPOrg_Repo' ) ? WCU_WPOrg_Repo::get_plugins( $wcu_wporg_username, 12 ) : array();
 				$wcu_themes   = class_exists( 'WCU_WPOrg_Repo' ) ? WCU_WPOrg_Repo::get_themes( $wcu_wporg_username, 12 ) : array();
-				$wcu_activity = class_exists( 'WCU_WPOrg_Profiles' ) ? WCU_WPOrg_Profiles::get_activity( $wcu_wporg_username, 20 ) : array();
+				$wcu_activity     = class_exists( 'WCU_WPOrg_Profiles' ) ? WCU_WPOrg_Profiles::get_activity( $wcu_wporg_username, 20 ) : array();
+				$wcu_courses      = class_exists( 'WCU_WPOrg_Profiles' ) ? WCU_WPOrg_Profiles::get_courses( $wcu_wporg_username ) : array();
+				$wcu_photos       = class_exists( 'WCU_WPOrg_Profiles' ) ? WCU_WPOrg_Profiles::get_photos( $wcu_wporg_username ) : array();
+				$wcu_favorites    = class_exists( 'WCU_WPOrg_Profiles' ) ? WCU_WPOrg_Profiles::get_favorites( $wcu_wporg_username ) : array( 'themes' => array(), 'plugins' => array() );
+				$wcu_translations = class_exists( 'WCU_WPOrg_Profiles' ) ? WCU_WPOrg_Profiles::get_translations( $wcu_wporg_username ) : array();
 
-				$wcu_has_any = ! empty( $wcu_badges ) || ! empty( $wcu_plugins ) || ! empty( $wcu_themes ) || ! empty( $wcu_activity );
+				$wcu_has_any = ! empty( $wcu_badges ) || ! empty( $wcu_plugins ) || ! empty( $wcu_themes )
+					|| ! empty( $wcu_activity ) || ! empty( $wcu_courses ) || ! empty( $wcu_photos )
+					|| ! empty( $wcu_favorites['themes'] ) || ! empty( $wcu_favorites['plugins'] )
+					|| ! empty( $wcu_translations );
 				$wcu_profile_url = 'https://profiles.wordpress.org/' . rawurlencode( $wcu_wporg_username ) . '/';
 				?>
 
@@ -439,103 +446,222 @@ while ( have_posts() ) :
 						</div>
 					<?php endif; ?>
 
-					<?php if ( ! empty( $wcu_activity ) ) : ?>
-							<?php
-							// Build the tab list dynamically — only show tabs that have items.
-							$wcu_cat_labels = array(
-								'blogs'       => __( 'Posts', 'wcuganda' ),
-								'forums'      => __( 'Forums', 'wcuganda' ),
-								'slack'       => __( 'Slack', 'wcuganda' ),
-								'github'      => __( 'GitHub', 'wcuganda' ),
-								'plugins'     => __( 'Plugins', 'wcuganda' ),
-								'themes'      => __( 'Themes', 'wcuganda' ),
-								'photos'      => __( 'Photos', 'wcuganda' ),
-								'learn'       => __( 'Courses', 'wcuganda' ),
-								'glotpress'   => __( 'Translations', 'wcuganda' ),
-								'wordcamp'    => __( 'WordCamps', 'wcuganda' ),
-								'favorites'   => __( 'Favorites', 'wcuganda' ),
-							);
-							$wcu_cat_counts = array();
-							foreach ( $wcu_activity as $wcu_act ) {
-								$wcu_cat_counts[ $wcu_act['category'] ] = ( $wcu_cat_counts[ $wcu_act['category'] ] ?? 0 ) + 1;
-							}
-							?>
-							<div class="wcu-folks-activity-wrap" data-wcu-activity-tabs>
-								<aside class="wcu-folks-activity__tabs" role="tablist" aria-label="<?php esc_attr_e( 'Filter activity', 'wcuganda' ); ?>">
-									<button type="button"
-										class="wcu-folks-activity__tab is-active"
-										role="tab"
-										aria-selected="true"
-										data-wcu-tab="all">
-										<?php esc_html_e( 'Activity', 'wcuganda' ); ?>
-										<span class="wcu-folks-activity__tab-count"><?php echo esc_html( count( $wcu_activity ) ); ?></span>
-									</button>
-									<?php foreach ( $wcu_cat_labels as $wcu_cat_slug => $wcu_cat_label ) : ?>
-										<?php if ( empty( $wcu_cat_counts[ $wcu_cat_slug ] ) ) { continue; } ?>
-										<button type="button"
-											class="wcu-folks-activity__tab"
-											role="tab"
-											aria-selected="false"
-											data-wcu-tab="<?php echo esc_attr( $wcu_cat_slug ); ?>">
-											<?php echo esc_html( $wcu_cat_label ); ?>
-											<span class="wcu-folks-activity__tab-count"><?php echo esc_html( $wcu_cat_counts[ $wcu_cat_slug ] ); ?></span>
-										</button>
-									<?php endforeach; ?>
-								</aside>
+					<?php
+					// Build the tab list: each tab corresponds to a panel below.
+					// Tabs only render when their panel has data (matches wp.org's
+					// "show only tabs that have items" behaviour).
+					$wcu_panels = array(
+						'activity'     => array(
+							'label' => __( 'Activity', 'wcuganda' ),
+							'count' => count( $wcu_activity ),
+						),
+						'courses'      => array(
+							'label' => __( 'Courses', 'wcuganda' ),
+							'count' => count( $wcu_courses ),
+						),
+						'photos'       => array(
+							'label' => __( 'Photos', 'wcuganda' ),
+							'count' => count( $wcu_photos ),
+						),
+						'favorites'    => array(
+							'label' => __( 'Favorites', 'wcuganda' ),
+							'count' => count( (array) ( $wcu_favorites['themes'] ?? array() ) ) + count( (array) ( $wcu_favorites['plugins'] ?? array() ) ),
+						),
+						'translations' => array(
+							'label' => __( 'Translations', 'wcuganda' ),
+							'count' => array_sum( array_map( static function ( $loc ) { return count( (array) ( $loc['projects'] ?? array() ) ); }, (array) $wcu_translations ) ),
+						),
+					);
+					$wcu_panels = array_filter( $wcu_panels, static function ( $p ) { return $p['count'] > 0; } );
+					if ( ! empty( $wcu_panels ) ) :
+						$wcu_first_panel = array_key_first( $wcu_panels );
+					?>
+					<div class="wcu-folks-tabs-wrap" data-wcu-folks-tabs>
+						<aside class="wcu-folks-tabs__nav" role="tablist" aria-label="<?php esc_attr_e( 'WordPress.org sections', 'wcuganda' ); ?>">
+							<?php foreach ( $wcu_panels as $wcu_pkey => $wcu_p ) : ?>
+								<button type="button"
+									class="wcu-folks-tabs__tab<?php echo $wcu_pkey === $wcu_first_panel ? ' is-active' : ''; ?>"
+									role="tab"
+									aria-selected="<?php echo $wcu_pkey === $wcu_first_panel ? 'true' : 'false'; ?>"
+									data-wcu-tab="<?php echo esc_attr( $wcu_pkey ); ?>">
+									<?php echo esc_html( $wcu_p['label'] ); ?>
+									<span class="wcu-folks-tabs__count"><?php echo esc_html( number_format_i18n( $wcu_p['count'] ) ); ?></span>
+								</button>
+							<?php endforeach; ?>
+						</aside>
 
-								<ul class="wcu-folks-activity" role="tabpanel">
-									<?php foreach ( $wcu_activity as $wcu_act ) : ?>
-										<li class="wcu-folks-activity__item wcu-folks-activity__item--<?php echo esc_attr( sanitize_html_class( $wcu_act['type'] ) ); ?>"
-											data-wcu-activity-cat="<?php echo esc_attr( $wcu_act['category'] ); ?>">
-											<span class="wcu-folks-activity__icon" aria-hidden="true">
-												<?php
-												$wcu_act_dashicon = 'admin-site';
-												switch ( $wcu_act['category'] ) {
-													case 'blogs':     $wcu_act_dashicon = 'edit'; break;
-													case 'forums':    $wcu_act_dashicon = 'buddicons-replies'; break;
-													case 'slack':     $wcu_act_dashicon = 'format-chat'; break;
-													case 'github':    $wcu_act_dashicon = 'editor-code'; break;
-													case 'plugins':   $wcu_act_dashicon = 'admin-plugins'; break;
-													case 'themes':    $wcu_act_dashicon = 'admin-appearance'; break;
-													case 'photos':    $wcu_act_dashicon = 'camera'; break;
-													case 'learn':     $wcu_act_dashicon = 'welcome-learn-more'; break;
-													case 'glotpress': $wcu_act_dashicon = 'translation'; break;
-													case 'wordcamp':  $wcu_act_dashicon = 'tickets-alt'; break;
-													case 'favorites': $wcu_act_dashicon = 'star-filled'; break;
-												}
-												?>
-												<?php wcu_dashicon_svg( $wcu_act_dashicon, array( "width" => 16, "height" => 16 ) ); ?>
-											</span>
-											<div class="wcu-folks-activity__body">
-												<p class="wcu-folks-activity__action">
+						<div class="wcu-folks-tabs__content">
+
+							<?php if ( isset( $wcu_panels['activity'] ) ) : ?>
+								<div class="wcu-folks-tabs__panel<?php echo 'activity' === $wcu_first_panel ? ' is-active' : ''; ?>" role="tabpanel" data-wcu-tab-panel="activity"<?php echo 'activity' === $wcu_first_panel ? '' : ' hidden'; ?>>
+									<ul class="wcu-folks-activity">
+										<?php foreach ( $wcu_activity as $wcu_act ) : ?>
+											<li class="wcu-folks-activity__item wcu-folks-activity__item--<?php echo esc_attr( sanitize_html_class( $wcu_act['type'] ) ); ?>">
+												<span class="wcu-folks-activity__icon" aria-hidden="true">
 													<?php
-													echo wp_kses(
-														$wcu_act['action'],
-														array(
-															'a'      => array( 'href' => array(), 'title' => array() ),
-															'strong' => array(),
-															'em'     => array(),
-															'i'      => array(),
-															'span'   => array(),
-														)
-													);
+													$wcu_act_dashicon = 'admin-site';
+													switch ( $wcu_act['category'] ) {
+														case 'blogs':     $wcu_act_dashicon = 'edit'; break;
+														case 'forums':    $wcu_act_dashicon = 'buddicons-replies'; break;
+														case 'slack':     $wcu_act_dashicon = 'format-chat'; break;
+														case 'github':    $wcu_act_dashicon = 'editor-code'; break;
+														case 'plugins':   $wcu_act_dashicon = 'admin-plugins'; break;
+														case 'themes':    $wcu_act_dashicon = 'admin-appearance'; break;
+														case 'photos':    $wcu_act_dashicon = 'camera'; break;
+														case 'learn':     $wcu_act_dashicon = 'welcome-learn-more'; break;
+														case 'glotpress': $wcu_act_dashicon = 'translation'; break;
+														case 'wordcamp':  $wcu_act_dashicon = 'tickets-alt'; break;
+														case 'favorites': $wcu_act_dashicon = 'star-filled'; break;
+													}
+													wcu_dashicon_svg( $wcu_act_dashicon, array( 'width' => 16, 'height' => 16 ) );
 													?>
-												</p>
-												<?php if ( ! empty( $wcu_act['excerpt'] ) ) : ?>
-													<p class="wcu-folks-activity__excerpt"><?php echo esc_html( $wcu_act['excerpt'] ); ?></p>
+												</span>
+												<div class="wcu-folks-activity__body">
+													<p class="wcu-folks-activity__action">
+														<?php
+														echo wp_kses(
+															$wcu_act['action'],
+															array(
+																'a'      => array( 'href' => array(), 'title' => array() ),
+																'strong' => array(),
+																'em'     => array(),
+																'i'      => array(),
+																'span'   => array(),
+															)
+														);
+														?>
+													</p>
+													<?php if ( ! empty( $wcu_act['excerpt'] ) ) : ?>
+														<p class="wcu-folks-activity__excerpt"><?php echo esc_html( $wcu_act['excerpt'] ); ?></p>
+													<?php endif; ?>
+													<?php if ( ! empty( $wcu_act['time'] ) ) : ?>
+														<span class="wcu-folks-activity__time"><?php echo esc_html( $wcu_act['time'] ); ?></span>
+													<?php endif; ?>
+												</div>
+											</li>
+										<?php endforeach; ?>
+									</ul>
+								</div>
+							<?php endif; ?>
+
+							<?php if ( isset( $wcu_panels['courses'] ) ) : ?>
+								<div class="wcu-folks-tabs__panel<?php echo 'courses' === $wcu_first_panel ? ' is-active' : ''; ?>" role="tabpanel" data-wcu-tab-panel="courses"<?php echo 'courses' === $wcu_first_panel ? '' : ' hidden'; ?>>
+									<header class="wcu-folks-panel__header">
+										<h4 class="wcu-folks-panel__heading"><?php esc_html_e( 'Completed Courses', 'wcuganda' ); ?></h4>
+										<p class="wcu-folks-panel__meta">
+											<?php
+											printf(
+												/* translators: %s: total course count. */
+												esc_html__( 'Total completed: %s', 'wcuganda' ),
+												'<strong>' . esc_html( number_format_i18n( count( $wcu_courses ) ) ) . '</strong>'
+											);
+											?>
+										</p>
+									</header>
+									<ul class="wcu-folks-courses">
+										<?php foreach ( $wcu_courses as $wcu_course ) : ?>
+											<li class="wcu-folks-course<?php echo empty( $wcu_course['available'] ) ? ' is-unavailable' : ''; ?>">
+												<span class="wcu-folks-course__name">
+													<?php if ( ! empty( $wcu_course['url'] ) && ! empty( $wcu_course['available'] ) ) : ?>
+														<a href="<?php echo esc_url( $wcu_course['url'] ); ?>" rel="noopener" target="_blank"><?php echo esc_html( $wcu_course['name'] ); ?></a>
+													<?php else : ?>
+														<?php echo esc_html( $wcu_course['name'] ); ?>
+														<?php if ( empty( $wcu_course['available'] ) ) : ?>
+															<sup title="<?php esc_attr_e( 'Course is no longer available', 'wcuganda' ); ?>">*</sup>
+														<?php endif; ?>
+													<?php endif; ?>
+												</span>
+												<?php if ( ! empty( $wcu_course['date'] ) ) : ?>
+													<span class="wcu-folks-course__date"><?php echo esc_html( $wcu_course['date'] ); ?></span>
 												<?php endif; ?>
-												<?php if ( ! empty( $wcu_act['time'] ) ) : ?>
-													<span class="wcu-folks-activity__time"><?php echo esc_html( $wcu_act['time'] ); ?></span>
-												<?php endif; ?>
-											</div>
-										</li>
+											</li>
+										<?php endforeach; ?>
+									</ul>
+								</div>
+							<?php endif; ?>
+
+							<?php if ( isset( $wcu_panels['photos'] ) ) : ?>
+								<div class="wcu-folks-tabs__panel<?php echo 'photos' === $wcu_first_panel ? ' is-active' : ''; ?>" role="tabpanel" data-wcu-tab-panel="photos"<?php echo 'photos' === $wcu_first_panel ? '' : ' hidden'; ?>>
+									<header class="wcu-folks-panel__header">
+										<h4 class="wcu-folks-panel__heading"><?php esc_html_e( 'Photo Contributions', 'wcuganda' ); ?></h4>
+										<p class="wcu-folks-panel__meta">
+											<?php
+											printf(
+												/* translators: %s: total photo count. */
+												esc_html__( 'Total photos: %s', 'wcuganda' ),
+												'<strong>' . esc_html( number_format_i18n( count( $wcu_photos ) ) ) . '</strong>'
+											);
+											?>
+										</p>
+									</header>
+									<ul class="wcu-folks-photos">
+										<?php foreach ( $wcu_photos as $wcu_photo ) : ?>
+											<li class="wcu-folks-photo">
+												<a href="<?php echo esc_url( $wcu_photo['url'] ); ?>" rel="noopener" target="_blank">
+													<img src="<?php echo esc_url( $wcu_photo['image'] ); ?>" alt="<?php echo esc_attr( $wcu_photo['alt'] ); ?>" loading="lazy">
+												</a>
+											</li>
+										<?php endforeach; ?>
+									</ul>
+								</div>
+							<?php endif; ?>
+
+							<?php if ( isset( $wcu_panels['favorites'] ) ) : ?>
+								<div class="wcu-folks-tabs__panel<?php echo 'favorites' === $wcu_first_panel ? ' is-active' : ''; ?>" role="tabpanel" data-wcu-tab-panel="favorites"<?php echo 'favorites' === $wcu_first_panel ? '' : ' hidden'; ?>>
+									<?php if ( ! empty( $wcu_favorites['themes'] ) ) : ?>
+										<header class="wcu-folks-panel__header">
+											<h4 class="wcu-folks-panel__heading"><?php esc_html_e( 'Favorite Themes', 'wcuganda' ); ?></h4>
+										</header>
+										<ul class="wcu-folks-favorites">
+											<?php foreach ( $wcu_favorites['themes'] as $wcu_fav ) : ?>
+												<li class="wcu-folks-favorite">
+													<a href="<?php echo esc_url( $wcu_fav['url'] ); ?>" rel="noopener" target="_blank">
+														<?php if ( ! empty( $wcu_fav['image'] ) ) : ?>
+															<img src="<?php echo esc_url( $wcu_fav['image'] ); ?>" alt="" loading="lazy">
+														<?php endif; ?>
+														<span class="wcu-folks-favorite__name"><?php echo esc_html( $wcu_fav['name'] ); ?></span>
+													</a>
+												</li>
+											<?php endforeach; ?>
+										</ul>
+									<?php endif; ?>
+									<?php if ( ! empty( $wcu_favorites['plugins'] ) ) : ?>
+										<header class="wcu-folks-panel__header">
+											<h4 class="wcu-folks-panel__heading"><?php esc_html_e( 'Favorite Plugins', 'wcuganda' ); ?></h4>
+										</header>
+										<ul class="wcu-folks-favorites">
+											<?php foreach ( $wcu_favorites['plugins'] as $wcu_fav ) : ?>
+												<li class="wcu-folks-favorite">
+													<a href="<?php echo esc_url( $wcu_fav['url'] ); ?>" rel="noopener" target="_blank">
+														<span class="wcu-folks-favorite__name"><?php echo esc_html( $wcu_fav['name'] ); ?></span>
+													</a>
+												</li>
+											<?php endforeach; ?>
+										</ul>
+									<?php endif; ?>
+								</div>
+							<?php endif; ?>
+
+							<?php if ( isset( $wcu_panels['translations'] ) ) : ?>
+								<div class="wcu-folks-tabs__panel<?php echo 'translations' === $wcu_first_panel ? ' is-active' : ''; ?>" role="tabpanel" data-wcu-tab-panel="translations"<?php echo 'translations' === $wcu_first_panel ? '' : ' hidden'; ?>>
+									<?php foreach ( $wcu_translations as $wcu_locale ) : ?>
+										<div class="wcu-folks-translation-locale">
+											<h4 class="wcu-folks-panel__heading"><?php echo esc_html( $wcu_locale['locale_name'] ); ?> <span class="wcu-folks-translation-locale__code">#<?php echo esc_html( $wcu_locale['locale_code'] ); ?></span></h4>
+											<ul class="wcu-folks-translation-projects">
+												<?php foreach ( $wcu_locale['projects'] as $wcu_proj ) : ?>
+													<li>
+														<a href="<?php echo esc_url( $wcu_proj['url'] ); ?>" rel="noopener" target="_blank"><?php echo esc_html( $wcu_proj['name'] ); ?></a>
+													</li>
+												<?php endforeach; ?>
+											</ul>
+										</div>
 									<?php endforeach; ?>
-									<li class="wcu-folks-activity__empty" hidden>
-										<?php esc_html_e( 'No items in this category yet.', 'wcuganda' ); ?>
-									</li>
-								</ul>
-							</div>
-						<?php endif; ?>
+								</div>
+							<?php endif; ?>
+
+						</div>
+					</div>
+					<?php endif; ?>
 
 						<?php if ( ! $wcu_has_any ) : ?>
 							<p class="wcu-folks-credentials__empty">

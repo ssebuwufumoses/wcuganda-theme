@@ -71,9 +71,13 @@ class WCU_WPOrg_Profiles {
 	public static function flush_cache( $username ) {
 		$username = self::sanitize_username( $username );
 		if ( '' !== $username ) {
-			delete_transient( self::CACHE_PREFIX . md5( $username ) );
-			delete_transient( self::AVATAR_PREFIX . md5( $username ) );
-			delete_transient( self::ACTIVITY_PREFIX . md5( $username ) );
+			$hash = md5( $username );
+			delete_transient( self::CACHE_PREFIX . $hash );
+			delete_transient( self::AVATAR_PREFIX . $hash );
+			delete_transient( self::ACTIVITY_PREFIX . $hash );
+			foreach ( array( 'courses', 'photos', 'favorites', 'translations' ) as $section ) {
+				delete_transient( 'wcu_wporg_' . $section . '_' . $hash );
+			}
 		}
 	}
 
@@ -104,20 +108,7 @@ class WCU_WPOrg_Profiles {
 			return array_slice( $cached, 0, $limit );
 		}
 
-		$response = wp_remote_get(
-			self::PROFILE_URL_BASE . rawurlencode( $username ) . '/',
-			array(
-				'timeout'    => 6,
-				'user-agent' => 'WCUganda/' . WCU_THEME_VERSION . '; ' . home_url(),
-			)
-		);
-
-		if ( is_wp_error( $response ) || 200 !== (int) wp_remote_retrieve_response_code( $response ) ) {
-			set_transient( $cache_key, array(), self::CACHE_NEGATIVE );
-			return array();
-		}
-
-		$html = (string) wp_remote_retrieve_body( $response );
+		$html = self::fetch_profile_html( $username );
 		if ( '' === $html ) {
 			set_transient( $cache_key, array(), self::CACHE_NEGATIVE );
 			return array();
@@ -129,6 +120,284 @@ class WCU_WPOrg_Profiles {
 		set_transient( $cache_key, $items, $lifetime );
 
 		return array_slice( $items, 0, $limit );
+	}
+
+	/**
+	 * Shared profile HTML fetch with request-lifecycle memoization.
+	 *
+	 * The wp.org profile page already contains every tab's data inline
+	 * (just hidden by CSS), so the courses / photos / favorites /
+	 * translations parsers can all read from the same response.
+	 * Memoizing for the request lifecycle prevents one page render from
+	 * making 5 identical HTTP calls when the cache is cold.
+	 *
+	 * @param string $username Sanitized wp.org username.
+	 * @return string HTML body, or '' on failure.
+	 */
+	private static function fetch_profile_html( $username ) {
+		static $memo = array();
+		if ( isset( $memo[ $username ] ) ) {
+			return $memo[ $username ];
+		}
+
+		$response = wp_remote_get(
+			self::PROFILE_URL_BASE . rawurlencode( $username ) . '/',
+			array(
+				'timeout'    => 6,
+				'user-agent' => 'WCUganda/' . WCU_THEME_VERSION . '; ' . home_url(),
+			)
+		);
+
+		if ( is_wp_error( $response ) || 200 !== (int) wp_remote_retrieve_response_code( $response ) ) {
+			$memo[ $username ] = '';
+			return '';
+		}
+
+		$memo[ $username ] = (string) wp_remote_retrieve_body( $response );
+		return $memo[ $username ];
+	}
+
+	/**
+	 * Get the full Completed Courses list from the profile.
+	 *
+	 * Parses the `<ul class="courses-completed">` block. Each course
+	 * entry is either a linked title (active course) or a plain <span>
+	 * (course no longer available — wp.org marks these with an asterisk
+	 * footnote).
+	 *
+	 * @param string $username wp.org username.
+	 * @return array<int,array<string,string|bool>> List of {name, url, date, available}.
+	 */
+	public static function get_courses( $username ) {
+		return self::get_section_data( $username, 'courses', static function ( $html ) {
+			if ( ! preg_match( '/<ul class="courses-completed">(.*?)<\/ul>/is', $html, $list ) ) {
+				return array();
+			}
+
+			// Capture class attribute too so we can skip the trailing
+			// `<li class="footnote">` row (which carries the asterisk
+			// legend, not a course).
+			preg_match_all( '/<li([^>]*)>(.*?)<\/li>/is', $list[1], $rows, PREG_SET_ORDER );
+			$courses = array();
+			foreach ( $rows as $entry ) {
+				$attrs = $entry[1];
+				$row   = $entry[2];
+				if ( false !== strpos( $attrs, 'footnote' ) ) {
+					continue;
+				}
+
+				$url       = '';
+				$name      = '';
+				$available = true;
+
+				if ( preg_match( '/<a\s+href="([^"]+)"[^>]*>(.*?)<\/a>/is', $row, $a ) ) {
+					$url  = esc_url_raw( $a[1] );
+					$name = trim( wp_strip_all_tags( $a[2] ) );
+				} elseif ( preg_match( '/<span[^>]*>(.*?)<\/span>/is', $row, $sp ) ) {
+					$name      = trim( wp_strip_all_tags( $sp[1] ) );
+					$available = false;
+				}
+
+				$date = '';
+				if ( preg_match( '/<span\s+class="course-completed-date">([^<]+)<\/span>/is', $row, $d ) ) {
+					$date = trim( wp_strip_all_tags( $d[1] ) );
+				}
+
+				if ( '' === $name ) {
+					continue;
+				}
+
+				$courses[] = array(
+					'name'      => sanitize_text_field( $name ),
+					'url'       => $url,
+					'date'      => sanitize_text_field( $date ),
+					'available' => $available,
+				);
+			}
+			return $courses;
+		} );
+	}
+
+	/**
+	 * Get the photo contributions grid from the profile.
+	 *
+	 * @param string $username wp.org username.
+	 * @return array<int,array<string,string>> List of {url, image, alt}.
+	 */
+	public static function get_photos( $username ) {
+		return self::get_section_data( $username, 'photos', static function ( $html ) {
+			if ( ! preg_match( '/<div\s+id="content-photos"[^>]*>(.*?)<\/div>\s*<div\s+id="content-/is', $html, $sec ) ) {
+				return array();
+			}
+			preg_match_all(
+				'/<a\s+href="(https:\/\/wordpress\.org\/photos\/[^"]+)">\s*<img[^>]*src="([^"]+)"[^>]*alt="([^"]*)"[^>]*>/is',
+				$sec[1],
+				$matches,
+				PREG_SET_ORDER
+			);
+			$photos = array();
+			foreach ( $matches as $m ) {
+				$photos[] = array(
+					'url'   => esc_url_raw( $m[1] ),
+					'image' => esc_url_raw( $m[2] ),
+					'alt'   => sanitize_text_field( wp_strip_all_tags( $m[3] ) ),
+				);
+			}
+			return $photos;
+		} );
+	}
+
+	/**
+	 * Get the favorited themes + plugins from the profile.
+	 *
+	 * @param string $username wp.org username.
+	 * @return array{themes: array, plugins: array} Each entry is {name, url, image}.
+	 */
+	public static function get_favorites( $username ) {
+		return self::get_section_data( $username, 'favorites', static function ( $html ) {
+			if ( ! preg_match( '/<div\s+id="content-favorites"[^>]*>(.*?)<\/div>\s*<div\s+id="content-/is', $html, $sec ) ) {
+				return array( 'themes' => array(), 'plugins' => array() );
+			}
+			$body = $sec[1];
+
+			$parse_block = static function ( $block_html ) {
+				$out = array();
+				preg_match_all(
+					'/<a\s+href="(\/\/?wordpress\.org\/[^"]+)"[^>]*>(?:\s*<img[^>]*src="([^"]+)"[^>]*alt="([^"]*)"[^>]*>)?(.*?)<\/a>/is',
+					$block_html,
+					$matches,
+					PREG_SET_ORDER
+				);
+				foreach ( $matches as $m ) {
+					$url  = $m[1];
+					if ( 0 === strpos( $url, '//' ) ) {
+						$url = 'https:' . $url;
+					}
+					$image = ! empty( $m[2] ) ? $m[2] : '';
+					if ( 0 === strpos( $image, '//' ) ) {
+						$image = 'https:' . $image;
+					}
+					$alt  = isset( $m[3] ) ? trim( wp_strip_all_tags( $m[3] ) ) : '';
+					$text = isset( $m[4] ) ? trim( wp_strip_all_tags( $m[4] ) ) : '';
+					$name = '' !== $alt ? $alt : $text;
+					if ( '' === $name ) {
+						continue;
+					}
+					$out[] = array(
+						'name'  => sanitize_text_field( $name ),
+						'url'   => esc_url_raw( $url ),
+						'image' => esc_url_raw( $image ),
+					);
+				}
+				return $out;
+			};
+
+			$themes  = array();
+			$plugins = array();
+
+			if ( preg_match( '/<div\s+class="favorites favorite-themes">(.*?)<\/div>/is', $body, $tb ) ) {
+				$themes = $parse_block( $tb[1] );
+			}
+			if ( preg_match( '/<div\s+class="favorites favorite-plugins">(.*?)<\/div>/is', $body, $pb ) ) {
+				$plugins = $parse_block( $pb[1] );
+			}
+
+			return array( 'themes' => $themes, 'plugins' => $plugins );
+		} );
+	}
+
+	/**
+	 * Get the translation contributions grouped by locale.
+	 *
+	 * @param string $username wp.org username.
+	 * @return array<int,array{locale_name: string, locale_code: string, projects: array}>
+	 */
+	public static function get_translations( $username ) {
+		return self::get_section_data( $username, 'translations', static function ( $html ) {
+			// Translations div has flat content (h3s + links, no nested
+			// divs), so a simple non-greedy match against the closing
+			// </div> is correct.
+			if ( ! preg_match( '/<div\s+id="content-translations"[^>]*>(.*?)<\/div>/is', $html, $sec ) ) {
+				return array();
+			}
+			$body = $sec[1];
+
+			// Find all locale headings + their following content. Use a
+			// non-lookahead approach: split on `<h3 class="translations-`
+			// so each chunk is one locale.
+			$chunks = preg_split( '/<h3\s+class="translations-([a-z0-9_-]+)"/i', $body, -1, PREG_SPLIT_DELIM_CAPTURE );
+
+			$locales = array();
+			// Chunks alternate: [ before-first-h3, code1, body1, code2, body2, ... ]
+			for ( $i = 1; $i + 1 < count( $chunks ); $i += 2 ) {
+				$code  = sanitize_html_class( $chunks[ $i ] );
+				$block = $chunks[ $i + 1 ];
+
+				// Locale name is the rest of the h3 element.
+				$locale_name = '';
+				if ( preg_match( '/^[^>]*>([^<]+)<\/h3>/is', $block, $h ) ) {
+					$locale_name = trim( wp_strip_all_tags( $h[1] ) );
+					// Strip the trailing " - #code" from the title.
+					$locale_name = preg_replace( '/\s*-\s*#[a-z0-9_-]+\s*$/i', '', $locale_name );
+				}
+
+				$projects = array();
+				if ( preg_match_all( '/<a\s+href="([^"]+)"[^>]*>(.*?)<\/a>/is', $block, $links, PREG_SET_ORDER ) ) {
+					foreach ( $links as $link ) {
+						$name = trim( wp_strip_all_tags( $link[2] ) );
+						if ( '' === $name ) {
+							continue;
+						}
+						$projects[] = array(
+							'name' => sanitize_text_field( $name ),
+							'url'  => esc_url_raw( $link[1] ),
+						);
+					}
+				}
+				if ( ! empty( $projects ) ) {
+					$locales[] = array(
+						'locale_name' => sanitize_text_field( $locale_name ),
+						'locale_code' => $code,
+						'projects'    => $projects,
+					);
+				}
+			}
+			return $locales;
+		} );
+	}
+
+	/**
+	 * Shared backend for the per-section getters above. Handles the cache,
+	 * the shared HTML fetch, and the empty-result negative cache.
+	 *
+	 * @param string   $username Sanitized username.
+	 * @param string   $section  Cache-key suffix (courses / photos / etc.).
+	 * @param callable $parser   Function that takes the page HTML and returns
+	 *                            the parsed data array.
+	 * @return array Parsed data, or empty on failure.
+	 */
+	private static function get_section_data( $username, $section, $parser ) {
+		$username = self::sanitize_username( $username );
+		if ( '' === $username ) {
+			return array();
+		}
+
+		$cache_key = 'wcu_wporg_' . sanitize_key( $section ) . '_' . md5( $username );
+		$cached    = get_transient( $cache_key );
+		if ( false !== $cached && is_array( $cached ) ) {
+			return $cached;
+		}
+
+		$html = self::fetch_profile_html( $username );
+		if ( '' === $html ) {
+			set_transient( $cache_key, array(), self::CACHE_NEGATIVE );
+			return array();
+		}
+
+		$data     = call_user_func( $parser, $html );
+		$lifetime = empty( $data ) ? self::CACHE_NEGATIVE : self::CACHE_LIFETIME;
+		set_transient( $cache_key, $data, $lifetime );
+		return $data;
 	}
 
 	/**
