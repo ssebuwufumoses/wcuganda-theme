@@ -1,0 +1,286 @@
+// =============================================================================
+// Blog index, archives (category/tag/date/author), single post, author bio.
+// Reuses the shared archive header pattern + .container--narrow for prose.
+// =============================================================================
+
+@use '../abstracts' as *;
+
+// -----------------------------------------------------------------------------
+// Blog archive header (same shape as events / chapters / members archives)
+// -----------------------------------------------------------------------------
+.wcu-blog-archive__header {
+	padding-top: $space-12;
+	padding-bottom: $space-8;
+	background-color: $color-bg-alt;
+
+	@include breakpoint-up(md) {
+		padding-top: $space-16;
+		padding-bottom: $space-10;
+	}
+}
+
+.wcu-blog-archive__title {
+	margin: 0 0 $space-3;
+	font-size: fluid(36, 56);
+	letter-spacing: -0.02em;
+}
+
+.wcu-blog-archive__lead {
+	max-width: 60ch;
+	margin: 0;
+	font-size: $font-size-lg;
+	line-height: $line-height-relaxed;
+	color: $color-text-muted;
+}
+
+.wcu-blog-archive__section {
+	padding-top: $space-10;
+	padding-bottom: $space-16;
+
+	@include breakpoint-up(md) {
+		padding-top: $space-12;
+	}
+}
+
+// -----------------------------------------------------------------------------
+// Blog post card meta line
+// -----------------------------------------------------------------------------
+.wcu-blog-card__meta {
+	margin: 0;
+	font-family: $font-mono;
+	font-size: $font-size-xs;
+	color: $color-text-muted;
+	letter-spacing: 0;
+}
+
+// -----------------------------------------------------------------------------
+// Single post header + content + tags
+// -----------------------------------------------------------------------------
+.wcu-blog-single__header {
+	padding: $space-10 0 $space-8;
+	background-color: $color-bg-alt;
+
+	@include breakpoint-up(md) {
+		padding: $space-12 0 $space-10;
+	}
+}
+
+.wcu-blog-single__category {
+	margin: $space-5 0 $space-3;
+	font-family: $font-mono;
+	font-size: $font-size-xs;
+	font-weight: $font-weight-medium;
+	color: $color-text-muted;
+	letter-spacing: 0;
+	text-transform: uppercase;
+
+	a {
+		color: $color-primary-dark;
+		text-decoration: none;
+
+		&:hover,
+		&:focus-visible {
+			text-decoration: underline;
+		}
+	}
+}
+
+.wcu-blog-single__title {
+	margin: 0 0 $space-4;
+	font-size: fluid(32, 56);
+	line-height: 1.05;
+	letter-spacing: -0.02em;
+}
+
+.wcu-blog-single__meta {
+	display: flex;
+	gap: $space-2;
+	align-items: center;
+	margin: 0;
+	font-family: $font-mono;
+	font-size: $font-size-sm;
+	color: $color-text-muted;
+	letter-spacing: 0;
+}
+
+.wcu-blog-single__avatar {
+	width: 1.75rem;
+	height: 1.75rem;
+	border-radius: $radius-circle;
+}
+
+.wcu-blog-single__media {
+	margin: $space-8 0 $space-4;
+	overflow: hidden;
+	border-radius: $radius-lg;
+
+	img {
+		display: block;
+		width: 100%;
+		height: auto;
+	}
+}
+
+.wcu-blog-single__content {
+	padding-top: $space-8;
+	padding-bottom: $space-6;
+	font-size: fluid(16, 18);
+	line-height: $line-height-relaxed;
+
+	h2,
+	h3,
+	h4 {
+		margin-top: $space-8;
+	}
+
+	p,
+	ul,
+	ol {
+		margin-bottom: $space-4;
+	}
+
+	pre {
+		margin: $space-5 0;
+	}
+
+	figure,
+	img {
+		margin: $space-5 0;
+	}
+}
+
+.wcu-blog-single__tags {
+	display: flex;
+	flex-wrap: wrap;
+	gap: $space-2;
+	align-items: center;
+	margin: 0 0 $space-8;
+	padding: $space-4 0;
+	border-top: $border-width solid $color-border-muted;
+	border-bottom: $border-width solid $color-border-muted;
+	font-family: $font-mono;
+	font-size: $font-size-xs;
+	color: $color-text-muted;
+
+	a {
+		display: inline-flex;
+		align-items: center;
+		padding: 0.25rem $space-2;
+		color: $color-text-light;
+		text-decoration: none;
+		background-color: $color-bg-alt;
+		border: $border-width solid $color-border-muted;
+		border-radius: $radius-pill;
+
+		&:hover,
+		&:focus-visible {
+			color: $color-text;
+			border-color: $color-border-strong;
+		}
+	}
+}
+
+.wcu-blog-single__tags-label {
+	font-weight: $font-weight-medium;
+	letter-spacing: 0;
+	text-transform: uppercase;
+}
+
+.wcu-blog-single__comments {
+	padding-top: $space-8;
+	padding-bottom: $space-12;
+}
+
+// -----------------------------------------------------------------------------
+// Author bio block (used at end of single posts + author archive header)
+// -----------------------------------------------------------------------------
+.wcu-author-bio {
+	display: flex;
+	flex-direction: column;
+	gap: $space-4;
+	margin: $space-8 0;
+	padding: $space-6;
+	background-color: $color-bg-alt;
+	border: $border-width solid $color-border-muted;
+	border-radius: $radius-lg;
+
+	@include breakpoint-up(md) {
+		flex-direction: row;
+		gap: $space-6;
+		align-items: flex-start;
+		padding: $space-8;
+	}
+}
+
+.wcu-author-bio__avatar {
+	flex-shrink: 0;
+
+	img,
+	.wcu-author-bio__avatar-img {
+		width: 4.5rem;
+		height: 4.5rem;
+		border-radius: $radius-circle;
+		object-fit: cover;
+	}
+}
+
+.wcu-author-bio__body {
+	min-width: 0;
+}
+
+.wcu-author-bio__eyebrow {
+	margin: 0 0 $space-1;
+	font-family: $font-mono;
+	font-size: $font-size-xs;
+	font-weight: $font-weight-medium;
+	color: $color-text-muted;
+	letter-spacing: 0;
+	text-transform: uppercase;
+}
+
+.wcu-author-bio__name {
+	margin: 0 0 $space-2;
+	font-size: $font-size-xl;
+
+	a {
+		color: $color-text;
+		text-decoration: none;
+
+		&:hover,
+		&:focus-visible {
+			color: $color-primary-dark;
+		}
+	}
+}
+
+.wcu-author-bio__desc {
+	margin: 0 0 $space-3;
+	font-size: $font-size-md;
+	line-height: $line-height-relaxed;
+	color: $color-text-muted;
+}
+
+.wcu-author-bio__links {
+	@include list-reset;
+
+	display: flex;
+	flex-wrap: wrap;
+	gap: $space-2 $space-4;
+	font-family: $font-mono;
+	font-size: $font-size-xs;
+
+	li {
+		margin: 0;
+	}
+
+	a {
+		color: $color-primary-dark;
+		font-weight: $font-weight-medium;
+
+		&:hover,
+		&:focus-visible {
+			color: $color-primary;
+			text-decoration: underline;
+		}
+	}
+}

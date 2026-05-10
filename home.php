@@ -1,7 +1,7 @@
 <?php
 /**
- * Generic archive template — used for category, tag, date, and any
- * non-CPT archive that doesn't have its own template.
+ * Blog index — used when "Posts page" is set in Settings → Reading,
+ * or as the fallback for the posts archive when index.php is not used.
  *
  * @package WCUganda
  */
@@ -11,41 +11,26 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 get_header();
-
-$wcu_archive_eyebrow = '';
-if ( is_category() ) {
-	$wcu_archive_eyebrow = __( 'Category', 'wcuganda' );
-} elseif ( is_tag() ) {
-	$wcu_archive_eyebrow = __( 'Tag', 'wcuganda' );
-} elseif ( is_date() ) {
-	$wcu_archive_eyebrow = __( 'Date', 'wcuganda' );
-} else {
-	$wcu_archive_eyebrow = __( 'Archive', 'wcuganda' );
-}
 ?>
 
 <main id="primary" class="site-main wcu-blog-archive">
 
 	<header class="wcu-blog-archive__header">
 		<div class="container">
-			<p class="section-eyebrow"><?php echo esc_html( $wcu_archive_eyebrow ); ?></p>
+			<p class="section-eyebrow"><?php esc_html_e( 'From the community', 'wcuganda' ); ?></p>
 			<h1 class="wcu-blog-archive__title">
 				<?php
-				if ( is_category() || is_tag() ) {
-					single_term_title();
-				} elseif ( is_date() ) {
-					echo esc_html( get_the_archive_title() );
+				$wcu_blog_page_id = (int) get_option( 'page_for_posts' );
+				if ( $wcu_blog_page_id ) {
+					echo esc_html( get_the_title( $wcu_blog_page_id ) );
 				} else {
-					post_type_archive_title();
+					esc_html_e( 'Blog', 'wcuganda' );
 				}
 				?>
 			</h1>
-			<?php if ( is_category() || is_tag() ) : ?>
-				<?php $wcu_term_desc = term_description(); ?>
-				<?php if ( ! empty( $wcu_term_desc ) ) : ?>
-					<div class="wcu-blog-archive__lead"><?php echo wp_kses_post( $wcu_term_desc ); ?></div>
-				<?php endif; ?>
-			<?php endif; ?>
+			<p class="wcu-blog-archive__lead">
+				<?php esc_html_e( 'Stories, tutorials, and community updates from contributors across Uganda.', 'wcuganda' ); ?>
+			</p>
 		</div>
 	</header>
 
@@ -79,9 +64,9 @@ if ( is_category() ) {
 		<?php else : ?>
 			<section class="wcu-blog-archive__section">
 				<div class="wcu-empty">
-					<p class="wcu-empty__title"><?php esc_html_e( 'No posts in this archive', 'wcuganda' ); ?></p>
+					<p class="wcu-empty__title"><?php esc_html_e( 'No posts yet', 'wcuganda' ); ?></p>
 					<p class="wcu-empty__desc">
-						<?php esc_html_e( 'Try a different category or browse the latest posts.', 'wcuganda' ); ?>
+						<?php esc_html_e( 'The first post is being written. Subscribe below to be notified when it goes live.', 'wcuganda' ); ?>
 					</p>
 				</div>
 			</section>
