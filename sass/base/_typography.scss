@@ -8,11 +8,15 @@ html {
 	font-size: 100%; // 16px root
 }
 
+// Site is dark-by-default (Supabase pattern). Body canvas = bg-dark, text =
+// the light variant. Specific surfaces inside content can opt back into a
+// light background via .section--light or component-level overrides.
 body {
 	@include body-text;
 
 	font-size: $font-size-base;
-	background-color: $color-bg;
+	color: $color-text-on-dark;
+	background-color: $color-bg-dark;
 }
 
 // -----------------------------------------------------------------------------

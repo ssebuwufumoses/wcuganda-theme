@@ -11,37 +11,52 @@
 $color-primary:        #3ECF8E; // Supabase emerald (vibrant; pair with dark text on top)
 $color-primary-dark:   #166534; // Deep green for body text / button hover (AAA on white, 7.46:1)
 
-// Surfaces — Supabase-style layered scale.
-// On light pages: bg-alt for cards/sections, surface-100 slight elevation.
-// On dark pages: bg-dark base, surface-100/200 for layered cards.
-$color-bg:                 #FFFFFF;
-$color-bg-alt:             #F8F8F8; // Cards on light, alt sections
-$color-bg-surface-100:     #FAFAFA; // Slight elevation above bg-alt on light
-$color-bg-surface-200:     #F2F2F2; // More elevation, e.g. nested cards
-$color-bg-dark:            #1C1C1C; // Supabase dark surface (warmer than pure black)
-$color-bg-darker:          #121212; // Page bg under cards on dark sections
-$color-bg-surface-100-dark: #232323; // Slight elevation above bg-dark
-$color-bg-surface-200-dark: #2A2A2A; // More elevation on dark
+// Surfaces — DARK-CANVAS DEFAULTS (Supabase pattern).
+// The body is dark; un-suffixed tokens are the dark-canvas values. The
+// rare light surface (.section--light, button overlays, form inputs)
+// uses explicit *-on-light variants.
 
-// Text — three-step softness scale on each background, Supabase pattern.
-$color-text:                  #1A1A1A; // AAA on white (16.4:1) — body
-$color-text-light:            #404040; // 1 step softer (AAA on white)
-$color-text-lighter:          #525252; // 2 steps softer = current muted alias
-$color-text-muted:            #525252; // (alias of lighter for backwards compat)
-$color-text-subtle:           #737373; // 3 steps softer, AA only — for fine print
-$color-text-on-dark:          #EDEDED; // AAA on bg-dark
-$color-text-light-on-dark:    #C4C4C4; // 1 step softer on dark (AAA)
-$color-text-lighter-on-dark:  #A1A1A1; // 2 steps softer on dark (AAA)
-$color-text-muted-on-dark:    #A1A1A1; // (alias of lighter-on-dark for backwards compat)
+// Dark canvas (defaults)
+$color-bg-dark:             #1C1C1C; // body canvas
+$color-bg-darker:            #121212; // deeper for stacked dark sections
+$color-bg-alt:               #232323; // CHANGED — was light gray, now dark elevated surface
+$color-bg-surface-100-dark:  #232323; // alias of $color-bg-alt for clarity
+$color-bg-surface-200-dark:  #2A2A2A; // higher elevation card on dark
 
-// Borders / dividers — Supabase weight scale.
-$color-border:                  #EAEAEA; // Default 1px divider on light
-$color-border-muted:            #F0F0F0; // Subtler than default, decorative dividers
-$color-border-strong:           #D4D4D4; // Hover, focus, more prominent
-$color-border-stronger:         #A1A1A1; // Highlighted / strongest
-$color-border-on-dark:          #2A2A2A; // Default 1px divider on dark
-$color-border-muted-on-dark:    #232323; // Subtler on dark
-$color-border-strong-on-dark:   #404040; // Hover/focus on dark
+// Light surfaces (explicit; rarely used)
+$color-bg:                   #FFFFFF; // pure white (forms, .section--light)
+$color-bg-alt-on-light:      #F8F8F8; // alt light surface
+$color-bg-surface-100:       #FAFAFA;
+$color-bg-surface-200:       #F2F2F2;
+
+// Text — DARK CANVAS DEFAULTS
+$color-text:                  #EDEDED; // CHANGED — light-on-dark default
+$color-text-light:            #C4C4C4; // 1 step softer on dark
+$color-text-lighter:          #A1A1A1;
+$color-text-muted:            #A1A1A1; // CHANGED — muted on dark
+$color-text-subtle:           #737373;
+$color-text-on-dark:          $color-text;          // alias
+$color-text-muted-on-dark:    $color-text-muted;    // alias
+$color-text-light-on-dark:    $color-text-light;    // alias
+
+// Light-context text (explicit)
+$color-text-on-light:         #1A1A1A; // dark text for light surfaces (was $color-text)
+$color-text-muted-on-light:   #525252;
+$color-text-subtle-on-light:  #737373;
+
+// Borders — DARK CANVAS DEFAULTS
+$color-border:                #2A2A2A; // CHANGED — dark border
+$color-border-muted:          #232323; // CHANGED — subtler dark
+$color-border-strong:         #404040; // CHANGED — strong dark
+$color-border-stronger:       #5A5A5A;
+$color-border-on-dark:        $color-border;        // alias
+$color-border-muted-on-dark:  $color-border-muted;  // alias
+$color-border-strong-on-dark: $color-border-strong; // alias
+
+// Light-context borders (explicit)
+$color-border-on-light:        #EAEAEA;
+$color-border-muted-on-light:  #F0F0F0;
+$color-border-strong-on-light: #D4D4D4;
 
 // Constants
 $color-white:          #FFFFFF;
@@ -72,16 +87,20 @@ $font-size-5xl:    3rem;       // 48px
 $font-size-6xl:    3.75rem;    // 60px
 
 // Canonical heading scale — single source of truth for h1..h6 across the
-// entire site. Matched to Supabase marketing typography after a downsize
-// pass: h1 ~28-44px, h2 ~22-30px, h3 ~18-20px. Reads tight and editorial,
-// not billboard. Per-page overrides should be the rare exception, not
-// the rule.
-$h1: clamp(1.75rem, 2vw + 1rem, 2.75rem);   // 28 → 44px (page titles, hero)
-$h2: clamp(1.375rem, 1vw + 0.875rem, 1.875rem); // 22 → 30px (section headings, banners)
-$h3: clamp(1.125rem, 0.25vw + 1rem, 1.25rem);   // 18 → 20px (card titles, sub-section)
-$h4: 1rem;                                  // 16px (sub-headings)
-$h5: 0.9375rem;                             // 15px
-$h6: 0.875rem;                              // 14px
+// entire site. Mapped to Tailwind defaults (text-3xl → text-5xl etc.)
+// matching Supabase's marketing pages.
+//   h1 = text-3xl → text-5xl  (30 → 48px)
+//   h2 = text-xl  → text-3xl  (20 → 30px)
+//   h3 = text-lg  → text-xl   (18 → 20px)
+//   h4 = text-base            (16px)
+//   h5 = text-sm              (14px)
+//   h6 = text-xs              (12px)
+$h1: clamp(1.875rem, 2vw + 1rem, 3rem);     // 30 → 48px
+$h2: clamp(1.25rem, 1vw + 0.875rem, 1.875rem); // 20 → 30px
+$h3: clamp(1.125rem, 0.25vw + 1rem, 1.25rem);  // 18 → 20px
+$h4: 1rem;                                  // 16px
+$h5: 0.875rem;                              // 14px
+$h6: 0.75rem;                               // 12px
 
 $line-height-tight:   1.1;
 $line-height-snug:    1.3;

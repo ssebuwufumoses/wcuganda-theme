@@ -19,7 +19,7 @@
 	// Dark text on the bright Supabase green keeps AAA contrast on the
 	// primary button. The hover-state darken (-8% lightness) lands at a
 	// medium green where dark text still passes AA.
-	color: $color-text;
+	color: $color-text-on-light;
 	text-align: center;
 	text-decoration: none;
 	cursor: pointer;
@@ -32,7 +32,7 @@
 
 	&:hover,
 	&:focus {
-		color: $color-text;
+		color: $color-text-on-light;
 		text-decoration: none;
 		background-color: color.adjust($color-primary, $lightness: -8%);
 		border-color: color.adjust($color-primary, $lightness: -8%);
@@ -66,7 +66,7 @@
 
 	&:hover,
 	&:focus {
-		color: $color-text;
+		color: $color-text-on-light;
 		background-color: $color-primary;
 		border-color: $color-primary;
 	}
@@ -79,7 +79,7 @@
 
 	&:hover,
 	&:focus {
-		color: $color-text;
+		color: $color-text-on-light;
 		background-color: $color-white;
 	}
 }

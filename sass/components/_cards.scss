@@ -12,7 +12,7 @@
 	overflow: hidden;
 	// Supabase pattern: subtle default border + flat (no shadow / no lift).
 	// On hover only the border strengthens to brand green — quiet, no motion.
-	border-color: $color-border-muted;
+	border-color: $color-border-on-dark;
 	box-shadow: none;
 	transition: border-color $transition-fast;
 
@@ -24,7 +24,7 @@
 .wcu-card__media {
 	@include aspect-ratio(16, 9);
 
-	background-color: $color-bg-alt;
+	background-color: $color-bg-surface-200-dark;
 
 	img {
 		width: 100%;
@@ -77,7 +77,7 @@
 .wcu-card__excerpt {
 	flex: 1;
 	font-size: $font-size-sm;
-	color: $color-text-muted;
+	color: $color-text-muted-on-dark;
 }
 
 .wcu-card__meta {
@@ -86,7 +86,7 @@
 	gap: $space-3;
 	font-family: $font-heading;
 	font-size: $font-size-sm;
-	color: $color-text-muted;
+	color: $color-text-muted-on-dark;
 }
 
 .wcu-card__footer {
@@ -96,7 +96,7 @@
 	align-items: center;
 	justify-content: space-between;
 	padding: $space-4 $space-5;
-	border-top: $border-width solid $color-border-muted;
+	border-top: $border-width solid $color-border-on-dark;
 
 	@include breakpoint-up(md) {
 		padding: $space-4 $space-6;

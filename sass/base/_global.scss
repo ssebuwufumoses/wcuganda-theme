@@ -41,13 +41,22 @@
 	}
 }
 
+// On a dark-default body the .section--alt is now a SLIGHTLY ELEVATED
+// dark surface (was light gray). Visual rhythm comes from subtle
+// luminance shifts, Supabase pattern.
 .section--alt {
-	background-color: $color-bg-alt;
+	background-color: $color-bg-surface-100-dark;
 }
 
 .section--dark {
-	color: $color-text-on-dark;
-	background-color: $color-bg-dark;
+	background-color: $color-bg-darker;
+}
+
+// Explicit light-surface variant for the rare section that wants a true
+// light background (e.g. case studies, white-paper style content).
+.section--light {
+	color: $color-text;
+	background-color: $color-bg;
 
 	h1,
 	h2,
@@ -55,18 +64,7 @@
 	h4,
 	h5,
 	h6 {
-		color: $color-text-on-dark;
-	}
-
-	a {
-		color: $color-text-on-dark;
-		text-decoration-thickness: 2px;
-
-		&:hover,
-		&:focus-visible {
-			color: $color-text-on-dark;
-			text-decoration-thickness: 3px;
-		}
+		color: $color-text;
 	}
 }
 

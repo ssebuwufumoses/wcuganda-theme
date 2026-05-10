@@ -67,7 +67,9 @@ select {
 	font-family: $font-body;
 	font-size: $font-size-sm;
 	line-height: $line-height-snug;
-	color: $color-text;
+	// Form inputs stay on a white surface for typing affordance even on the
+	// dark canvas — explicit dark text on white.
+	color: $color-text-on-light;
 	background-color: $color-white;
 	border: $border-width solid $color-border-strong;
 	border-radius: $radius-md;

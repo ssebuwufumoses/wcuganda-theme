@@ -8,17 +8,17 @@
 	position: sticky;
 	top: 0;
 	z-index: $z-header;
-	// Supabase-style sticky header: barely-there border, no heavy shadow
-	// on scroll — just a slightly more solid border instead.
-	background-color: rgba($color-bg, 0.85);
+	// Dark canvas variant: translucent dark with backdrop blur, subtle
+	// dark-on-dark border. Matches Supabase's nav bar.
+	background-color: rgba($color-bg-dark, 0.75);
 	backdrop-filter: saturate(180%) blur(8px);
 	-webkit-backdrop-filter: saturate(180%) blur(8px);
-	border-bottom: $border-width solid $color-border-muted;
+	border-bottom: $border-width solid $color-border-on-dark;
 	transition: border-color $transition-base, background-color $transition-base;
 
 	&.is-scrolled {
-		background-color: rgba($color-bg, 0.95);
-		border-bottom-color: $color-border;
+		background-color: rgba($color-bg-dark, 0.9);
+		border-bottom-color: $color-border-strong-on-dark;
 	}
 }
 
@@ -61,7 +61,7 @@
 	font-size: $font-size-md;
 	font-weight: $font-weight-semibold;
 	line-height: 1.1;
-	color: $color-text;
+	color: $color-text-on-dark;
 	letter-spacing: -0.01em;
 
 	a {
@@ -70,7 +70,7 @@
 
 		&:hover,
 		&:focus-visible {
-			color: $color-primary-dark;
+			color: $color-primary;
 		}
 	}
 }

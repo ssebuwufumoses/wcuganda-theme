@@ -124,18 +124,21 @@ $breakpoints: (
 // -----------------------------------------------------------------------------
 // Typography helpers
 // -----------------------------------------------------------------------------
+// Headings + body inherit color from their containing surface so they read
+// correctly on either dark (default) or light surfaces. The body element
+// sets the base color; .section--light flips it back to dark text.
 @mixin heading {
 	font-family: $font-heading;
 	font-weight: $font-weight-bold;
 	line-height: $line-height-tight;
-	color: $color-text;
+	color: inherit;
 }
 
 @mixin body-text {
 	font-family: $font-body;
 	font-weight: $font-weight-regular;
 	line-height: $line-height-base;
-	color: $color-text;
+	color: inherit;
 }
 
 @mixin truncate($lines: 1) {
@@ -170,12 +173,14 @@ $breakpoints: (
 	list-style: none;
 }
 
+// Card base — slight elevation on dark canvas using surface-100-dark + a
+// subtle border-on-dark token. No shadow (Supabase pattern: borders, not
+// shadows). The component file (.wcu-card) layers hover behavior on top.
 @mixin card-base {
-	background: $color-white;
-	border: $border-width solid $color-border;
+	background: $color-bg-surface-100-dark;
+	border: $border-width solid $color-border-on-dark;
 	border-radius: $radius-lg;
-	box-shadow: $shadow-sm;
-	transition: box-shadow $transition-base, transform $transition-base;
+	transition: border-color $transition-base, background-color $transition-base;
 }
 
 // Smooth scrolling on the named element while respecting reduced-motion.
