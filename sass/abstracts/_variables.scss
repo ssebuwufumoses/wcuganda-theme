@@ -30,11 +30,11 @@ $color-bg-surface-100:       #FAFAFA;
 $color-bg-surface-200:       #F2F2F2;
 
 // Text — DARK CANVAS DEFAULTS
-$color-text:                  #EDEDED; // CHANGED — light-on-dark default
+$color-text:                  #EDEDED; // light-on-dark default
 $color-text-light:            #C4C4C4; // 1 step softer on dark
-$color-text-lighter:          #A1A1A1;
-$color-text-muted:            #A1A1A1; // CHANGED — muted on dark
-$color-text-subtle:           #737373;
+$color-text-lighter:          #B8B8B8; // bumped — AAA on bg-dark (was #A1A1A1, AA only)
+$color-text-muted:            #B8B8B8; // AAA muted on dark (was #A1A1A1)
+$color-text-subtle:           #8A8A8A; // softer still — captions/fine print
 $color-text-on-dark:          $color-text;          // alias
 $color-text-muted-on-dark:    $color-text-muted;    // alias
 $color-text-light-on-dark:    $color-text-light;    // alias

@@ -11,7 +11,7 @@
 .wcu-members-archive__header {
 	padding-top: $space-12;
 	padding-bottom: $space-8;
-	background-color: $color-bg-alt;
+	background-color: var(--wcu-bg-alt);
 
 	@include breakpoint-up(md) {
 		padding-top: $space-16;
@@ -28,7 +28,7 @@
 	margin: 0;
 	font-size: $font-size-lg;
 	line-height: $line-height-relaxed;
-	color: $color-text-muted;
+	color: var(--wcu-text-muted);
 }
 
 .wcu-members-archive__section {
@@ -58,7 +58,7 @@
 	margin-bottom: $space-3;
 	overflow: hidden;
 	border-radius: $radius-circle;
-	background-color: $color-bg-alt;
+	background-color: var(--wcu-bg-alt);
 	transition: transform $transition-base;
 
 	img {
@@ -101,7 +101,7 @@
 	font-size: $font-size-lg;
 
 	a {
-		color: $color-text;
+		color: var(--wcu-text);
 		text-decoration: none;
 
 		&:hover,
@@ -114,14 +114,14 @@
 .wcu-member-card__role {
 	margin: 0;
 	font-size: $font-size-sm;
-	color: $color-text-muted;
+	color: var(--wcu-text-muted);
 }
 
 .wcu-member-card__chapter {
 	justify-content: center;
 	margin: 0;
 	font-size: $font-size-xs;
-	color: $color-text-muted;
+	color: var(--wcu-text-muted);
 }
 
 .wcu-member-card__tags {
@@ -144,15 +144,15 @@
 .wcu-member-single--folks {
 	padding-top: $space-8;
 	padding-bottom: $space-16;
-	background-color: $color-bg-alt;
+	background-color: var(--wcu-bg-alt);
 }
 
 .wcu-member-single__back {
-	color: $color-text-muted;
+	color: var(--wcu-text-muted);
 
 	&:hover,
 	&:focus-visible {
-		color: $color-text;
+		color: var(--wcu-text);
 	}
 }
 
@@ -422,7 +422,7 @@
 	font-family: $font-heading;
 	font-size: $font-size-xs;
 	font-weight: $font-weight-semibold;
-	color: $color-text-muted;
+	color: var(--wcu-text-muted);
 	letter-spacing: 0.08em;
 	text-transform: uppercase;
 
@@ -452,9 +452,9 @@
 	font-family: $font-heading;
 	font-size: $font-size-sm;
 	font-weight: $font-weight-medium;
-	color: $color-text;
-	background-color: $color-white;
-	border: $border-width solid $color-border;
+	color: var(--wcu-text);
+	background-color: var(--wcu-bg-alt);
+	border: $border-width solid var(--wcu-border);
 	border-radius: $radius-pill;
 }
 
@@ -487,16 +487,16 @@
 	font-weight: $font-weight-medium;
 	color: $color-text-light;
 	text-decoration: none;
-	background-color: $color-white;
-	border: $border-width solid $color-border-muted;
+	background-color: var(--wcu-bg-alt);
+	border: $border-width solid var(--wcu-border-muted);
 	border-radius: $radius-pill;
 	transition: color $transition-fast, border-color $transition-fast,
 		background-color $transition-fast;
 
 	&:hover,
 	&:focus-visible {
-		color: $color-text;
-		background-color: $color-bg-alt;
+		color: var(--wcu-text);
+		background-color: var(--wcu-bg-alt);
 		border-color: $color-border-strong;
 	}
 }
@@ -506,8 +506,8 @@
 	gap: $space-5 $space-8;
 	margin: $space-8 0 0;
 	padding: $space-6;
-	background-color: $color-white;
-	border: $border-width solid $color-border;
+	background-color: var(--wcu-bg-alt);
+	border: $border-width solid var(--wcu-border);
 	border-radius: $radius-lg;
 
 	@include breakpoint-up(sm) {
@@ -525,7 +525,7 @@
 		font-family: $font-mono;
 		font-size: $font-size-xs;
 		font-weight: $font-weight-medium;
-		color: $color-text-muted;
+		color: var(--wcu-text-muted);
 		letter-spacing: 0;
 		text-transform: uppercase;
 	}
@@ -534,7 +534,7 @@
 		margin: 0;
 		font-size: $font-size-md;
 		font-weight: $font-weight-semibold;
-		color: $color-text;
+		color: var(--wcu-text);
 	}
 }
 
@@ -544,8 +544,8 @@
 .wcu-folks-bio {
 	margin-top: $space-12;
 	padding: $space-8;
-	background-color: $color-white;
-	border: $border-width solid $color-border;
+	background-color: var(--wcu-bg-alt);
+	border: $border-width solid var(--wcu-border);
 	border-radius: $radius-lg;
 }
 
@@ -556,7 +556,7 @@
 .wcu-folks-bio__content {
 	font-size: $font-size-lg;
 	line-height: $line-height-relaxed;
-	color: $color-text;
+	color: var(--wcu-text);
 
 	h2,
 	h3 {
@@ -573,8 +573,8 @@
 	gap: $space-8;
 	margin-top: $space-12;
 	padding: $space-8;
-	background-color: $color-white;
-	border: $border-width solid $color-border;
+	background-color: var(--wcu-bg-alt);
+	border: $border-width solid var(--wcu-border);
 	border-radius: $radius-lg;
 }
 
@@ -626,7 +626,7 @@
 	font-family: $font-heading;
 	font-size: $font-size-sm;
 	font-weight: $font-weight-semibold;
-	color: $color-text-muted;
+	color: var(--wcu-text-muted);
 	letter-spacing: 0.08em;
 	text-transform: uppercase;
 }
@@ -654,9 +654,9 @@
 	font-family: $font-heading;
 	font-size: $font-size-sm;
 	font-weight: $font-weight-medium;
-	color: $color-text;
-	background-color: $color-bg-alt;
-	border: $border-width solid $color-border;
+	color: var(--wcu-text);
+	background-color: var(--wcu-bg-alt);
+	border: $border-width solid var(--wcu-border);
 	border-radius: $radius-pill;
 }
 
@@ -726,16 +726,16 @@
 	gap: $space-3;
 	align-items: flex-start;
 	padding: $space-3;
-	color: $color-text;
+	color: var(--wcu-text);
 	text-decoration: none;
-	background-color: $color-bg-alt;
-	border: $border-width solid $color-border;
+	background-color: var(--wcu-bg-alt);
+	border: $border-width solid var(--wcu-border);
 	border-radius: $radius-md;
 	transition: border-color $transition-fast, background-color $transition-fast;
 
 	&:hover,
 	&:focus-visible {
-		background-color: $color-white;
+		background-color: var(--wcu-bg-alt);
 		border-color: $color-primary;
 	}
 }
@@ -746,7 +746,7 @@
 	height: 3rem;
 	overflow: hidden;
 	object-fit: cover;
-	background-color: $color-white;
+	background-color: var(--wcu-bg-alt);
 	border-radius: $radius-md;
 }
 
@@ -777,7 +777,7 @@
 	font-family: $font-heading;
 	font-size: $font-size-md;
 	font-weight: $font-weight-semibold;
-	color: $color-text;
+	color: var(--wcu-text);
 
 	.wcu-folks-project__link:hover &,
 	.wcu-folks-project__link:focus-visible & {
@@ -788,11 +788,11 @@
 .wcu-folks-project__desc {
 	font-size: $font-size-sm;
 	line-height: $line-height-base;
-	color: $color-text-muted;
+	color: var(--wcu-text-muted);
 }
 
 .wcu-folks-project__meta {
 	font-family: $font-heading;
 	font-size: $font-size-xs;
-	color: $color-text-muted;
+	color: var(--wcu-text-muted);
 }

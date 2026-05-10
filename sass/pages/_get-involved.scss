@@ -10,7 +10,7 @@
 .wcu-get-involved__header {
 	padding-top: $space-12;
 	padding-bottom: $space-8;
-	background-color: $color-bg-alt;
+	background-color: var(--wcu-bg-alt);
 
 	@include breakpoint-up(md) {
 		padding-top: $space-16;
@@ -27,7 +27,7 @@
 	margin: 0;
 	font-size: $font-size-lg;
 	line-height: $line-height-relaxed;
-	color: $color-text-muted;
+	color: var(--wcu-text-muted);
 }
 
 .wcu-get-involved__intro {
@@ -79,7 +79,7 @@
 	.wcu-card__excerpt {
 		flex: 1;
 		font-size: $font-size-md;
-		color: $color-text-muted;
+		color: var(--wcu-text-muted);
 	}
 
 	.wcu-blog-card__meta {
@@ -107,7 +107,7 @@
 // -----------------------------------------------------------------------------
 .wcu-app-page__header {
 	padding: $space-10 0 $space-8;
-	background-color: $color-bg-alt;
+	background-color: var(--wcu-bg-alt);
 
 	@include breakpoint-up(md) {
 		padding: $space-12 0 $space-10;
@@ -123,7 +123,7 @@
 	margin: 0;
 	font-size: $font-size-lg;
 	line-height: $line-height-relaxed;
-	color: $color-text-muted;
+	color: var(--wcu-text-muted);
 }
 
 .wcu-app-page__body {
@@ -142,8 +142,8 @@
 // -----------------------------------------------------------------------------
 .wcu-app-form__form {
 	padding: $space-6;
-	background-color: $color-bg-alt;
-	border: $border-width solid $color-border-muted;
+	background-color: var(--wcu-bg-alt);
+	border: $border-width solid var(--wcu-border-muted);
 	border-radius: $radius-lg;
 
 	@include breakpoint-up(md) {
@@ -176,7 +176,7 @@
 	}
 
 	.wcu-empty__desc {
-		color: $color-text;
+		color: var(--wcu-text);
 	}
 }
 
@@ -190,7 +190,7 @@
 	}
 
 	.wcu-empty__desc {
-		color: $color-text;
+		color: var(--wcu-text);
 	}
 }
 
@@ -212,7 +212,7 @@
 	align-items: flex-start;
 	margin-top: $space-6;
 	padding-top: $space-6;
-	border-top: $border-width solid $color-border-muted;
+	border-top: $border-width solid var(--wcu-border-muted);
 
 	@include breakpoint-up(sm) {
 		flex-direction: row;
@@ -225,6 +225,6 @@
 	margin: 0;
 	font-family: $font-mono;
 	font-size: $font-size-xs;
-	color: $color-text-muted;
+	color: var(--wcu-text-muted);
 	letter-spacing: 0;
 }

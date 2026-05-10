@@ -100,17 +100,10 @@ function wcu_inline_theme_toggle() {
 }
 add_action( 'wp_head', 'wcu_inline_theme_toggle', 1 );
 
-/**
- * Enqueue editor (Gutenberg) styles.
- *
- * @return void
- */
-function wcu_enqueue_editor_assets() {
-	wp_enqueue_style(
-		'wcu-editor-style',
-		WCU_THEME_URI . '/assets/css/style.css',
-		array(),
-		WCU_THEME_VERSION
-	);
-}
-add_action( 'enqueue_block_editor_assets', 'wcu_enqueue_editor_assets' );
+// Note: deliberately NOT enqueuing the front-end style.css inside the
+// block editor. Loading the dark-canvas theme into Gutenberg breaks the
+// admin chrome (faded labels, mismatched buttons, broken meta-box headers).
+// The block editor should render with WordPress core admin styles. If the
+// editor needs theme-scoped styles for the post content area, add a separate
+// editor-style.css and wire it via add_theme_support( 'editor-styles' )
+// instead of pulling the public stylesheet.

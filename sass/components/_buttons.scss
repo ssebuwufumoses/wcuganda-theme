@@ -83,7 +83,7 @@
 	&:hover,
 	&:focus {
 		color: $color-text-on-light;
-		background-color: $color-white;
+		background-color: var(--wcu-bg-alt);
 	}
 }
 

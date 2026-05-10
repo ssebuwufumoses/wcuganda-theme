@@ -11,7 +11,7 @@
 .wcu-blog-archive__header {
 	padding-top: $space-12;
 	padding-bottom: $space-8;
-	background-color: $color-bg-alt;
+	background-color: var(--wcu-bg-alt);
 
 	@include breakpoint-up(md) {
 		padding-top: $space-16;
@@ -28,7 +28,7 @@
 	margin: 0;
 	font-size: $font-size-lg;
 	line-height: $line-height-relaxed;
-	color: $color-text-muted;
+	color: var(--wcu-text-muted);
 }
 
 .wcu-blog-archive__section {
@@ -47,7 +47,7 @@
 	margin: 0;
 	font-family: $font-mono;
 	font-size: $font-size-xs;
-	color: $color-text-muted;
+	color: var(--wcu-text-muted);
 	letter-spacing: 0;
 }
 
@@ -56,7 +56,7 @@
 // -----------------------------------------------------------------------------
 .wcu-blog-single__header {
 	padding: $space-10 0 $space-8;
-	background-color: $color-bg-alt;
+	background-color: var(--wcu-bg-alt);
 
 	@include breakpoint-up(md) {
 		padding: $space-12 0 $space-10;
@@ -68,7 +68,7 @@
 	font-family: $font-mono;
 	font-size: $font-size-xs;
 	font-weight: $font-weight-medium;
-	color: $color-text-muted;
+	color: var(--wcu-text-muted);
 	letter-spacing: 0;
 	text-transform: uppercase;
 
@@ -94,7 +94,7 @@
 	margin: 0;
 	font-family: $font-mono;
 	font-size: $font-size-sm;
-	color: $color-text-muted;
+	color: var(--wcu-text-muted);
 	letter-spacing: 0;
 }
 
@@ -151,11 +151,11 @@
 	align-items: center;
 	margin: 0 0 $space-8;
 	padding: $space-4 0;
-	border-top: $border-width solid $color-border-muted;
-	border-bottom: $border-width solid $color-border-muted;
+	border-top: $border-width solid var(--wcu-border-muted);
+	border-bottom: $border-width solid var(--wcu-border-muted);
 	font-family: $font-mono;
 	font-size: $font-size-xs;
-	color: $color-text-muted;
+	color: var(--wcu-text-muted);
 
 	a {
 		display: inline-flex;
@@ -163,13 +163,13 @@
 		padding: 0.25rem $space-2;
 		color: $color-text-light;
 		text-decoration: none;
-		background-color: $color-bg-alt;
-		border: $border-width solid $color-border-muted;
+		background-color: var(--wcu-bg-alt);
+		border: $border-width solid var(--wcu-border-muted);
 		border-radius: $radius-pill;
 
 		&:hover,
 		&:focus-visible {
-			color: $color-text;
+			color: var(--wcu-text);
 			border-color: $color-border-strong;
 		}
 	}
@@ -195,8 +195,8 @@
 	gap: $space-4;
 	margin: $space-8 0;
 	padding: $space-6;
-	background-color: $color-bg-alt;
-	border: $border-width solid $color-border-muted;
+	background-color: var(--wcu-bg-alt);
+	border: $border-width solid var(--wcu-border-muted);
 	border-radius: $radius-lg;
 
 	@include breakpoint-up(md) {
@@ -228,7 +228,7 @@
 	font-family: $font-mono;
 	font-size: $font-size-xs;
 	font-weight: $font-weight-medium;
-	color: $color-text-muted;
+	color: var(--wcu-text-muted);
 	letter-spacing: 0;
 	text-transform: uppercase;
 }
@@ -238,7 +238,7 @@
 	font-size: $font-size-xl;
 
 	a {
-		color: $color-text;
+		color: var(--wcu-text);
 		text-decoration: none;
 
 		&:hover,
@@ -252,7 +252,7 @@
 	margin: 0 0 $space-3;
 	font-size: $font-size-md;
 	line-height: $line-height-relaxed;
-	color: $color-text-muted;
+	color: var(--wcu-text-muted);
 }
 
 .wcu-author-bio__links {

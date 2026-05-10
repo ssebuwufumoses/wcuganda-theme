@@ -166,7 +166,7 @@
 	font-size: $h1;
 	font-weight: $font-weight-bold;
 	line-height: 1;
-	color: $color-text;
+	color: var(--wcu-text);
 	letter-spacing: -0.02em;
 	// tabular-nums keeps numerals same width during the count-up animation.
 	font-variant-numeric: tabular-nums;
@@ -176,7 +176,7 @@
 	font-family: $font-heading;
 	font-size: $font-size-sm;
 	font-weight: $font-weight-medium;
-	color: $color-text-muted;
+	color: var(--wcu-text-muted);
 	letter-spacing: 0.02em;
 	text-transform: uppercase;
 }
@@ -192,7 +192,7 @@
 .wcu-events-preview__empty {
 	padding: $space-8;
 	font-size: $font-size-lg;
-	color: $color-text-muted;
+	color: var(--wcu-text-muted);
 	text-align: center;
 	background: $color-bg-alt;
 	border-radius: $radius-lg;
@@ -212,7 +212,7 @@
 
 .wcu-card__meta--source {
 	font-size: $font-size-xs;
-	color: $color-text-muted;
+	color: var(--wcu-text-muted);
 }
 
 // -----------------------------------------------------------------------------
@@ -311,7 +311,7 @@
 	font-family: $font-heading;
 	font-size: $font-size-sm;
 	font-weight: $font-weight-semibold;
-	color: $color-text-muted;
+	color: var(--wcu-text-muted);
 	letter-spacing: 0.18em;
 	text-transform: uppercase;
 }
@@ -364,13 +364,13 @@
 .wcu-sponsors__name {
 	font-family: $font-heading;
 	font-weight: $font-weight-semibold;
-	color: $color-text-muted;
+	color: var(--wcu-text-muted);
 }
 
 .wcu-sponsors__empty {
 	margin: 0 0 $space-6;
 	text-align: center;
-	color: $color-text-muted;
+	color: var(--wcu-text-muted);
 }
 
 .wcu-sponsors__cta {
@@ -434,6 +434,6 @@
 // Map
 // -----------------------------------------------------------------------------
 .wcu-map__embed {
-	border: $border-width solid $color-border;
+	border: $border-width solid var(--wcu-border);
 	box-shadow: $shadow-md;
 }

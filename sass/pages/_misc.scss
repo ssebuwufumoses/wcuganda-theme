@@ -10,7 +10,7 @@
 .wcu-misc-page {
 	padding-top: $space-12;
 	padding-bottom: $space-16;
-	background-color: $color-bg-alt;
+	background-color: var(--wcu-bg-alt);
 	min-height: calc(100vh - 6rem);
 
 	@include breakpoint-up(md) {
@@ -33,7 +33,7 @@
 .wcu-misc-page__code {
 	font-family: $font-mono;
 	font-size: $font-size-md;
-	color: $color-text-muted;
+	color: var(--wcu-text-muted);
 	letter-spacing: 0;
 	text-transform: uppercase;
 }
@@ -47,7 +47,7 @@
 	margin: 0;
 	font-size: $font-size-lg;
 	line-height: $line-height-relaxed;
-	color: $color-text-muted;
+	color: var(--wcu-text-muted);
 }
 
 .wcu-misc-page__search {
@@ -70,7 +70,7 @@
 .wcu-misc-page__shortcuts {
 	margin-top: $space-3;
 	padding-top: $space-6;
-	border-top: $border-width solid $color-border-muted;
+	border-top: $border-width solid var(--wcu-border-muted);
 }
 
 .wcu-misc-page__shortcuts-heading {
@@ -78,7 +78,7 @@
 	font-family: $font-mono;
 	font-size: $font-size-xs;
 	font-weight: $font-weight-medium;
-	color: $color-text-muted;
+	color: var(--wcu-text-muted);
 	letter-spacing: 0;
 	text-transform: uppercase;
 }
@@ -101,10 +101,10 @@
 		font-family: $font-mono;
 		font-size: $font-size-sm;
 		font-weight: $font-weight-medium;
-		color: $color-text;
+		color: var(--wcu-text);
 		text-decoration: none;
-		background-color: $color-white;
-		border: $border-width solid $color-border-muted;
+		background-color: var(--wcu-bg-alt);
+		border: $border-width solid var(--wcu-border-muted);
 		border-radius: $radius-pill;
 		transition: border-color $transition-fast, color $transition-fast;
 
@@ -131,7 +131,7 @@
 	margin: 0 0 $space-6;
 	font-family: $font-mono;
 	font-size: $font-size-xs;
-	color: $color-text-muted;
+	color: var(--wcu-text-muted);
 	letter-spacing: 0;
 	text-transform: uppercase;
 }
@@ -143,7 +143,7 @@
 	padding: $space-3 0;
 	font-family: $font-mono;
 	font-size: $font-size-xs;
-	color: $color-text-muted;
+	color: var(--wcu-text-muted);
 }
 
 .wcu-breadcrumbs__list {
@@ -172,7 +172,7 @@
 	}
 
 	a {
-		color: $color-text-muted;
+		color: var(--wcu-text-muted);
 		text-decoration: none;
 
 		&:hover,
@@ -183,6 +183,6 @@
 	}
 
 	[aria-current='page'] {
-		color: $color-text;
+		color: var(--wcu-text);
 	}
 }

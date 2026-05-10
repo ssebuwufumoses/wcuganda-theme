@@ -33,10 +33,10 @@
 		font-family: $font-mono;
 		font-size: $font-size-sm;
 		font-weight: $font-weight-medium;
-		color: $color-text-light;
+		color: var(--wcu-text-muted);
 		text-decoration: none;
-		background-color: $color-white;
-		border: $border-width solid $color-border-muted;
+		background-color: var(--wcu-bg-alt);
+		border: $border-width solid var(--wcu-border-muted);
 		border-radius: $radius-md;
 		transition: color $transition-fast, background-color $transition-fast,
 			border-color $transition-fast;
@@ -44,7 +44,7 @@
 		&:hover,
 		&:focus-visible {
 			color: $color-text;
-			background-color: $color-bg-alt;
+			background-color: var(--wcu-bg-alt);
 			border-color: $color-border-strong;
 		}
 
@@ -87,7 +87,7 @@
 	.nav-previous,
 	.nav-next {
 		padding: $space-4 $space-5;
-		background-color: $color-bg-alt;
+		background-color: var(--wcu-bg-alt);
 		border-radius: $radius-md;
 
 		a {

@@ -12,7 +12,7 @@
 .wcu-chapters-archive__header {
 	padding-top: $space-12;
 	padding-bottom: $space-8;
-	background-color: $color-bg-alt;
+	background-color: var(--wcu-bg-alt);
 
 	@include breakpoint-up(md) {
 		padding-top: $space-16;
@@ -29,7 +29,7 @@
 	margin: 0;
 	font-size: $font-size-lg;
 	line-height: $line-height-relaxed;
-	color: $color-text-muted;
+	color: var(--wcu-text-muted);
 }
 
 .wcu-chapters-archive__section {
@@ -64,7 +64,7 @@
 	font-family: $font-heading;
 	font-size: $font-size-xs;
 	font-weight: $font-weight-semibold;
-	color: $color-text-muted;
+	color: var(--wcu-text-muted);
 	text-decoration: none;
 	letter-spacing: 0.04em;
 	text-transform: uppercase;
@@ -146,7 +146,7 @@
 // -----------------------------------------------------------------------------
 .wcu-chapter-meetup__embed {
 	overflow: hidden;
-	border: $border-width solid $color-border;
+	border: $border-width solid var(--wcu-border);
 	border-radius: $radius-lg;
 	box-shadow: $shadow-md;
 

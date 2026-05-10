@@ -11,7 +11,7 @@
 .wcu-sponsors-archive__header {
 	padding-top: $space-12;
 	padding-bottom: $space-8;
-	background-color: $color-bg-alt;
+	background-color: var(--wcu-bg-alt);
 
 	@include breakpoint-up(md) {
 		padding-top: $space-16;
@@ -28,7 +28,7 @@
 	margin: 0;
 	font-size: $font-size-lg;
 	line-height: $line-height-relaxed;
-	color: $color-text-muted;
+	color: var(--wcu-text-muted);
 
 	p {
 		margin: 0 0 $space-3;
@@ -71,7 +71,7 @@
 	justify-content: space-between;
 	margin-bottom: $space-6;
 	padding-bottom: $space-3;
-	border-bottom: $border-width solid $color-border-muted;
+	border-bottom: $border-width solid var(--wcu-border-muted);
 }
 
 .wcu-sponsors-archive__tier-title {
@@ -81,7 +81,7 @@
 .wcu-sponsors-archive__tier--past {
 	margin-top: $space-12;
 	padding-top: $space-12;
-	border-top: $border-width solid $color-border;
+	border-top: $border-width solid var(--wcu-border);
 
 	.wcu-sponsor-card {
 		opacity: 0.85;
@@ -138,8 +138,8 @@
 	justify-content: center;
 	min-height: 7rem;
 	padding: $space-5;
-	background-color: $color-bg-alt;
-	border-bottom: $border-width solid $color-border-muted;
+	background-color: var(--wcu-bg-alt);
+	border-bottom: $border-width solid var(--wcu-border-muted);
 
 	img {
 		max-width: 80%;
@@ -174,7 +174,7 @@
 .wcu-sponsor-hero {
 	padding-top: $space-8;
 	padding-bottom: $space-10;
-	background-color: $color-bg-alt;
+	background-color: var(--wcu-bg-alt);
 
 	@include breakpoint-up(md) {
 		padding-top: $space-10;
@@ -204,8 +204,8 @@
 	width: 8rem;
 	height: 8rem;
 	padding: $space-4;
-	background-color: $color-white;
-	border: $border-width solid $color-border-muted;
+	background-color: var(--wcu-bg-alt);
+	border: $border-width solid var(--wcu-border-muted);
 	border-radius: $radius-lg;
 
 	@include breakpoint-up(md) {
@@ -244,7 +244,7 @@
 	font-family: $font-mono;
 	font-size: $font-size-sm;
 	font-weight: $font-weight-medium;
-	color: $color-text-muted;
+	color: var(--wcu-text-muted);
 	letter-spacing: 0;
 	text-transform: uppercase;
 

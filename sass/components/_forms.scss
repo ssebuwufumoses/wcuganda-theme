@@ -35,7 +35,7 @@ label {
 
 .wcu-form__hint {
 	font-size: $font-size-xs;
-	color: $color-text-muted;
+	color: var(--wcu-text-muted);
 }
 
 .wcu-form__error {
@@ -70,7 +70,7 @@ select {
 	// Form inputs stay on a white surface for typing affordance even on the
 	// dark canvas — explicit dark text on white.
 	color: $color-text-on-light;
-	background-color: $color-white;
+	background-color: var(--wcu-bg-alt);
 	border: $border-width solid $color-border-strong;
 	border-radius: $radius-md;
 	transition: border-color $transition-fast, box-shadow $transition-fast;
@@ -96,8 +96,8 @@ select {
 
 	&:disabled,
 	&[readonly] {
-		color: $color-text-muted;
-		background-color: $color-bg-alt;
+		color: var(--wcu-text-muted);
+		background-color: var(--wcu-bg-alt);
 	}
 }
 
