@@ -277,17 +277,20 @@
 .wcu-event-meta__row {
 	dt {
 		margin-bottom: $space-1;
-		font-family: $font-heading;
+		// Mono uppercase label — Supabase data-card pattern. Tabular feel
+		// against the dd value below.
+		font-family: $font-mono;
 		font-size: $font-size-xs;
-		font-weight: $font-weight-semibold;
+		font-weight: $font-weight-medium;
 		color: $color-text-muted;
-		letter-spacing: 0.08em;
+		letter-spacing: 0;
 		text-transform: uppercase;
 	}
 
 	dd {
 		margin: 0;
 		font-size: $font-size-md;
+		line-height: $line-height-snug;
 		color: $color-text;
 	}
 }

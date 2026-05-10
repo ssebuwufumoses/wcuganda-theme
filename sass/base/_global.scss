@@ -159,6 +159,28 @@
 	}
 }
 
+// -----------------------------------------------------------------------------
+// Hairline section divider (Supabase docs pattern). Use between adjacent
+// content sections that share the same background to provide visual rhythm
+// without a heavy bg color change.
+// -----------------------------------------------------------------------------
+.wcu-divider {
+	display: block;
+	width: 100%;
+	height: 1px;
+	margin: 0;
+	background-color: $color-border-muted;
+	border: 0;
+}
+
+.wcu-divider--strong {
+	background-color: $color-border;
+}
+
+.wcu-divider--on-dark {
+	background-color: $color-border-on-dark;
+}
+
 // Embedded media wrapper (for iframes).
 .embed-responsive {
 	@include aspect-ratio(16, 9);

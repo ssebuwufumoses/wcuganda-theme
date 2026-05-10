@@ -527,11 +527,11 @@
 .wcu-folks-info__row {
 	dt {
 		margin-bottom: $space-1;
-		font-family: $font-heading;
+		font-family: $font-mono;
 		font-size: $font-size-xs;
-		font-weight: $font-weight-semibold;
+		font-weight: $font-weight-medium;
 		color: $color-text-muted;
-		letter-spacing: 0.08em;
+		letter-spacing: 0;
 		text-transform: uppercase;
 	}
 

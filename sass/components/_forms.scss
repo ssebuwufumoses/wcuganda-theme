@@ -2,7 +2,6 @@
 // Form controls — inputs, textareas, selects, search forms.
 // =============================================================================
 
-@use 'sass:color';
 @use '../abstracts' as *;
 
 .wcu-form {
@@ -61,19 +60,26 @@ input[type='color'],
 textarea,
 select {
 	width: 100%;
-	min-height: 2.75rem;
-	padding: $space-3 $space-4;
+	// Supabase-style: taller, slightly larger radius, subtler default border,
+	// crisper focus ring (defined in $shadow-focus).
+	min-height: 2.5rem;
+	padding: 0.5rem $space-3;
 	font-family: $font-body;
-	font-size: $font-size-md;
+	font-size: $font-size-sm;
+	line-height: $line-height-snug;
 	color: $color-text;
 	background-color: $color-white;
-	border: $border-width solid $color-border;
+	border: $border-width solid $color-border-strong;
 	border-radius: $radius-md;
 	transition: border-color $transition-fast, box-shadow $transition-fast;
 	appearance: none;
 
 	&::placeholder {
-		color: color.adjust($color-text-muted, $lightness: 10%);
+		color: $color-text-subtle;
+	}
+
+	&:hover {
+		border-color: $color-border-stronger;
 	}
 
 	&:focus {
