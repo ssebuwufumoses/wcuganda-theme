@@ -78,6 +78,19 @@ if ( ! defined( 'ABSPATH' ) ) {
 					<?php wcu_render_primary_menu(); ?>
 				</nav>
 
+				<button type="button"
+					class="site-header__theme-toggle"
+					data-wcu-theme-toggle
+					aria-label="<?php esc_attr_e( 'Switch to light theme', 'wcuganda' ); ?>"
+					aria-pressed="false">
+					<span class="site-header__theme-toggle-icon site-header__theme-toggle-icon--moon" aria-hidden="true">
+						<?php wcu_svg_icon( 'moon', array( 'width' => 16, 'height' => 16 ) ); ?>
+					</span>
+					<span class="site-header__theme-toggle-icon site-header__theme-toggle-icon--sun" aria-hidden="true">
+						<?php wcu_svg_icon( 'sun', array( 'width' => 16, 'height' => 16 ) ); ?>
+					</span>
+				</button>
+
 				<?php
 				$wcu_join_url = get_theme_mod( 'wcu_join_url', '' );
 				if ( ! empty( $wcu_join_url ) ) :

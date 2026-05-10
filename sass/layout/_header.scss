@@ -33,6 +33,56 @@
 }
 
 // -----------------------------------------------------------------------------
+// Theme toggle — small icon button next to the CTA. Sun icon shows in dark
+// theme (click → switch to light); moon shows in light theme (→ dark).
+// -----------------------------------------------------------------------------
+.site-header__theme-toggle {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 2rem;
+	height: 2rem;
+	padding: 0;
+	color: var(--wcu-text);
+	background: transparent;
+	border: $border-width solid var(--wcu-border);
+	border-radius: $radius-md;
+	cursor: pointer;
+	transition: color $transition-fast, border-color $transition-fast,
+		background-color $transition-fast;
+
+	&:hover,
+	&:focus-visible {
+		color: $color-primary;
+		border-color: var(--wcu-border-strong);
+	}
+
+	svg {
+		display: block;
+	}
+}
+
+.site-header__theme-toggle-icon {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+}
+
+// Dark theme (default): show the sun icon (click → light), hide moon.
+.site-header__theme-toggle-icon--moon {
+	display: none;
+}
+
+// Light theme: show the moon icon (click → dark), hide sun.
+:root[data-theme='light'] .site-header__theme-toggle-icon--sun {
+	display: none;
+}
+
+:root[data-theme='light'] .site-header__theme-toggle-icon--moon {
+	display: inline-flex;
+}
+
+// -----------------------------------------------------------------------------
 // Branding (logo + site title)
 // -----------------------------------------------------------------------------
 .site-branding {

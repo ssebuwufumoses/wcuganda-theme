@@ -4,6 +4,64 @@
 
 @use '../abstracts' as *;
 
+// -----------------------------------------------------------------------------
+// Theme tokens — CSS custom properties so the dark / light theme can flip
+// at runtime via [data-theme="light"] on <html>. SCSS tokens carry the
+// canonical hex values; these CSS vars expose the surface-level subset
+// that's allowed to flip per theme.
+// -----------------------------------------------------------------------------
+:root {
+	--wcu-bg:               #{$color-bg-dark};            // body canvas (dark)
+	--wcu-bg-alt:           #{$color-bg-alt};             // elevated surface
+	--wcu-bg-deep:          #{$color-bg-darker};          // section--dark
+	--wcu-text:             #{$color-text};               // body text (light)
+	--wcu-text-muted:       #{$color-text-muted};         // muted body text
+	--wcu-border:           #{$color-border};             // divider / card border
+	--wcu-border-muted:     #{$color-border-muted};       // subtle divider
+	--wcu-border-strong:    #{$color-border-strong};      // hover / focus border
+	--wcu-header-bg:        #{rgba($color-bg-dark, 0.75)}; // sticky nav background
+	--wcu-header-border:    #{$color-border};
+}
+
+:root[data-theme='light'] {
+	--wcu-bg:               #{$color-bg};                  // white
+	--wcu-bg-alt:           #{$color-bg-alt-on-light};     // light gray elevated
+	--wcu-bg-deep:          #{$color-bg-alt-on-light};     // alt for dark blocks on light theme
+	--wcu-text:             #{$color-text-on-light};       // dark text
+	--wcu-text-muted:       #{$color-text-muted-on-light};
+	--wcu-border:           #{$color-border-on-light};
+	--wcu-border-muted:     #{$color-border-muted-on-light};
+	--wcu-border-strong:    #{$color-border-strong-on-light};
+	--wcu-header-bg:        #{rgba($color-bg, 0.85)};
+	--wcu-header-border:    #{$color-border-on-light};
+}
+
+// Flip body + sections + cards + header by referencing the CSS vars.
+// SCSS tokens still hold the canonical values for places that don't
+// need to be theme-aware (gradients, shadows, brand colors).
+body {
+	color: var(--wcu-text);
+	background-color: var(--wcu-bg);
+}
+
+body .section--alt {
+	background-color: var(--wcu-bg-alt);
+}
+
+body .section--dark {
+	background-color: var(--wcu-bg-deep);
+}
+
+body .wcu-card {
+	background-color: var(--wcu-bg-alt);
+	border-color: var(--wcu-border);
+}
+
+body .site-header {
+	background-color: var(--wcu-header-bg);
+	border-bottom-color: var(--wcu-header-border);
+}
+
 .site {
 	display: flex;
 	flex-direction: column;

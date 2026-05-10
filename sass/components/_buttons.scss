@@ -10,10 +10,13 @@
 	align-items: center;
 	justify-content: center;
 	gap: $space-2;
-	min-height: 2.75rem; // 44px touch target
-	padding: $space-3 $space-6;
+	// Supabase-style compact default: 36px tall, tighter horizontal padding,
+	// 14px font. Tapping still meets the 36-44 ergonomic range; .wcu-btn--lg
+	// gives the explicit 44+ touch target where larger CTAs are needed.
+	min-height: 2.25rem;
+	padding: $space-2 $space-4;
 	font-family: $font-heading;
-	font-size: $font-size-md;
+	font-size: $font-size-sm;
 	font-weight: $font-weight-semibold;
 	line-height: 1;
 	// Dark text on the bright Supabase green keeps AAA contrast on the
@@ -121,18 +124,19 @@
 }
 
 // -----------------------------------------------------------------------------
-// Sizes
+// Sizes — base sits at the Supabase \"compact\" default (36px). The variants
+// below provide tinier and larger options for inline / hero contexts.
 // -----------------------------------------------------------------------------
 .wcu-btn--sm {
-	min-height: 2.25rem;
-	padding: $space-2 $space-4;
-	font-size: $font-size-sm;
+	min-height: 2rem;
+	padding: 0.375rem $space-3;
+	font-size: $font-size-xs;
 }
 
 .wcu-btn--lg {
-	min-height: 3.25rem;
-	padding: $space-4 $space-8;
-	font-size: $font-size-lg;
+	min-height: 2.75rem;
+	padding: $space-3 $space-6;
+	font-size: $font-size-md;
 }
 
 .wcu-btn--block {

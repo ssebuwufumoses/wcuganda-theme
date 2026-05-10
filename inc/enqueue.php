@@ -81,6 +81,26 @@ function wcu_preload_fonts() {
 add_action( 'wp_head', 'wcu_preload_fonts', 2 );
 
 /**
+ * Inline the theme-toggle bootstrap inside <head> so the data-theme attribute
+ * is set on <html> BEFORE paint. Prevents a flash of dark theme when the user
+ * has chosen light (or vice versa).
+ *
+ * @return void
+ */
+function wcu_inline_theme_toggle() {
+	$path = get_template_directory() . '/assets/js/src/theme-toggle.js';
+	if ( ! file_exists( $path ) ) {
+		return;
+	}
+	$js = file_get_contents( $path ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents -- local theme file.
+	if ( false === $js ) {
+		return;
+	}
+	echo "<script>\n" . $js . "\n</script>\n"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- file is theme-controlled.
+}
+add_action( 'wp_head', 'wcu_inline_theme_toggle', 1 );
+
+/**
  * Enqueue editor (Gutenberg) styles.
  *
  * @return void
