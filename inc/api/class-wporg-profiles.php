@@ -417,13 +417,17 @@ class WCU_WPOrg_Profiles {
 		}
 
 		// Current wp.org markup (BuddyPress group list):
-		//   <li class="...">
-		//     <div class="badge item dashicons badge-{slug} dashicons-{icon}"></div>
-		//     {Display Name}
-		//   </li>
-		// Capture the badge slug, the dashicon class (so we can render the
-		// same icon wp.org shows), and the display name.
-		$pattern = '/<div\s+class="badge\s+item\s+dashicons\s+badge-([a-z0-9-]+)\s+dashicons-([a-z0-9-]+)[^"]*"[^>]*>\s*<\/div>\s*([^<]+?)\s*<\/li>/is';
+		//   <li class="..."><div class="badge item dashicons badge-{slug} dashicons-{icon}"></div> Display Name </li>
+		//
+		// Some badges carry an extra modifier class between badge-X and
+		// dashicons-Y, e.g. `badge-code-committer has-overlay dashicons-editor-code`.
+		// The regex must tolerate ANY classes between them — earlier strict
+		// "back-to-back" matching missed `has-overlay` badges (Core Code
+		// Committer, Photos Team, etc.) on Matt's profile.
+		//
+		// Word-boundary anchored slug + dashicon captures, with [^"]* between
+		// to allow arbitrary class ordering without crossing the closing quote.
+		$pattern = '/<div\s+class="[^"]*\bbadge-([a-z0-9-]+)\b[^"]*\bdashicons-([a-z0-9-]+)\b[^"]*"[^>]*>\s*<\/div>\s*([^<]+?)\s*<\/li>/is';
 		preg_match_all( $pattern, $html, $matches );
 
 		$badges = array();
@@ -467,26 +471,64 @@ class WCU_WPOrg_Profiles {
 }
 
 /**
- * Flush every cached wp.org artifact (badges, avatar, activity, plugins,
- * themes) for a member when their post is saved. Catches the case where an
- * editor adds/changes the wp.org username and shouldn't have to wait 30 min
- * for the negative-cache window to expire before the data appears.
+ * Flush every cached wp.org artifact for a member as soon as their wp.org
+ * username field is added or changed. We hook into the meta lifecycle
+ * directly (added_post_meta, updated_post_meta) instead of save_post,
+ * because Gutenberg saves meta via a separate REST request that fires
+ * AFTER save_post — meaning a save_post handler that read the meta would
+ * see the OLD value (or no value) on a fresh post and skip the flush.
+ *
+ * Hooking the meta itself catches both the editor save flow and any
+ * programmatic update_post_meta() calls from import scripts.
  */
+$wcu_flush_wporg_for_member = static function ( $post_id, $username ) {
+	if ( ! $post_id || empty( $username ) ) {
+		return;
+	}
+	if ( 'wcu_member' !== get_post_type( $post_id ) ) {
+		return;
+	}
+	WCU_WPOrg_Profiles::flush_cache( $username );
+	if ( class_exists( 'WCU_WPOrg_Repo' ) ) {
+		WCU_WPOrg_Repo::flush_cache( $username );
+	}
+};
+
+add_action(
+	'updated_post_meta',
+	static function ( $meta_id, $post_id, $meta_key, $meta_value ) use ( $wcu_flush_wporg_for_member ) {
+		if ( '_wcu_member_wporg_username' === $meta_key ) {
+			$wcu_flush_wporg_for_member( $post_id, $meta_value );
+		}
+	},
+	10,
+	4
+);
+
+add_action(
+	'added_post_meta',
+	static function ( $meta_id, $post_id, $meta_key, $meta_value ) use ( $wcu_flush_wporg_for_member ) {
+		if ( '_wcu_member_wporg_username' === $meta_key ) {
+			$wcu_flush_wporg_for_member( $post_id, $meta_value );
+		}
+	},
+	10,
+	4
+);
+
+// Belt-and-suspenders: still hook save_post in case the meta was written
+// the legacy way (e.g. from a meta-box save handler) so save_post catches
+// it without needing the meta lifecycle hooks above.
 add_action(
 	'save_post_wcu_member',
-	static function ( $post_id ) {
+	static function ( $post_id ) use ( $wcu_flush_wporg_for_member ) {
 		if ( ! $post_id || ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) ) {
 			return;
 		}
 		$username = get_post_meta( $post_id, '_wcu_member_wporg_username', true );
-		if ( empty( $username ) ) {
-			return;
-		}
-		WCU_WPOrg_Profiles::flush_cache( $username );
-		if ( class_exists( 'WCU_WPOrg_Repo' ) ) {
-			WCU_WPOrg_Repo::flush_cache( $username );
-		}
-	}
+		$wcu_flush_wporg_for_member( $post_id, $username );
+	},
+	999
 );
 
 /**
