@@ -134,53 +134,63 @@ class WCU_WPOrg_Profiles {
 	/**
 	 * Parse activity items out of a wp.org profile HTML page.
 	 *
-	 * The profile page renders a BuddyPress activity stream as `<li class="activity-item">`
-	 * rows. Each row carries a header (action description with linked names),
-	 * an inner excerpt, and a "X ago" timestamp.
+	 * The profile page emits each row as either:
+	 *   <li class="wporgactivity wporgactivity-{cat} wporgactivity-{action}">
+	 *     <p>...action HTML, with optional <span> excerpt after a <br>...</p>
+	 *     <time class="ago" datetime="...">3 weeks ago</time>
+	 *   </li>
+	 * or the trac-commit variant:
+	 *   <li class="tracplugins"> <p>Committed [...]</p> <time>...</time> </li>
 	 *
 	 * @param string $html Page HTML.
 	 * @return array<int,array<string,string>>
 	 */
 	private static function parse_activity_html( $html ) {
-		// Each activity row.
-		if ( ! preg_match_all( '/<li[^>]+class="[^"]*activity-item[^"]*"[^>]*>(.*?)<\/li>/is', $html, $matches ) ) {
+		// Match both `wporgactivity-*` and the `tracplugins` variants.
+		$row_pattern = '/<li[^>]+class="[^"]*(?:wporgactivity|tracplugins)[^"]*"[^>]*>(.*?)<\/li>/is';
+		if ( ! preg_match_all( $row_pattern, $html, $matches, PREG_SET_ORDER ) ) {
 			return array();
 		}
 
 		$items = array();
-		foreach ( $matches[1] as $row ) {
-			// Action description ("Reacted to a post by Foo Bar").
-			$action_html = '';
-			if ( preg_match( '/<div[^>]+class="[^"]*activity-header[^"]*"[^>]*>(.*?)<\/div>/is', $row, $head ) ) {
-				$action_html = self::clean_inline_html( $head[1] );
-			} elseif ( preg_match( '/<p[^>]+class="[^"]*activity-header[^"]*"[^>]*>(.*?)<\/p>/is', $row, $head ) ) {
-				$action_html = self::clean_inline_html( $head[1] );
-			}
+		foreach ( $matches as $match ) {
+			$row = $match[1];
 
-			// Excerpt body, if any.
-			$excerpt = '';
-			if ( preg_match( '/<div[^>]+class="[^"]*activity-inner[^"]*"[^>]*>(.*?)<\/div>/is', $row, $inner ) ) {
-				$excerpt = trim( wp_strip_all_tags( $inner[1] ) );
-				$excerpt = preg_replace( '/\s+/', ' ', $excerpt );
-				if ( mb_strlen( $excerpt ) > 220 ) {
+			// Pull the inner <p>...</p> — it carries the action HTML.
+			$action_html = '';
+			$excerpt     = '';
+			if ( preg_match( '/<p[^>]*>(.*?)<\/p>/is', $row, $p ) ) {
+				$inner = $p[1];
+
+				// The trailing <span>...</span> after a <br> (or directly inside the p)
+				// is the post excerpt. Pull it out so it can render as a quote block,
+				// and drop it from the action HTML so the action stays one short line.
+				if ( preg_match( '/<span[^>]*>(.*?)<\/span>/is', $inner, $sp ) ) {
+					$excerpt = trim( preg_replace( '/\s+/', ' ', wp_strip_all_tags( $sp[1] ) ) );
+					$inner   = preg_replace( '/<br\s*\/?>\s*<span[^>]*>.*?<\/span>/is', '', $inner );
+					$inner   = preg_replace( '/<span[^>]*>.*?<\/span>/is', '', $inner );
+				}
+
+				$action_html = self::clean_inline_html( $inner );
+
+				if ( '' !== $excerpt && mb_strlen( $excerpt ) > 220 ) {
 					$excerpt = mb_substr( $excerpt, 0, 217 ) . '…';
 				}
 			}
 
-			// "2 hours ago" timestamp.
+			// Friendly relative time ("3 weeks ago").
 			$time = '';
-			if ( preg_match( '/class="[^"]*time-since[^"]*"[^>]*>([^<]+)<\/a>/i', $row, $ts ) ) {
-				$time = trim( wp_strip_all_tags( $ts[1] ) );
-			} elseif ( preg_match( '/<time[^>]*>([^<]+)<\/time>/i', $row, $ts ) ) {
+			if ( preg_match( '/<time[^>]*>([^<]+)<\/time>/i', $row, $ts ) ) {
 				$time = trim( wp_strip_all_tags( $ts[1] ) );
 			}
 
-			// Activity type — derived from the row's class list.
+			// Activity type — for icon selection. Pull the second wporgactivity-*
+			// class (the action), or fall back to the row class for tracplugins.
 			$type = 'activity';
-			if ( preg_match( '/class="[^"]*activity-item[^"]*"/i', $row, $cls ) ) {
-				if ( preg_match( '/\b(reaction|favorite|new_blog_post|new_plugin|new_theme|wp_org_meeting|new_member|added_plugin|updated_plugin|added_theme|updated_theme)\b/', $cls[0], $tm ) ) {
-					$type = $tm[1];
-				}
+			if ( preg_match( '/wporgactivity-([a-z0-9_-]+)\s+wporgactivity-([a-z0-9_-]+)/i', $row, $tm ) ) {
+				$type = $tm[2];
+			} elseif ( false !== strpos( $row, 'tracplugins' ) ) {
+				$type = 'plugin_commit';
 			}
 
 			if ( '' === $action_html ) {
@@ -188,10 +198,10 @@ class WCU_WPOrg_Profiles {
 			}
 
 			$items[] = array(
-				'type'    => $type,
+				'type'    => sanitize_html_class( $type ),
 				'action'  => $action_html,
-				'excerpt' => $excerpt,
-				'time'    => $time,
+				'excerpt' => sanitize_text_field( $excerpt ),
+				'time'    => sanitize_text_field( $time ),
 			);
 		}
 
@@ -212,6 +222,7 @@ class WCU_WPOrg_Profiles {
 				'a'      => array( 'href' => array(), 'title' => array() ),
 				'strong' => array(),
 				'em'     => array(),
+				'i'      => array(),
 				'span'   => array(),
 			)
 		) );
@@ -398,8 +409,14 @@ class WCU_WPOrg_Profiles {
 			return array();
 		}
 
-		// wp.org renders badges as `<span class="profile-badge profile-badge-<slug>" title="<name>">`.
-		$pattern = '/profile-badge\s+profile-badge-([a-z0-9-]+)[^"]*"\s*[^>]*title="([^"]*)"/i';
+		// Current wp.org markup (BuddyPress group list):
+		//   <li class="...">
+		//     <div class="badge item dashicons badge-{slug} dashicons-{icon}"></div>
+		//     {Display Name}
+		//   </li>
+		// The slug is in the badge-* class; the name is the text node after
+		// the closing </div> and before the </li>.
+		$pattern = '/<div\s+class="badge\s+item\s+dashicons\s+badge-([a-z0-9-]+)[^"]*"[^>]*>\s*<\/div>\s*([^<]+?)\s*<\/li>/is';
 		preg_match_all( $pattern, $html, $matches );
 
 		$badges = array();
@@ -407,18 +424,30 @@ class WCU_WPOrg_Profiles {
 		if ( ! empty( $matches[1] ) ) {
 			foreach ( $matches[1] as $i => $slug ) {
 				$slug = sanitize_title( $slug );
-				if ( '' === $slug || isset( $seen[ $slug ] ) ) {
+				if ( '' === $slug ) {
 					continue;
 				}
-				$seen[ $slug ] = true;
 
-				$name = isset( $matches[2][ $i ] ) ? sanitize_text_field( $matches[2][ $i ] ) : '';
+				$name = isset( $matches[2][ $i ] )
+					? trim( preg_replace( '/\s+/', ' ', wp_strip_all_tags( $matches[2][ $i ] ) ) )
+					: '';
 				if ( '' === $name ) {
 					$name = ucwords( str_replace( '-', ' ', $slug ) );
 				}
+
+				// Dedup on slug+name. wp.org reuses the same badge slug for
+				// related-but-distinct badges (e.g. `organizer` covers both
+				// "Meetup Organizer" and "WordCamp Organizer"); the display
+				// name is what disambiguates them.
+				$key = $slug . '|' . strtolower( $name );
+				if ( isset( $seen[ $key ] ) ) {
+					continue;
+				}
+				$seen[ $key ] = true;
+
 				$badges[] = array(
 					'slug' => $slug,
-					'name' => $name,
+					'name' => sanitize_text_field( $name ),
 				);
 			}
 		}
@@ -426,3 +455,55 @@ class WCU_WPOrg_Profiles {
 		return $badges;
 	}
 }
+
+/**
+ * Flush every cached wp.org artifact (badges, avatar, activity, plugins,
+ * themes) for a member when their post is saved. Catches the case where an
+ * editor adds/changes the wp.org username and shouldn't have to wait 30 min
+ * for the negative-cache window to expire before the data appears.
+ */
+add_action(
+	'save_post_wcu_member',
+	static function ( $post_id ) {
+		if ( ! $post_id || ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) ) {
+			return;
+		}
+		$username = get_post_meta( $post_id, '_wcu_member_wporg_username', true );
+		if ( empty( $username ) ) {
+			return;
+		}
+		WCU_WPOrg_Profiles::flush_cache( $username );
+		if ( class_exists( 'WCU_WPOrg_Repo' ) ) {
+			WCU_WPOrg_Repo::flush_cache( $username );
+		}
+	}
+);
+
+/**
+ * Admin-only `?wcu_refresh_wporg=1` query trigger — flushes the wp.org
+ * caches for the currently-viewed member profile. Useful for verifying
+ * after fixing a parser without waiting for the cache to age out.
+ */
+add_action(
+	'template_redirect',
+	static function () {
+		if ( ! isset( $_GET['wcu_refresh_wporg'] ) || ! current_user_can( 'edit_posts' ) ) {
+			return;
+		}
+		if ( ! is_singular( 'wcu_member' ) ) {
+			return;
+		}
+		$username = get_post_meta( get_queried_object_id(), '_wcu_member_wporg_username', true );
+		if ( empty( $username ) ) {
+			return;
+		}
+		WCU_WPOrg_Profiles::flush_cache( $username );
+		if ( class_exists( 'WCU_WPOrg_Repo' ) ) {
+			WCU_WPOrg_Repo::flush_cache( $username );
+		}
+		// Bounce to the same URL without the query var so the next render
+		// is the freshly-fetched data (and the URL stays clean).
+		wp_safe_redirect( remove_query_arg( 'wcu_refresh_wporg' ) );
+		exit;
+	}
+);

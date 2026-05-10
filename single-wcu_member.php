@@ -494,6 +494,7 @@ while ( have_posts() ) :
 														'a'      => array( 'href' => array(), 'title' => array() ),
 														'strong' => array(),
 														'em'     => array(),
+														'i'      => array(),
 														'span'   => array(),
 													)
 												);

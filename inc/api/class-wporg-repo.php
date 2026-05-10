@@ -78,6 +78,21 @@ class WCU_WPOrg_Repo {
 	}
 
 	/**
+	 * Force a refresh of plugin + theme caches for a username.
+	 *
+	 * @param string $username Username.
+	 * @return void
+	 */
+	public static function flush_cache( $username ) {
+		$username = sanitize_user( ltrim( (string) $username, '@' ), true );
+		if ( '' === $username ) {
+			return;
+		}
+		delete_transient( 'wcu_wporg_plugins_' . md5( $username ) );
+		delete_transient( 'wcu_wporg_themes_' . md5( $username ) );
+	}
+
+	/**
 	 * Run a query against the appropriate endpoint and normalize results.
 	 *
 	 * @param string $kind  'plugins' or 'themes'.
@@ -119,7 +134,10 @@ class WCU_WPOrg_Repo {
 		$key  = ( 'plugins' === $kind ) ? 'plugins' : 'themes';
 
 		if ( empty( $body[ $key ] ) || ! is_array( $body[ $key ] ) ) {
-			set_transient( $cache_key, array(), self::CACHE_LIFETIME );
+			// Negative cache the empty result briefly. Caching it for the full
+			// 24h would freeze a legit "no plugins yet" user out of the data
+			// for a whole day after they publish their first plugin upstream.
+			set_transient( $cache_key, array(), self::CACHE_NEGATIVE );
 			return array();
 		}
 
