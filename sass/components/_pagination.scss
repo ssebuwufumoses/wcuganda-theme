@@ -26,30 +26,34 @@
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		min-width: 2.5rem;
-		min-height: 2.5rem;
+		min-width: 2.25rem;
+		min-height: 2.25rem;
 		padding: 0 $space-3;
+		// Mono for page numbers — Supabase data-pagination pattern.
+		font-family: $font-mono;
 		font-size: $font-size-sm;
-		font-weight: $font-weight-semibold;
-		color: $color-text;
+		font-weight: $font-weight-medium;
+		color: $color-text-light;
 		text-decoration: none;
 		background-color: $color-white;
-		border: $border-width solid $color-border;
+		border: $border-width solid $color-border-muted;
 		border-radius: $radius-md;
 		transition: color $transition-fast, background-color $transition-fast,
 			border-color $transition-fast;
 
 		&:hover,
 		&:focus-visible {
-			color: $color-white;
-			background-color: $color-primary;
-			border-color: $color-primary;
+			color: $color-text;
+			background-color: $color-bg-alt;
+			border-color: $color-border-strong;
 		}
 
 		&.current {
-			color: $color-white;
-			background-color: $color-bg-dark;
-			border-color: $color-bg-dark;
+			// Dark text on bright Supabase green — AAA contrast, current page
+			// reads as the active state without a color flip.
+			color: $color-text;
+			background-color: $color-primary;
+			border-color: $color-primary;
 		}
 
 		&.dots {
@@ -93,7 +97,7 @@
 
 			&:hover,
 			&:focus-visible {
-				color: $color-primary;
+				color: $color-primary-dark;
 			}
 		}
 	}

@@ -89,7 +89,7 @@
 // Bottom bar
 // -----------------------------------------------------------------------------
 .site-footer__bottom {
-	border-top: $border-width solid rgba($color-white, 0.12);
+	border-top: $border-width solid $color-border-on-dark;
 }
 
 .site-footer__bottom-inner {
@@ -102,10 +102,11 @@
 	justify-content: space-between;
 	padding-top: $space-5;
 	padding-bottom: $space-5;
-	font-family: $font-heading;
+	// Mono for the copyright / legal line — Supabase technical-text pattern.
+	font-family: $font-mono;
 	font-size: $font-size-xs;
-	color: rgba($color-white, 0.6);
-	letter-spacing: 0.03em;
+	color: $color-text-muted-on-dark;
+	letter-spacing: 0;
 
 	@include breakpoint-up(md) {
 		flex-direction: row;

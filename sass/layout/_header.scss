@@ -8,12 +8,17 @@
 	position: sticky;
 	top: 0;
 	z-index: $z-header;
-	background-color: $color-white;
-	border-bottom: $border-width solid $color-border;
-	transition: box-shadow $transition-base;
+	// Supabase-style sticky header: barely-there border, no heavy shadow
+	// on scroll — just a slightly more solid border instead.
+	background-color: rgba($color-bg, 0.85);
+	backdrop-filter: saturate(180%) blur(8px);
+	-webkit-backdrop-filter: saturate(180%) blur(8px);
+	border-bottom: $border-width solid $color-border-muted;
+	transition: border-color $transition-base, background-color $transition-base;
 
 	&.is-scrolled {
-		box-shadow: $shadow-md;
+		background-color: rgba($color-bg, 0.95);
+		border-bottom-color: $color-border;
 	}
 }
 
@@ -53,10 +58,11 @@
 .site-title {
 	margin: 0;
 	font-family: $font-heading;
-	font-size: $font-size-lg;
-	font-weight: $font-weight-bold;
+	font-size: $font-size-md;
+	font-weight: $font-weight-semibold;
 	line-height: 1.1;
 	color: $color-text;
+	letter-spacing: -0.01em;
 
 	a {
 		color: inherit;
@@ -64,7 +70,7 @@
 
 		&:hover,
 		&:focus-visible {
-			color: $color-primary;
+			color: $color-primary-dark;
 		}
 	}
 }
