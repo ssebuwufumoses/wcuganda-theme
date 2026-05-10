@@ -22,8 +22,6 @@
 
 .wcu-chapters-archive__title {
 	margin: 0 0 $space-3;
-	font-size: fluid(36, 56);
-	letter-spacing: -0.02em;
 }
 
 .wcu-chapters-archive__lead {
@@ -111,10 +109,7 @@
 
 .wcu-chapter-hero__title {
 	margin: 0;
-	font-size: fluid(36, 64);
-	line-height: 1.05;
 	color: $color-text;
-	letter-spacing: -0.02em;
 }
 
 // Reuse the events two-column layout for the body.

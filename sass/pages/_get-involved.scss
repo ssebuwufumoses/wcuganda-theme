@@ -20,8 +20,6 @@
 
 .wcu-get-involved__title {
 	margin: 0 0 $space-3;
-	font-size: fluid(36, 56);
-	letter-spacing: -0.02em;
 }
 
 .wcu-get-involved__lead {
@@ -76,7 +74,6 @@
 
 	.wcu-card__title {
 		margin: $space-1 0 $space-2;
-		font-size: fluid(22, 28);
 	}
 
 	.wcu-card__excerpt {
@@ -119,14 +116,12 @@
 
 .wcu-app-page__title {
 	margin: $space-4 0 $space-3;
-	font-size: fluid(32, 48);
-	letter-spacing: -0.02em;
 }
 
 .wcu-app-page__lead {
 	max-width: 56ch;
 	margin: 0;
-	font-size: fluid(15, 17);
+	font-size: $font-size-lg;
 	line-height: $line-height-relaxed;
 	color: $color-text-muted;
 }

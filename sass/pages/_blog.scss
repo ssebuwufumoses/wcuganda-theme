@@ -21,8 +21,6 @@
 
 .wcu-blog-archive__title {
 	margin: 0 0 $space-3;
-	font-size: fluid(36, 56);
-	letter-spacing: -0.02em;
 }
 
 .wcu-blog-archive__lead {
@@ -87,9 +85,6 @@
 
 .wcu-blog-single__title {
 	margin: 0 0 $space-4;
-	font-size: fluid(32, 56);
-	line-height: 1.05;
-	letter-spacing: -0.02em;
 }
 
 .wcu-blog-single__meta {
@@ -124,7 +119,7 @@
 .wcu-blog-single__content {
 	padding-top: $space-8;
 	padding-bottom: $space-6;
-	font-size: fluid(16, 18);
+	font-size: $font-size-lg;
 	line-height: $line-height-relaxed;
 
 	h2,

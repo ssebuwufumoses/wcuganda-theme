@@ -21,8 +21,6 @@
 
 .wcu-members-archive__title {
 	margin: 0 0 $space-3;
-	font-size: fluid(36, 56);
-	letter-spacing: -0.02em;
 }
 
 .wcu-members-archive__lead {
@@ -231,7 +229,7 @@
 	width: 100%;
 	height: 100%;
 	font-family: $font-heading;
-	font-size: fluid(36, 48);
+	font-size: $h1;
 	font-weight: $font-weight-bold;
 	color: $color-text-on-dark;
 	background-color: rgba($color-primary, 0.4);
@@ -247,10 +245,7 @@
 
 .wcu-folks-hero__name {
 	margin: 0;
-	font-size: fluid(28, 40);
-	line-height: 1.05;
 	color: $color-text-on-dark;
-	letter-spacing: -0.02em;
 }
 
 .wcu-folks-hero__verified {
@@ -362,7 +357,7 @@
 
 .wcu-folks-hero__bio {
 	margin: 0;
-	font-size: fluid(15, 17);
+	font-size: $font-size-md;
 	line-height: $line-height-relaxed;
 	color: rgba($color-text-on-dark, 0.85);
 }
@@ -556,7 +551,6 @@
 
 .wcu-folks-bio__heading {
 	margin: 0 0 $space-4;
-	font-size: fluid(20, 24);
 }
 
 .wcu-folks-bio__content {
@@ -602,7 +596,6 @@
 
 .wcu-folks-credentials__heading {
 	margin: 0;
-	font-size: fluid(20, 24);
 }
 
 .wcu-folks-credentials__profile-link {

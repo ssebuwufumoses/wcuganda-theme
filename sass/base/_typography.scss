@@ -30,37 +30,46 @@ h6 {
 	letter-spacing: -0.01em;
 }
 
+// Canonical heading scale — these are the ONLY font-size declarations for
+// h1..h6 in the theme. Per-page templates should not override font-size on
+// h1/h2/h3 elements (they may override line-height / letter-spacing /
+// color / margin where context warrants).
+
 h1,
 .h1 {
-	font-size: fluid(32, 56);
+	font-size: $h1;
+	line-height: $line-height-tight;
 	letter-spacing: -0.02em;
 }
 
 h2,
 .h2 {
-	font-size: fluid(28, 40);
+	font-size: $h2;
+	line-height: $line-height-tight;
 }
 
 h3,
 .h3 {
-	font-size: fluid(22, 30);
+	font-size: $h3;
+	line-height: $line-height-snug;
 }
 
 h4,
 .h4 {
-	font-size: fluid(20, 24);
+	font-size: $h4;
+	line-height: $line-height-snug;
 	font-weight: $font-weight-semibold;
 }
 
 h5,
 .h5 {
-	font-size: $font-size-lg;
+	font-size: $h5;
 	font-weight: $font-weight-semibold;
 }
 
 h6,
 .h6 {
-	font-size: $font-size-md;
+	font-size: $h6;
 	font-weight: $font-weight-semibold;
 	text-transform: uppercase;
 	letter-spacing: 0.05em;

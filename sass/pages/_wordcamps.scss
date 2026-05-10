@@ -21,8 +21,6 @@
 
 .wcu-wordcamps-archive__title {
 	margin: 0 0 $space-3;
-	font-size: fluid(36, 56);
-	letter-spacing: -0.02em;
 }
 
 .wcu-wordcamps-archive__lead {
@@ -47,8 +45,6 @@
 
 .wcu-wordcamps-archive__section-title {
 	margin: 0 0 $space-6;
-	font-size: fluid(22, 28);
-	letter-spacing: -0.01em;
 }
 
 .wcu-wordcamps-archive__section--past {
@@ -96,10 +92,7 @@
 
 .wcu-wordcamp-hero__title {
 	margin: 0 0 $space-3;
-	font-size: fluid(36, 64);
-	line-height: 1.05;
 	color: $color-text;
-	letter-spacing: -0.02em;
 }
 
 .wcu-wordcamp-hero__past-badge {
@@ -161,7 +154,7 @@
 .wcu-wordcamp-single__content {
 	padding-top: $space-10;
 	padding-bottom: $space-10;
-	font-size: fluid(16, 18);
+	font-size: $font-size-lg;
 	line-height: $line-height-relaxed;
 
 	h2,
