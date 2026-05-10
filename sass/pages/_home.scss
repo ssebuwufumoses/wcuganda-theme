@@ -48,37 +48,50 @@
 	z-index: 1;
 	display: flex;
 	flex-direction: column;
-	gap: $space-5;
-	max-width: 880px;
-	text-align: left;
+	gap: $space-4;
+	align-items: center;
+	max-width: 56rem;
+	margin: 0 auto;
+	text-align: center;
 }
 
+// Pill-style eyebrow — small rounded chip on dark, like Supabase's
+// "State of Startups 2026" capsule.
 .wcu-hero__eyebrow {
+	display: inline-flex;
+	align-items: center;
+	gap: $space-2;
 	margin: 0;
+	padding: 0.35rem $space-3;
 	font-family: $font-heading;
-	font-size: $font-size-sm;
-	font-weight: $font-weight-semibold;
-	letter-spacing: 0.18em;
+	font-size: $font-size-xs;
+	font-weight: $font-weight-medium;
+	letter-spacing: 0;
 	color: rgba($color-text-on-dark, 0.85);
-	text-transform: uppercase;
+	text-transform: none;
+	background-color: rgba($color-text-on-dark, 0.06);
+	border: $border-width solid $color-border-on-dark;
+	border-radius: $radius-pill;
 }
 
 .wcu-hero__heading {
+	max-width: 24ch;
 	margin: 0;
-	font-size: fluid(36, 64);
-	line-height: 1.05;
+	font-size: fluid(28, 52);
+	line-height: 1.1;
 	color: $color-text-on-dark;
 	letter-spacing: -0.02em;
 }
 
 .wcu-hero__subheading {
-	max-width: 56ch;
-	font-size: fluid(16, 20);
+	max-width: 52ch;
+	margin: 0;
+	font-size: fluid(15, 18);
 	line-height: $line-height-relaxed;
-	color: rgba($color-text-on-dark, 0.85);
+	color: rgba($color-text-on-dark, 0.7);
 
 	p {
-		margin: 0 0 $space-3;
+		margin: 0 0 $space-2;
 
 		&:last-child {
 			margin-bottom: 0;
@@ -90,6 +103,7 @@
 	display: flex;
 	flex-wrap: wrap;
 	gap: $space-3;
+	justify-content: center;
 	margin-top: $space-3;
 }
 
