@@ -6,21 +6,21 @@
 @use '../abstracts' as *;
 
 // -----------------------------------------------------------------------------
-// Hero
+// Hero — Supabase-style compact centered layout
 // -----------------------------------------------------------------------------
 .wcu-hero {
 	position: relative;
-	padding: $space-16 0 $space-12;
+	padding: $space-12 0 $space-10;
 	overflow: hidden;
 	color: $color-text-on-dark;
 	background-color: $color-bg-dark;
 
 	@include breakpoint-up(md) {
-		padding: $space-20 0 $space-16;
+		padding: $space-16 0 $space-12;
 	}
 
 	@include breakpoint-up(lg) {
-		padding: $space-24 0 $space-20;
+		padding: $space-20 0 $space-16;
 	}
 
 	&--has-image {
