@@ -2,6 +2,7 @@
 // Buttons. `.wcu-btn` is the canonical class; native button elements inherit it.
 // =============================================================================
 
+@use 'sass:color';
 @use '../abstracts' as *;
 
 %btn-base {
@@ -15,7 +16,10 @@
 	font-size: $font-size-md;
 	font-weight: $font-weight-semibold;
 	line-height: 1;
-	color: $color-white;
+	// Dark text on the bright Supabase green keeps AAA contrast on the
+	// primary button. The hover-state darken (-8% lightness) lands at a
+	// medium green where dark text still passes AA.
+	color: $color-text;
 	text-align: center;
 	text-decoration: none;
 	cursor: pointer;
@@ -28,10 +32,10 @@
 
 	&:hover,
 	&:focus {
-		color: $color-white;
+		color: $color-text;
 		text-decoration: none;
-		background-color: $color-primary-dark;
-		border-color: $color-primary-dark;
+		background-color: color.adjust($color-primary, $lightness: -8%);
+		border-color: color.adjust($color-primary, $lightness: -8%);
 	}
 
 	&:active {
@@ -54,13 +58,17 @@
 // Variants
 // -----------------------------------------------------------------------------
 .wcu-btn--outline {
-	color: $color-primary;
+	// Deep green text + bright green border keeps the outline button readable
+	// on white while still telegraphing the Supabase brand color.
+	color: $color-primary-dark;
 	background-color: transparent;
+	border-color: $color-primary;
 
 	&:hover,
 	&:focus {
-		color: $color-white;
+		color: $color-text;
 		background-color: $color-primary;
+		border-color: $color-primary;
 	}
 }
 

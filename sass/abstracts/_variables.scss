@@ -3,42 +3,44 @@
 // =============================================================================
 
 // -----------------------------------------------------------------------------
-// Colors — minimal WordPress.com / Studio palette. Body/muted text passes
-// AAA on white; brand blue is AA (industry standard for dev community sites).
+// Colors — Supabase-inspired palette. Bright emerald primary for fills/accents,
+// deep AAA-safe green for text. Dark surfaces match Supabase's dev-tool dark.
 // -----------------------------------------------------------------------------
 
 // Brand
-$color-primary:        #3858E9; // WordPress brand blue (AA on white, 5.54:1)
-$color-primary-dark:   #1D35B4; // Hover / deep gradients (AAA on white, 9.45:1)
+$color-primary:        #3ECF8E; // Supabase emerald (vibrant; pair with dark text on top)
+$color-primary-dark:   #166534; // Deep green for body text / button hover (AAA on white, 7.46:1)
 
 // Surfaces
 $color-bg:             #FFFFFF;
-$color-bg-alt:         #F6F7F7; // Subtle gray, matches WordPress.com surface
-$color-bg-dark:        #0A0A0A; // Refined off-black, matches WordPress.com / Studio dark sections
+$color-bg-alt:         #F8F8F8; // Slightly warmer light surface (Supabase-leaning)
+$color-bg-dark:        #1C1C1C; // Supabase dark surface (warmer than pure black)
+$color-bg-darker:      #121212; // Page bg under cards on dark sections
 
 // Text
 $color-text:                #1A1A1A; // AAA on white (16.4:1)
 $color-text-muted:          #525252; // AAA on white (7.66:1)
-$color-text-on-dark:        #F5F5F5; // AAA on bg-dark (18.9:1)
-$color-text-muted-on-dark:  #B8B8B8; // AAA on bg-dark (8.5:1)
+$color-text-on-dark:        #EDEDED; // AAA on bg-dark
+$color-text-muted-on-dark:  #A1A1A1; // Subdued muted on dark, AAA-passing
 
 // Borders / dividers
-$color-border:         #E5E5E5;
+$color-border:           #EAEAEA; // 1px divider on light
+$color-border-on-dark:   #2A2A2A; // Subtle 1px divider on dark surfaces
 
 // Constants
 $color-white:          #FFFFFF;
 $color-black:          #000000;
 
 // Functional aliases
-$color-link:        $color-primary;
-$color-link-hover:  $color-primary-dark;
+$color-link:        $color-primary-dark; // Deep green for legibility on white text
+$color-link-hover:  $color-primary;      // Brighter green on hover (decorative)
 
 // -----------------------------------------------------------------------------
 // Typography
 // -----------------------------------------------------------------------------
 $font-heading: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 $font-body:    $font-heading;
-$font-mono:    'SFMono-Regular', Menlo, Consolas, 'Liberation Mono', monospace;
+$font-mono:    'JetBrains Mono', 'Source Code Pro', 'SFMono-Regular', Menlo, Consolas, monospace;
 
 $font-size-base:   1rem;       // 16px
 $font-size-xs:     0.75rem;    // 12px

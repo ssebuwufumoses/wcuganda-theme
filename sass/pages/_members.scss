@@ -280,10 +280,11 @@
 
 .wcu-folks-hero__handle {
 	margin: 0;
-	font-family: $font-heading;
-	font-size: $font-size-md;
-	font-weight: $font-weight-semibold;
+	font-family: $font-mono;
+	font-size: $font-size-sm;
+	font-weight: $font-weight-medium;
 	color: $color-primary;
+	letter-spacing: -0.01em;
 }
 
 .wcu-folks-hero__role {
