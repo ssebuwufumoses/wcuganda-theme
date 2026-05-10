@@ -82,7 +82,9 @@
 // -----------------------------------------------------------------------------
 .wcu-chapter-hero {
 	padding: $space-12 0;
-	color: $color-text-on-dark;
+	// Dark text on bright Supabase green for AAA contrast (matches the
+	// WordCamp banner + single event hero pattern).
+	color: $color-text;
 	background-color: $color-primary;
 
 	@include breakpoint-up(md) {
@@ -95,11 +97,11 @@
 	gap: $space-2;
 	align-items: center;
 	margin: 0 0 $space-3;
-	font-family: $font-heading;
-	font-size: $font-size-md;
-	font-weight: $font-weight-semibold;
-	color: rgba($color-text-on-dark, 0.9);
-	letter-spacing: 0.04em;
+	font-family: $font-mono;
+	font-size: $font-size-sm;
+	font-weight: $font-weight-medium;
+	color: rgba($color-text, 0.7);
+	letter-spacing: 0;
 	text-transform: uppercase;
 
 	svg {
@@ -111,7 +113,7 @@
 	margin: 0;
 	font-size: fluid(36, 64);
 	line-height: 1.05;
-	color: $color-text-on-dark;
+	color: $color-text;
 	letter-spacing: -0.02em;
 }
 

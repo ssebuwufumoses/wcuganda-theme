@@ -118,28 +118,31 @@
 .wcu-event-filters__chip {
 	display: inline-flex;
 	align-items: center;
-	padding: $space-2 $space-4;
+	// Tighter, Supabase-style chip — smaller padding, mono-leaning,
+	// subtle by default, prominent only when active.
+	padding: 0.35rem $space-3;
 	font-family: $font-heading;
-	font-size: $font-size-sm;
+	font-size: $font-size-xs;
 	font-weight: $font-weight-medium;
-	color: $color-text;
+	color: $color-text-light;
 	text-decoration: none;
 	background-color: $color-white;
-	border: $border-width solid $color-border;
+	border: $border-width solid $color-border-muted;
 	border-radius: $radius-pill;
 	transition: color $transition-fast, background-color $transition-fast,
 		border-color $transition-fast;
 
 	&:hover,
 	&:focus-visible {
-		color: $color-primary;
+		color: $color-text;
 		text-decoration: none;
 		background-color: $color-bg-alt;
-		border-color: $color-primary;
+		border-color: $color-border-strong;
 	}
 
 	&.is-active {
-		color: $color-white;
+		// Dark text on bright green for AAA contrast (Supabase pattern).
+		color: $color-text;
 		background-color: $color-primary;
 		border-color: $color-primary;
 	}
@@ -150,7 +153,9 @@
 // -----------------------------------------------------------------------------
 .wcu-event-hero {
 	padding: $space-12 0;
-	color: $color-text-on-dark;
+	// Dark text on bright Supabase green for AAA contrast (matches the
+	// WordCamp banner pattern across the site).
+	color: $color-text;
 	background-color: $color-primary;
 
 	@include breakpoint-up(md) {
@@ -166,14 +171,14 @@
 	font-family: $font-heading;
 	font-size: $font-size-sm;
 	font-weight: $font-weight-semibold;
-	color: rgba($color-text-on-dark, 0.85);
+	color: rgba($color-text, 0.7);
 	text-decoration: none;
 	letter-spacing: 0.04em;
 	text-transform: uppercase;
 
 	&:hover,
 	&:focus-visible {
-		color: $color-text-on-dark;
+		color: $color-text;
 		text-decoration: none;
 	}
 }
@@ -183,9 +188,9 @@
 	gap: $space-2;
 	align-items: center;
 	margin: 0 0 $space-3;
-	font-family: $font-heading;
-	font-size: $font-size-md;
-	color: rgba($color-text-on-dark, 0.9);
+	font-family: $font-mono;
+	font-size: $font-size-sm;
+	color: rgba($color-text, 0.85);
 
 	svg {
 		flex-shrink: 0;
@@ -196,7 +201,7 @@
 	margin: 0;
 	font-size: fluid(32, 56);
 	line-height: 1.05;
-	color: $color-text-on-dark;
+	color: $color-text;
 	letter-spacing: -0.02em;
 }
 

@@ -139,26 +139,38 @@
 	gap: $space-1;
 	padding: $space-4 0;
 	text-align: left;
-	border-left: 3px solid $color-primary;
+	// Thin Supabase-style accent: 1px solid muted border, primary green only on hover.
+	border-left: 2px solid $color-border-strong;
 	padding-left: $space-4;
+	transition: border-color $transition-fast;
+
+	&:hover {
+		border-color: $color-primary;
+	}
 
 	@include breakpoint-up(md) {
 		text-align: center;
 		border-left: 0;
-		border-top: 3px solid $color-primary;
+		border-top: 2px solid $color-border-strong;
 		padding-left: 0;
 		padding-top: $space-3;
+
+		&:hover {
+			border-top-color: $color-primary;
+		}
 	}
 }
 
 .wcu-stats__value {
 	display: block;
 	font-family: $font-heading;
-	font-size: fluid(36, 56);
+	font-size: fluid(32, 48);
 	font-weight: $font-weight-bold;
 	line-height: 1;
 	color: $color-text;
 	letter-spacing: -0.02em;
+	// tabular-nums keeps numerals same width during the count-up animation.
+	font-variant-numeric: tabular-nums;
 }
 
 .wcu-stats__label {

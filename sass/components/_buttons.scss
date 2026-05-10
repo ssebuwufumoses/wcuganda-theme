@@ -84,6 +84,14 @@
 	}
 }
 
+// Supabase-style tiny button — used for inline actions, table-row CTAs, etc.
+.wcu-btn--tiny {
+	min-height: 1.75rem;
+	padding: 0.25rem $space-2;
+	font-size: $font-size-xs;
+	border-radius: $radius-md;
+}
+
 .wcu-btn--ghost {
 	color: $color-text;
 	background-color: transparent;
