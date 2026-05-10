@@ -9,13 +9,15 @@
 	align-items: center;
 	gap: $space-1;
 	padding: 0.25rem $space-2;
-	font-family: $font-heading;
+	// Supabase-style technical badge: mono font, looser tracking, dark text
+	// on bright green for AAA contrast (was white text — failed AA).
+	font-family: $font-mono;
 	font-size: $font-size-xs;
-	font-weight: $font-weight-semibold;
+	font-weight: $font-weight-medium;
 	line-height: 1;
-	color: $color-white;
-	letter-spacing: 0.05em;
-	text-transform: uppercase;
+	color: $color-text;
+	letter-spacing: 0;
+	text-transform: none;
 	white-space: nowrap;
 	background-color: $color-primary;
 	border-radius: $radius-pill;

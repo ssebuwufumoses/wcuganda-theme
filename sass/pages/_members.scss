@@ -484,21 +484,25 @@
 .wcu-folks-specialties__chip {
 	display: inline-flex;
 	align-items: center;
-	padding: 0.4rem $space-3;
-	font-family: $font-heading;
-	font-size: $font-size-sm;
+	padding: 0.35rem $space-3;
+	// Supabase-style technical chip — mono for tag-like values
+	// (skills, roles, specialties read as data not prose).
+	font-family: $font-mono;
+	font-size: $font-size-xs;
 	font-weight: $font-weight-medium;
-	color: $color-text;
+	color: $color-text-light;
 	text-decoration: none;
 	background-color: $color-white;
-	border: $border-width solid $color-border;
+	border: $border-width solid $color-border-muted;
 	border-radius: $radius-pill;
-	transition: color $transition-fast, border-color $transition-fast;
+	transition: color $transition-fast, border-color $transition-fast,
+		background-color $transition-fast;
 
 	&:hover,
 	&:focus-visible {
-		color: $color-primary;
-		border-color: $color-primary;
+		color: $color-text;
+		background-color: $color-bg-alt;
+		border-color: $color-border-strong;
 	}
 }
 
