@@ -417,32 +417,44 @@ class WCU_WPOrg_Profiles {
 		}
 
 		// Current wp.org markup (BuddyPress group list):
-		//   <li class="..."><div class="badge item dashicons badge-{slug} dashicons-{icon}"></div> Display Name </li>
+		//   <li class="..."><div class="badge item dashicons badge-{slug} [...] [dashicons-{icon}]"></div> Display Name </li>
 		//
-		// Some badges carry an extra modifier class between badge-X and
-		// dashicons-Y, e.g. `badge-code-committer has-overlay dashicons-editor-code`.
-		// The regex must tolerate ANY classes between them — earlier strict
-		// "back-to-back" matching missed `has-overlay` badges (Core Code
-		// Committer, Photos Team, etc.) on Matt's profile.
+		// The dashicon-{icon} class is OPTIONAL — some badges (campus-connect-
+		// participant, credits-graduate, credits-mentor, openverse, etc.)
+		// don't have one because wp.org renders them via a CSS
+		// `background-image: url(data:...)` instead of a font glyph.
+		// Earlier passes required the dashicon class and rejected those
+		// badges entirely. Now we match on the badge-{slug} class alone
+		// and extract the dashicon name from the captured class attribute
+		// in a second pass when present.
 		//
-		// Word-boundary anchored slug + dashicon captures, with [^"]* between
-		// to allow arbitrary class ordering without crossing the closing quote.
-		$pattern = '/<div\s+class="[^"]*\bbadge-([a-z0-9-]+)\b[^"]*\bdashicons-([a-z0-9-]+)\b[^"]*"[^>]*>\s*<\/div>\s*([^<]+?)\s*<\/li>/is';
+		// Match the whole `<div class="..."></div> Display Name </li>` block
+		// in two captures: full class attribute, then display name.
+		$pattern = '/<div\s+class="([^"]*\bbadge-[a-z0-9-]+\b[^"]*)"[^>]*>\s*<\/div>\s*([^<]+?)\s*<\/li>/is';
 		preg_match_all( $pattern, $html, $matches );
 
 		$badges = array();
 		$seen   = array();
 		if ( ! empty( $matches[1] ) ) {
-			foreach ( $matches[1] as $i => $slug ) {
-				$slug = sanitize_title( $slug );
+			foreach ( $matches[1] as $i => $class_attr ) {
+				// Extract badge-{slug} from the class attribute.
+				if ( ! preg_match( '/\bbadge-([a-z0-9-]+)\b/', $class_attr, $sm ) ) {
+					continue;
+				}
+				$slug = sanitize_title( $sm[1] );
 				if ( '' === $slug ) {
 					continue;
 				}
 
-				$icon = isset( $matches[2][ $i ] ) ? sanitize_html_class( $matches[2][ $i ] ) : '';
+				// dashicons-{icon} is optional; capture if present so the
+				// renderer can map it to the matching SVG glyph.
+				$icon = '';
+				if ( preg_match( '/\bdashicons-([a-z0-9-]+)\b/', $class_attr, $im ) ) {
+					$icon = sanitize_html_class( $im[1] );
+				}
 
-				$name = isset( $matches[3][ $i ] )
-					? trim( preg_replace( '/\s+/', ' ', wp_strip_all_tags( $matches[3][ $i ] ) ) )
+				$name = isset( $matches[2][ $i ] )
+					? trim( preg_replace( '/\s+/', ' ', wp_strip_all_tags( $matches[2][ $i ] ) ) )
 					: '';
 				if ( '' === $name ) {
 					$name = ucwords( str_replace( '-', ' ', $slug ) );
