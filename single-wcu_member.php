@@ -315,7 +315,7 @@ while ( have_posts() ) :
 				$wcu_badges   = class_exists( 'WCU_WPOrg_Profiles' ) ? WCU_WPOrg_Profiles::get_badges( $wcu_wporg_username ) : array();
 				$wcu_plugins  = class_exists( 'WCU_WPOrg_Repo' ) ? WCU_WPOrg_Repo::get_plugins( $wcu_wporg_username, 12 ) : array();
 				$wcu_themes   = class_exists( 'WCU_WPOrg_Repo' ) ? WCU_WPOrg_Repo::get_themes( $wcu_wporg_username, 12 ) : array();
-				$wcu_activity = class_exists( 'WCU_WPOrg_Profiles' ) ? WCU_WPOrg_Profiles::get_activity( $wcu_wporg_username, 6 ) : array();
+				$wcu_activity = class_exists( 'WCU_WPOrg_Profiles' ) ? WCU_WPOrg_Profiles::get_activity( $wcu_wporg_username, 20 ) : array();
 
 				$wcu_has_any = ! empty( $wcu_badges ) || ! empty( $wcu_plugins ) || ! empty( $wcu_themes ) || ! empty( $wcu_activity );
 				$wcu_profile_url = 'https://profiles.wordpress.org/' . rawurlencode( $wcu_wporg_username ) . '/';
@@ -444,6 +444,9 @@ while ( have_posts() ) :
 							// Build the tab list dynamically — only show tabs that have items.
 							$wcu_cat_labels = array(
 								'blogs'       => __( 'Posts', 'wcuganda' ),
+								'forums'      => __( 'Forums', 'wcuganda' ),
+								'slack'       => __( 'Slack', 'wcuganda' ),
+								'github'      => __( 'GitHub', 'wcuganda' ),
 								'plugins'     => __( 'Plugins', 'wcuganda' ),
 								'themes'      => __( 'Themes', 'wcuganda' ),
 								'photos'      => __( 'Photos', 'wcuganda' ),
@@ -489,6 +492,9 @@ while ( have_posts() ) :
 												$wcu_act_dashicon = 'admin-site';
 												switch ( $wcu_act['category'] ) {
 													case 'blogs':     $wcu_act_dashicon = 'edit'; break;
+													case 'forums':    $wcu_act_dashicon = 'buddicons-replies'; break;
+													case 'slack':     $wcu_act_dashicon = 'format-chat'; break;
+													case 'github':    $wcu_act_dashicon = 'editor-code'; break;
 													case 'plugins':   $wcu_act_dashicon = 'admin-plugins'; break;
 													case 'themes':    $wcu_act_dashicon = 'admin-appearance'; break;
 													case 'photos':    $wcu_act_dashicon = 'camera'; break;

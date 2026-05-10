@@ -134,27 +134,31 @@ class WCU_WPOrg_Profiles {
 	/**
 	 * Parse activity items out of a wp.org profile HTML page.
 	 *
-	 * The profile page emits each row as either:
-	 *   <li class="wporgactivity wporgactivity-{cat} wporgactivity-{action}">
-	 *     <p>...action HTML, with optional <span> excerpt after a <br>...</p>
-	 *     <time class="ago" datetime="...">3 weeks ago</time>
-	 *   </li>
-	 * or the trac-commit variant:
-	 *   <li class="tracplugins"> <p>Committed [...]</p> <time>...</time> </li>
+	 * The profile page emits each row as one of three flavours, all with
+	 * the same inner structure (<p>action</p> + <time>):
+	 *   wp.org activity:  <li class="wporgactivity wporgactivity-{cat} wporgactivity-{action}">
+	 *   trac commits:     <li class="tracplugins">
+	 *   GitHub repo work: <li class="github-{Org}-{Repo}">
+	 *                     (e.g. github-WordPress-Community-Team for closed
+	 *                     issues, opened PRs, etc. on that repo)
 	 *
 	 * @param string $html Page HTML.
 	 * @return array<int,array<string,string>>
 	 */
 	private static function parse_activity_html( $html ) {
-		// Match both `wporgactivity-*` and the `tracplugins` variants.
-		$row_pattern = '/<li[^>]+class="[^"]*(?:wporgactivity|tracplugins)[^"]*"[^>]*>(.*?)<\/li>/is';
+		// Capture the class attribute (group 1) so we can detect the
+		// category, and the inner content (group 2) so we can extract the
+		// action HTML / time / excerpt. The class attribute also tells us
+		// which of the three row flavours we're in.
+		$row_pattern = '/<li[^>]+class="([^"]*(?:wporgactivity|tracplugins|github-)[^"]*)"[^>]*>(.*?)<\/li>/is';
 		if ( ! preg_match_all( $row_pattern, $html, $matches, PREG_SET_ORDER ) ) {
 			return array();
 		}
 
 		$items = array();
 		foreach ( $matches as $match ) {
-			$row = $match[1];
+			$class_attr = $match[1];
+			$row        = $match[2];
 
 			// Pull the inner <p>...</p> — it carries the action HTML.
 			$action_html = '';
@@ -184,18 +188,24 @@ class WCU_WPOrg_Profiles {
 				$time = trim( wp_strip_all_tags( $ts[1] ) );
 			}
 
-			// Activity category (drives sidebar tabs) + specific action type
-			// (drives icon choice). The first wporgactivity-* class is the
-			// category bucket (blogs / learn / glotpress / wordcamp / etc.);
-			// the second is the granular action (blog_post_create, etc.).
+			// Category + type are read from the OUTER class attribute (now
+			// captured separately). Three flavours:
+			//   - `wporgactivity wporgactivity-{cat} wporgactivity-{action}`
+			//     (blogs/forums/slack/learn/glotpress/wordcamp/photos/etc.)
+			//   - `tracplugins` for plugin-SVN commits.
+			//   - `github-{Org}-{Repo}` for issues/PRs/commits on a
+			//     wp.org-tracked GitHub repo.
 			$category = 'activity';
 			$type     = 'activity';
-			if ( preg_match( '/wporgactivity-([a-z0-9_-]+)\s+wporgactivity-([a-z0-9_-]+)/i', $row, $tm ) ) {
+			if ( preg_match( '/wporgactivity-([a-z0-9_-]+)\s+wporgactivity-([a-z0-9_-]+)/i', $class_attr, $tm ) ) {
 				$category = $tm[1];
 				$type     = $tm[2];
-			} elseif ( false !== strpos( $row, 'tracplugins' ) ) {
+			} elseif ( false !== strpos( $class_attr, 'tracplugins' ) ) {
 				$category = 'plugins';
 				$type     = 'plugin_commit';
+			} elseif ( false !== strpos( $class_attr, 'github-' ) ) {
+				$category = 'github';
+				$type     = 'github_activity';
 			}
 
 			if ( '' === $action_html ) {
