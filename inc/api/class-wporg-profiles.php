@@ -378,6 +378,7 @@ class WCU_WPOrg_Profiles {
 			}
 			$badges[] = array(
 				'slug' => $slug,
+				'icon' => '',
 				'name' => $name,
 			);
 		}
@@ -414,9 +415,9 @@ class WCU_WPOrg_Profiles {
 		//     <div class="badge item dashicons badge-{slug} dashicons-{icon}"></div>
 		//     {Display Name}
 		//   </li>
-		// The slug is in the badge-* class; the name is the text node after
-		// the closing </div> and before the </li>.
-		$pattern = '/<div\s+class="badge\s+item\s+dashicons\s+badge-([a-z0-9-]+)[^"]*"[^>]*>\s*<\/div>\s*([^<]+?)\s*<\/li>/is';
+		// Capture the badge slug, the dashicon class (so we can render the
+		// same icon wp.org shows), and the display name.
+		$pattern = '/<div\s+class="badge\s+item\s+dashicons\s+badge-([a-z0-9-]+)\s+dashicons-([a-z0-9-]+)[^"]*"[^>]*>\s*<\/div>\s*([^<]+?)\s*<\/li>/is';
 		preg_match_all( $pattern, $html, $matches );
 
 		$badges = array();
@@ -428,8 +429,10 @@ class WCU_WPOrg_Profiles {
 					continue;
 				}
 
-				$name = isset( $matches[2][ $i ] )
-					? trim( preg_replace( '/\s+/', ' ', wp_strip_all_tags( $matches[2][ $i ] ) ) )
+				$icon = isset( $matches[2][ $i ] ) ? sanitize_html_class( $matches[2][ $i ] ) : '';
+
+				$name = isset( $matches[3][ $i ] )
+					? trim( preg_replace( '/\s+/', ' ', wp_strip_all_tags( $matches[3][ $i ] ) ) )
 					: '';
 				if ( '' === $name ) {
 					$name = ucwords( str_replace( '-', ' ', $slug ) );
@@ -447,6 +450,7 @@ class WCU_WPOrg_Profiles {
 
 				$badges[] = array(
 					'slug' => $slug,
+					'icon' => $icon,
 					'name' => sanitize_text_field( $name ),
 				);
 			}

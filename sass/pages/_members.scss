@@ -741,12 +741,17 @@
 // -----------------------------------------------------------------------------
 // Badges
 // -----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
+// Badges — match WordPress.org's visual treatment: a circular colored
+// dashicon disc next to the badge name. Uses the `dashicons` font that
+// wp_enqueue_style('dashicons') loads on member singles.
+// -----------------------------------------------------------------------------
 .wcu-folks-badges {
 	@include list-reset;
 
 	display: flex;
 	flex-wrap: wrap;
-	gap: $space-2;
+	gap: $space-3;
 
 	li {
 		margin: 0;
@@ -757,7 +762,7 @@
 	display: inline-flex;
 	gap: $space-2;
 	align-items: center;
-	padding: 0.4rem $space-3;
+	padding: $space-1 $space-3 $space-1 $space-1;
 	font-family: $font-heading;
 	font-size: $font-size-sm;
 	font-weight: $font-weight-medium;
@@ -767,42 +772,62 @@
 	border-radius: $radius-pill;
 }
 
-.wcu-folks-badge__dot {
-	display: inline-block;
+.wcu-folks-badge__icon {
+	display: inline-flex;
 	flex-shrink: 0;
-	width: 0.6rem;
-	height: 0.6rem;
-	background-color: $color-primary;
+	align-items: center;
+	justify-content: center;
+	width: 1.75rem;
+	height: 1.75rem;
+	font-size: 1rem;
+	color: $color-white;
+	// Dashicons font ships at 20px line-height — re-center inside our 1.75rem disc.
+	line-height: 1;
+	background-color: #2271B1; // wp.org default badge blue (overridden per slug below).
 	border-radius: $radius-circle;
+
+	&.dashicons,
+	&.dashicons::before {
+		width: 1rem;
+		height: 1rem;
+		font-size: 1rem;
+		line-height: 1;
+	}
 }
 
-// Badge color hints based on common wp.org slugs.
-.wcu-folks-badge--core-team .wcu-folks-badge__dot,
-.wcu-folks-badge--core-contributor .wcu-folks-badge__dot { background-color: #2271B1; }
-
-.wcu-folks-badge--plugin-developer .wcu-folks-badge__dot,
-.wcu-folks-badge--plugin-author .wcu-folks-badge__dot { background-color: #826EB4; }
-
-.wcu-folks-badge--theme-developer .wcu-folks-badge__dot,
-.wcu-folks-badge--theme-author .wcu-folks-badge__dot { background-color: #EC4899; }
-
-.wcu-folks-badge--community-team .wcu-folks-badge__dot,
-.wcu-folks-badge--community-contributor .wcu-folks-badge__dot,
-.wcu-folks-badge--meetup-organizer .wcu-folks-badge__dot,
-.wcu-folks-badge--wordcamp-speaker .wcu-folks-badge__dot { background-color: #16A34A; }
-
-.wcu-folks-badge--polyglots-team .wcu-folks-badge__dot,
-.wcu-folks-badge--translation-editor .wcu-folks-badge__dot,
-.wcu-folks-badge--translation-contributor .wcu-folks-badge__dot { background-color: #F59E0B; }
-
-.wcu-folks-badge--accessibility-team .wcu-folks-badge__dot,
-.wcu-folks-badge--accessibility-contributor .wcu-folks-badge__dot { background-color: #06B6D4; }
-
-.wcu-folks-badge--training-team .wcu-folks-badge__dot,
-.wcu-folks-badge--training-contributor .wcu-folks-badge__dot { background-color: #DB2777; }
-
-.wcu-folks-badge--photos-team .wcu-folks-badge__dot,
-.wcu-folks-badge--photo-contributor .wcu-folks-badge__dot { background-color: #14B8A6; }
+// Per-slug color map, matching profiles.wordpress.org's stylesheet.
+// (Dashicons character + circle color combine to identify each badge.)
+.wcu-folks-badge--organizer .wcu-folks-badge__icon { background-color: #DC3232; } // Meetup / WordCamp Organizer.
+.wcu-folks-badge--speaker .wcu-folks-badge__icon { background-color: #826EB4; }
+.wcu-folks-badge--wordcamp-volunteer .wcu-folks-badge__icon,
+.wcu-folks-badge--volunteer .wcu-folks-badge__icon { background-color: #00A0D2; }
+.wcu-folks-badge--photo-contributor .wcu-folks-badge__icon,
+.wcu-folks-badge--photos-team .wcu-folks-badge__icon { background-color: #14B8A6; }
+.wcu-folks-badge--plugins .wcu-folks-badge__icon,
+.wcu-folks-badge--plugin-developer .wcu-folks-badge__icon,
+.wcu-folks-badge--plugin-author .wcu-folks-badge__icon { background-color: #826EB4; }
+.wcu-folks-badge--themes .wcu-folks-badge__icon,
+.wcu-folks-badge--theme-developer .wcu-folks-badge__icon,
+.wcu-folks-badge--theme-author .wcu-folks-badge__icon { background-color: #EC4899; }
+.wcu-folks-badge--translation-contributor .wcu-folks-badge__icon,
+.wcu-folks-badge--translation-editor .wcu-folks-badge__icon,
+.wcu-folks-badge--polyglots-team .wcu-folks-badge__icon { background-color: #F59E0B; }
+.wcu-folks-badge--core-team .wcu-folks-badge__icon,
+.wcu-folks-badge--core-contributor .wcu-folks-badge__icon,
+.wcu-folks-badge--core .wcu-folks-badge__icon { background-color: #2271B1; }
+.wcu-folks-badge--community-team .wcu-folks-badge__icon,
+.wcu-folks-badge--community-contributor .wcu-folks-badge__icon { background-color: #16A34A; }
+.wcu-folks-badge--accessibility-team .wcu-folks-badge__icon,
+.wcu-folks-badge--accessibility-contributor .wcu-folks-badge__icon { background-color: #06B6D4; }
+.wcu-folks-badge--training-team .wcu-folks-badge__icon,
+.wcu-folks-badge--training-contributor .wcu-folks-badge__icon { background-color: #DB2777; }
+.wcu-folks-badge--documentation-team .wcu-folks-badge__icon,
+.wcu-folks-badge--documentation-contributor .wcu-folks-badge__icon { background-color: #166534; }
+.wcu-folks-badge--meta-team .wcu-folks-badge__icon,
+.wcu-folks-badge--meta-contributor .wcu-folks-badge__icon { background-color: #6B7280; }
+.wcu-folks-badge--openverse-team .wcu-folks-badge__icon,
+.wcu-folks-badge--openverse-contributor .wcu-folks-badge__icon { background-color: #FE6E66; }
+.wcu-folks-badge--learn-contributor .wcu-folks-badge__icon { background-color: #F59E0B; }
 
 // -----------------------------------------------------------------------------
 // Authored plugins / themes list

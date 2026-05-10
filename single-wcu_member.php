@@ -374,7 +374,7 @@ while ( have_posts() ) :
 								<?php foreach ( $wcu_badges as $wcu_badge ) : ?>
 									<li>
 										<span class="wcu-folks-badge wcu-folks-badge--<?php echo esc_attr( $wcu_badge['slug'] ); ?>">
-											<span class="wcu-folks-badge__dot" aria-hidden="true"></span>
+											<span class="wcu-folks-badge__icon dashicons dashicons-<?php echo esc_attr( ! empty( $wcu_badge['icon'] ) ? $wcu_badge['icon'] : "awards" ); ?>" aria-hidden="true"></span>
 											<span class="wcu-folks-badge__name"><?php echo esc_html( $wcu_badge['name'] ); ?></span>
 										</span>
 									</li>
