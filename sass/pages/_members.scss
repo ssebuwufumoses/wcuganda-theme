@@ -828,15 +828,106 @@
 .wcu-folks-badge--polyglots-contributor .wcu-folks-badge__icon { color: rgb(195, 34, 131); }
 
 // -----------------------------------------------------------------------------
-// Authored plugins / themes list
+// Plugins grid (matches wp.org profile Plugins tab) — 3 columns, each card
+// has a square icon thumbnail + name + rating + active installs count.
 // -----------------------------------------------------------------------------
-.wcu-folks-projects {
+.wcu-folks-projects-grid {
 	@include list-reset;
 
 	display: grid;
-	gap: $space-3;
+	gap: $space-6 $space-5;
+	grid-template-columns: 1fr;
 
 	@include breakpoint-up(sm) {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+
+	@include breakpoint-up(md) {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+
+	li {
+		margin: 0;
+	}
+}
+
+.wcu-folks-project-card {
+	display: flex;
+	gap: $space-3;
+	align-items: flex-start;
+}
+
+.wcu-folks-project-card__icon {
+	flex-shrink: 0;
+	display: block;
+	width: 5rem;
+	height: 5rem;
+	overflow: hidden;
+	background-color: var(--wcu-bg-alt);
+	border-radius: $radius-sm;
+
+	img {
+		display: block;
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+	}
+}
+
+.wcu-folks-project-card__placeholder {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	height: 100%;
+	font-family: $font-heading;
+	font-size: $font-size-2xl;
+	font-weight: $font-weight-bold;
+	color: $color-primary;
+	background-color: rgba($color-primary, 0.12);
+}
+
+.wcu-folks-project-card__body {
+	display: flex;
+	flex-direction: column;
+	gap: $space-1;
+	min-width: 0;
+}
+
+.wcu-folks-project-card__name {
+	font-family: $font-heading;
+	font-size: $font-size-md;
+	font-weight: $font-weight-semibold;
+	line-height: $line-height-snug;
+	color: $color-primary;
+	text-decoration: underline;
+	text-underline-offset: 2px;
+
+	&:hover,
+	&:focus-visible {
+		color: $color-primary-dark;
+	}
+}
+
+.wcu-folks-project-card__meta {
+	font-family: $font-heading;
+	font-size: $font-size-sm;
+	font-style: italic;
+	color: var(--wcu-text-muted);
+}
+
+// -----------------------------------------------------------------------------
+// Themes grid (matches wp.org profile Themes tab) — 2 columns, large
+// screenshot above the title.
+// -----------------------------------------------------------------------------
+.wcu-folks-themes-grid {
+	@include list-reset;
+
+	display: grid;
+	gap: $space-8 $space-6;
+	grid-template-columns: 1fr;
+
+	@include breakpoint-up(md) {
 		grid-template-columns: repeat(2, minmax(0, 1fr));
 	}
 
@@ -845,86 +936,86 @@
 	}
 }
 
-.wcu-folks-projects--themes {
-	@include breakpoint-up(md) {
-		grid-template-columns: repeat(3, minmax(0, 1fr));
-	}
+.wcu-folks-theme-card {
+	display: flex;
+	flex-direction: column;
+	gap: $space-2;
 }
 
-.wcu-folks-project__link {
-	display: flex;
-	gap: $space-3;
-	align-items: flex-start;
-	padding: $space-3;
-	color: var(--wcu-text);
-	text-decoration: none;
+.wcu-folks-theme-card__screenshot {
+	display: block;
+	overflow: hidden;
 	background-color: var(--wcu-bg-alt);
 	border: $border-width solid var(--wcu-border);
-	border-radius: $radius-md;
-	transition: border-color $transition-fast, background-color $transition-fast;
+	border-radius: $radius-sm;
 
-	&:hover,
-	&:focus-visible {
-		background-color: var(--wcu-bg-alt);
-		border-color: $color-primary;
+	img {
+		display: block;
+		width: 100%;
+		height: auto;
+		aspect-ratio: 4 / 3;
+		object-fit: cover;
 	}
 }
 
-.wcu-folks-project__icon {
-	flex-shrink: 0;
-	width: 3rem;
-	height: 3rem;
-	overflow: hidden;
-	object-fit: cover;
-	background-color: var(--wcu-bg-alt);
-	border-radius: $radius-md;
-}
-
-.wcu-folks-project__icon--theme {
-	width: 5rem;
-	height: 3rem;
-}
-
-.wcu-folks-project__icon--placeholder {
+.wcu-folks-theme-card__placeholder {
 	display: flex;
 	align-items: center;
 	justify-content: center;
+	width: 100%;
+	aspect-ratio: 4 / 3;
 	font-family: $font-heading;
-	font-size: $font-size-lg;
+	font-size: $font-size-4xl;
 	font-weight: $font-weight-bold;
 	color: $color-primary;
-	background-color: rgba($color-primary, 0.1);
+	background-color: rgba($color-primary, 0.12);
 }
 
-.wcu-folks-project__body {
+.wcu-folks-theme-card__body {
 	display: flex;
 	flex-direction: column;
 	gap: $space-1;
 	min-width: 0;
 }
 
-.wcu-folks-project__name {
+.wcu-folks-theme-card__name {
 	font-family: $font-heading;
 	font-size: $font-size-md;
 	font-weight: $font-weight-semibold;
-	color: var(--wcu-text);
+	line-height: $line-height-snug;
+	color: $color-primary;
+	text-decoration: underline;
+	text-underline-offset: 2px;
 
-	.wcu-folks-project__link:hover &,
-	.wcu-folks-project__link:focus-visible & {
-		color: $color-primary;
+	&:hover,
+	&:focus-visible {
+		color: $color-primary-dark;
 	}
 }
 
-.wcu-folks-project__desc {
+.wcu-folks-theme-card__meta {
+	font-family: $font-heading;
 	font-size: $font-size-sm;
-	line-height: $line-height-base;
+	font-style: italic;
 	color: var(--wcu-text-muted);
 }
 
-.wcu-folks-project__meta {
-	font-family: $font-heading;
-	font-size: $font-size-xs;
-	color: var(--wcu-text-muted);
+// -----------------------------------------------------------------------------
+// Star rating row — shared by plugin + theme cards (and anything else
+// that wants the wp.org 5-star treatment).
+// -----------------------------------------------------------------------------
+.wcu-folks-stars {
+	display: inline-flex;
+	gap: 1px;
+	font-size: $font-size-md;
+	line-height: 1;
+	color: var(--wcu-border-strong);
+}
+
+.wcu-folks-stars__star {
+	&.is-filled {
+		color: #FFB900; // wp.org star color.
+	}
 }
 
 // -----------------------------------------------------------------------------
