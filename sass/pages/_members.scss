@@ -403,6 +403,83 @@
 }
 
 // -----------------------------------------------------------------------------
+// Hero meta rows — Specialties + Availability rendered in the hero card's
+// right column with an inline eyebrow label, replacing the redundant
+// rows that used to live below the card.
+// -----------------------------------------------------------------------------
+.wcu-folks-hero__meta-row {
+	display: flex;
+	flex-direction: column;
+	gap: $space-2;
+
+	@include breakpoint-up(sm) {
+		flex-direction: row;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: $space-2 $space-3;
+	}
+}
+
+.wcu-folks-hero__meta-label {
+	flex-shrink: 0;
+	font-family: $font-heading;
+	font-size: $font-size-xs;
+	font-weight: $font-weight-semibold;
+	color: rgba($color-text-on-dark, 0.6);
+	letter-spacing: 0.08em;
+	text-transform: uppercase;
+
+	@include breakpoint-up(sm) {
+		min-width: 5.5rem;
+	}
+}
+
+.wcu-folks-hero__meta-chips {
+	@include list-reset;
+
+	display: flex;
+	flex-wrap: wrap;
+	gap: $space-2;
+
+	li {
+		margin: 0;
+	}
+}
+
+.wcu-folks-hero__chip {
+	display: inline-flex;
+	align-items: center;
+	padding: 0.25rem $space-2;
+	font-family: $font-mono;
+	font-size: $font-size-xs;
+	font-weight: $font-weight-medium;
+	color: rgba($color-text-on-dark, 0.85);
+	background-color: rgba($color-text-on-dark, 0.06);
+	border: $border-width solid rgba($color-text-on-dark, 0.12);
+	border-radius: $radius-pill;
+}
+
+// Availability chips get semantic colors against the dark hero, similar
+// to the previous below-hero pills but tuned for dark-on-dark contrast.
+.wcu-folks-hero__chip--hire {
+	color: #6EE7A4;
+	background-color: rgba(110, 231, 164, 0.12);
+	border-color: rgba(110, 231, 164, 0.25);
+}
+
+.wcu-folks-hero__chip--sponsor {
+	color: #FBBF77;
+	background-color: rgba(251, 191, 119, 0.12);
+	border-color: rgba(251, 191, 119, 0.25);
+}
+
+.wcu-folks-hero__chip--volunteer {
+	color: $color-primary;
+	background-color: rgba($color-primary, 0.12);
+	border-color: rgba($color-primary, 0.3);
+}
+
+// -----------------------------------------------------------------------------
 // Below-hero strips: availability + info grid + specialties + roles
 // -----------------------------------------------------------------------------
 .wcu-folks-availability,

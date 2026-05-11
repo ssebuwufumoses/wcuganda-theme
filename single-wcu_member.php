@@ -204,6 +204,34 @@ while ( have_posts() ) :
 							<?php endforeach; ?>
 						</ul>
 					<?php endif; ?>
+
+					<?php if ( ! empty( $wcu_specialty_list ) ) : ?>
+						<div class="wcu-folks-hero__meta-row">
+							<span class="wcu-folks-hero__meta-label"><?php esc_html_e( 'Specialties', 'wcuganda' ); ?></span>
+							<ul class="wcu-folks-hero__meta-chips">
+								<?php foreach ( $wcu_specialty_list as $wcu_specialty ) : ?>
+									<li><span class="wcu-folks-hero__chip"><?php echo esc_html( $wcu_specialty ); ?></span></li>
+								<?php endforeach; ?>
+							</ul>
+						</div>
+					<?php endif; ?>
+
+					<?php if ( $wcu_is_for_hire || $wcu_open_sponsorship || $wcu_open_volunteering ) : ?>
+						<div class="wcu-folks-hero__meta-row">
+							<span class="wcu-folks-hero__meta-label"><?php esc_html_e( 'Available', 'wcuganda' ); ?></span>
+							<ul class="wcu-folks-hero__meta-chips" aria-label="<?php esc_attr_e( 'Availability', 'wcuganda' ); ?>">
+								<?php if ( $wcu_is_for_hire ) : ?>
+									<li><span class="wcu-folks-hero__chip wcu-folks-hero__chip--hire"><?php esc_html_e( 'For hire', 'wcuganda' ); ?></span></li>
+								<?php endif; ?>
+								<?php if ( $wcu_open_sponsorship ) : ?>
+									<li><span class="wcu-folks-hero__chip wcu-folks-hero__chip--sponsor"><?php esc_html_e( 'Sponsorship', 'wcuganda' ); ?></span></li>
+								<?php endif; ?>
+								<?php if ( $wcu_open_volunteering ) : ?>
+									<li><span class="wcu-folks-hero__chip wcu-folks-hero__chip--volunteer"><?php esc_html_e( 'Volunteering', 'wcuganda' ); ?></span></li>
+								<?php endif; ?>
+							</ul>
+						</div>
+					<?php endif; ?>
 				</div>
 
 				<div class="wcu-folks-hero__actions">
@@ -226,23 +254,6 @@ while ( have_posts() ) :
 				</div>
 
 			</header>
-
-			<?php if ( $wcu_is_for_hire || $wcu_open_sponsorship || $wcu_open_volunteering ) : ?>
-				<div class="wcu-folks-availability">
-					<span class="wcu-folks-availability__label"><?php esc_html_e( 'Availability', 'wcuganda' ); ?></span>
-					<ul class="wcu-folks-availability__list" aria-label="<?php esc_attr_e( 'Availability', 'wcuganda' ); ?>">
-						<?php if ( $wcu_is_for_hire ) : ?>
-							<li><span class="wcu-folks-availability__pill wcu-folks-availability__pill--hire"><?php esc_html_e( 'Available for hire', 'wcuganda' ); ?></span></li>
-						<?php endif; ?>
-						<?php if ( $wcu_open_sponsorship ) : ?>
-							<li><span class="wcu-folks-availability__pill wcu-folks-availability__pill--sponsor"><?php esc_html_e( 'Open to sponsorship', 'wcuganda' ); ?></span></li>
-						<?php endif; ?>
-						<?php if ( $wcu_open_volunteering ) : ?>
-							<li><span class="wcu-folks-availability__pill wcu-folks-availability__pill--volunteer"><?php esc_html_e( 'Open to volunteering', 'wcuganda' ); ?></span></li>
-						<?php endif; ?>
-					</ul>
-				</div>
-			<?php endif; ?>
 
 			<?php if ( ! empty( $wcu_company ) || ! empty( $wcu_hosting ) || ! empty( $wcu_first_wp ) || ! empty( $wcu_birthday ) ) : ?>
 				<dl class="wcu-folks-info">
@@ -271,17 +282,6 @@ while ( have_posts() ) :
 						</div>
 					<?php endif; ?>
 				</dl>
-			<?php endif; ?>
-
-			<?php if ( ! empty( $wcu_specialty_list ) ) : ?>
-				<div class="wcu-folks-specialties">
-					<span class="wcu-folks-specialties__label"><?php esc_html_e( 'Specialties', 'wcuganda' ); ?></span>
-					<ul class="wcu-folks-specialties__list">
-						<?php foreach ( $wcu_specialty_list as $wcu_specialty ) : ?>
-							<li><span class="wcu-folks-specialties__chip"><?php echo esc_html( $wcu_specialty ); ?></span></li>
-						<?php endforeach; ?>
-					</ul>
-				</div>
 			<?php endif; ?>
 
 			<?php if ( $wcu_role_terms && ! is_wp_error( $wcu_role_terms ) ) : ?>
