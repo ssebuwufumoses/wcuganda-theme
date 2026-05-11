@@ -75,7 +75,7 @@ class WCU_WPOrg_Profiles {
 			delete_transient( self::CACHE_PREFIX . $hash );
 			delete_transient( self::AVATAR_PREFIX . $hash );
 			delete_transient( self::ACTIVITY_PREFIX . $hash );
-			foreach ( array( 'courses', 'photos', 'favorites', 'translations' ) as $section ) {
+			foreach ( array( 'courses', 'photos', 'favorites', 'translations', 'about' ) as $section ) {
 				delete_transient( 'wcu_wporg_' . $section . '_' . $hash );
 			}
 		}
@@ -312,6 +312,31 @@ class WCU_WPOrg_Profiles {
 	 * @param string $username wp.org username.
 	 * @return array<int,array{locale_name: string, locale_code: string, projects: array}>
 	 */
+	/**
+	 * Get the About / Bio text from the profile.
+	 *
+	 * @param string $username wp.org username.
+	 * @return string Sanitized bio paragraph, or '' if empty.
+	 */
+	public static function get_about( $username ) {
+		$result = self::get_section_data( $username, 'about', static function ( $html ) {
+			if ( ! preg_match( '/<div\s+class="item-meta-about"[^>]*>(.*?)<\/div>/is', $html, $sec ) ) {
+				return array();
+			}
+			$body = $sec[1];
+
+			// Collapse <p>...</p> blocks into plain paragraphs separated
+			// by a single blank line, then strip remaining tags.
+			$body = preg_replace( '/\s*<\/p>\s*<p[^>]*>\s*/i', "\n\n", $body );
+			$body = wp_strip_all_tags( $body );
+			$body = trim( preg_replace( '/[ \t]+/', ' ', $body ) );
+
+			return $body !== '' ? array( 'text' => $body ) : array();
+		} );
+
+		return isset( $result['text'] ) ? (string) $result['text'] : '';
+	}
+
 	public static function get_translations( $username ) {
 		return self::get_section_data( $username, 'translations', static function ( $html ) {
 			// Translations div has flat content (h3s + links, no nested
@@ -562,6 +587,20 @@ class WCU_WPOrg_Profiles {
 				// Prefer the largest size advertised — WP usually exposes 24/48/96.
 				$avatars = $body[0]['avatar_urls'];
 				$url     = (string) ( $avatars['96'] ?? end( $avatars ) );
+			}
+		}
+
+		// REST endpoint returns `[]` for many users (the profiles.wordpress.org
+		// REST is not consistently populated). Fall back to grabbing the first
+		// secure.gravatar.com image from the profile HTML — wp.org always
+		// embeds it as the avatar.
+		if ( '' === $url ) {
+			$html = self::fetch_profile_html( $username );
+			if ( '' !== $html
+				&& preg_match( '/<img[^>]+\bsrc=["\']([^"\']*secure\.gravatar\.com\/avatar\/[^"\']+)["\']/i', $html, $am ) ) {
+				// HTML entity-decode so the gravatar query args (`s=`, `d=`,
+				// etc.) don't arrive double-encoded.
+				$url = html_entity_decode( $am[1], ENT_QUOTES );
 			}
 		}
 

@@ -63,7 +63,7 @@ while ( have_posts() ) :
 	// Fall back to the WordPress.org avatar when no featured image is set.
 	$wcu_wporg_avatar = '';
 	if ( ! has_post_thumbnail() && ! empty( $wcu_wporg_username ) && class_exists( 'WCU_WPOrg_Profiles' ) ) {
-		$wcu_wporg_avatar = WCU_WPOrg_Profiles::get_avatar_url( $wcu_wporg_username, 256 );
+		$wcu_wporg_avatar = WCU_WPOrg_Profiles::get_avatar_url( $wcu_wporg_username, 512 );
 	}
 
 	$wcu_socials = array_filter(
@@ -176,8 +176,21 @@ while ( have_posts() ) :
 				</div>
 
 				<div class="wcu-folks-hero__about">
-					<?php if ( ! empty( $wcu_short_bio ) ) : ?>
-						<p class="wcu-folks-hero__bio"><?php echo esc_html( $wcu_short_bio ); ?></p>
+					<?php
+					// Source priority for the bio: wp.org about (kept in sync
+					// upstream by the member) → manual `_wcu_member_short_bio`
+					// meta → nothing. Long bios are visually clamped via CSS
+					// (line-clamp) so the hero card never breaks.
+					$wcu_bio_text = '';
+					if ( ! empty( $wcu_wporg_username ) && class_exists( 'WCU_WPOrg_Profiles' ) ) {
+						$wcu_bio_text = WCU_WPOrg_Profiles::get_about( $wcu_wporg_username );
+					}
+					if ( '' === $wcu_bio_text && ! empty( $wcu_short_bio ) ) {
+						$wcu_bio_text = (string) $wcu_short_bio;
+					}
+					if ( '' !== $wcu_bio_text ) :
+						?>
+						<p class="wcu-folks-hero__bio"><?php echo esc_html( $wcu_bio_text ); ?></p>
 					<?php endif; ?>
 
 					<?php if ( $wcu_skill_terms && ! is_wp_error( $wcu_skill_terms ) ) : ?>
