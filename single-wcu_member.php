@@ -177,10 +177,13 @@ while ( have_posts() ) :
 
 				<div class="wcu-folks-hero__about">
 					<?php
-					// Source priority for the bio: wp.org about (kept in sync
-					// upstream by the member) → manual `_wcu_member_short_bio`
-					// meta → nothing. Long bios are visually clamped via CSS
-					// (line-clamp) so the hero card never breaks.
+					// Bio source is resolved here once so the dedicated About
+					// section below the hero can render it. Priority order:
+					// wp.org about (kept in sync upstream by the member) →
+					// manual `_wcu_member_short_bio` meta → the post body
+					// fallback rendered further down via the_content().
+					// The bio NO LONGER renders inside the hero card itself —
+					// long paragraphs were dominating the right column.
 					$wcu_bio_text = '';
 					if ( ! empty( $wcu_wporg_username ) && class_exists( 'WCU_WPOrg_Profiles' ) ) {
 						$wcu_bio_text = WCU_WPOrg_Profiles::get_about( $wcu_wporg_username );
@@ -188,10 +191,7 @@ while ( have_posts() ) :
 					if ( '' === $wcu_bio_text && ! empty( $wcu_short_bio ) ) {
 						$wcu_bio_text = (string) $wcu_short_bio;
 					}
-					if ( '' !== $wcu_bio_text ) :
-						?>
-						<p class="wcu-folks-hero__bio"><?php echo esc_html( $wcu_bio_text ); ?></p>
-					<?php endif; ?>
+					?>
 
 					<?php if ( $wcu_skill_terms && ! is_wp_error( $wcu_skill_terms ) ) : ?>
 						<ul class="wcu-folks-hero__tags" aria-label="<?php esc_attr_e( 'Skills', 'wcuganda' ); ?>">
@@ -299,19 +299,30 @@ while ( have_posts() ) :
 				</div>
 			<?php endif; ?>
 
-			<?php if ( get_the_content() ) : ?>
+			<?php
+			// Dedicated About section. Source priority: bio resolved above
+			// (wp.org about → manual short_bio) → the post body content.
+			// Render only when at least one source has content.
+			$wcu_has_post_content = trim( wp_strip_all_tags( get_the_content() ) ) !== '';
+			if ( '' !== $wcu_bio_text || $wcu_has_post_content ) :
+				?>
 				<section class="wcu-folks-bio">
 					<h2 class="wcu-folks-bio__heading"><?php esc_html_e( 'About', 'wcuganda' ); ?></h2>
 					<div class="wcu-folks-bio__content">
+						<?php if ( '' !== $wcu_bio_text ) : ?>
+							<?php echo wp_kses_post( wpautop( $wcu_bio_text ) ); ?>
+						<?php endif; ?>
 						<?php
-						the_content();
+						if ( $wcu_has_post_content ) {
+							the_content();
 
-						wp_link_pages(
-							array(
-								'before' => '<div class="page-links">' . esc_html__( 'Pages:', 'wcuganda' ),
-								'after'  => '</div>',
-							)
-						);
+							wp_link_pages(
+								array(
+									'before' => '<div class="page-links">' . esc_html__( 'Pages:', 'wcuganda' ),
+									'after'  => '</div>',
+								)
+							);
+						}
 						?>
 					</div>
 				</section>

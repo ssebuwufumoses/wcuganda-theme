@@ -360,18 +360,11 @@
 	}
 }
 
+// .wcu-folks-hero__bio is no longer rendered inside the hero card —
+// it lives in the dedicated About section below the hero. Style retained
+// here as a no-op in case any legacy markup still references it.
 .wcu-folks-hero__bio {
-	margin: 0;
-	font-size: $font-size-md;
-	line-height: $line-height-relaxed;
-	color: rgba($color-text-on-dark, 0.85);
-	// Clamp to 5 lines so an editor pasting a long wp.org bio doesn't
-	// blow out the hero card height. The full bio still reads on the
-	// wp.org profile via the "View full profile" link below.
-	display: -webkit-box;
-	-webkit-line-clamp: 5;
-	-webkit-box-orient: vertical;
-	overflow: hidden;
+	display: none;
 }
 
 .wcu-folks-hero__tags {
