@@ -159,8 +159,20 @@
 // Hero card — dark, rounded, padded box with two columns inside.
 // Sized to the content: tightened padding + gaps + avatar so the card
 // doesn't have huge empty real estate beyond the data it carries.
+//
+// Layout strategy:
+// - Mobile: flex column stack (identity → about → actions).
+// - Tablet+: CSS grid with named areas (`identity about` / `actions`).
+//
+// Important: children carry `grid-area: identity/about/actions` props
+// unconditionally. When the parent is `display: grid` but the areas
+// AREN'T defined (i.e. mobile), browsers place all three children at
+// the same implicit cell and they overlap. Switching the parent to
+// flex on mobile sidesteps that entirely — the grid-area props become
+// no-ops, and source order produces a clean stack.
 .wcu-folks-hero {
-	display: grid;
+	display: flex;
+	flex-direction: column;
 	gap: $space-5;
 	margin-top: $space-5;
 	padding: $space-5;
@@ -170,6 +182,7 @@
 	box-shadow: $shadow-md;
 
 	@include breakpoint-up(md) {
+		display: grid;
 		gap: $space-6;
 		padding: $space-6;
 		grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
