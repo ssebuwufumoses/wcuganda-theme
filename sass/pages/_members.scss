@@ -202,6 +202,24 @@
 	gap: $space-2;
 	padding-top: $space-4;
 	border-top: $border-width solid rgba($color-text-on-dark, 0.1);
+
+	// The default .wcu-btn--outline uses $color-primary-dark text
+	// (#166534), which fails AA/AAA on the dark hero card (2.37:1).
+	// Override with the bright brand primary (#3ECF8E) — 8.4:1 on
+	// $color-bg-dark, comfortably AAA. Hover still flips to dark
+	// text on bright fill so the interaction state is unambiguous.
+	.wcu-btn--outline {
+		color: $color-primary;
+		border-color: $color-primary;
+
+		&:hover,
+		&:focus,
+		&:focus-visible {
+			color: $color-text-on-light;
+			background-color: $color-primary;
+			border-color: $color-primary;
+		}
+	}
 }
 
 .wcu-folks-hero__avatar {
