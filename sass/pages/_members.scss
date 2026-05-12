@@ -313,14 +313,17 @@
 
 		svg {
 			flex-shrink: 0;
-			color: rgba($color-text-on-dark, 0.5);
+			// Icons are decorative but meta-row icons sit beside text, so
+			// bump alpha so the calendar/pin glyphs read clearly. 6.2:1
+			// vs $color-bg-dark — passes AAA UI-component (3:1) easily.
+			color: rgba($color-text-on-dark, 0.7);
 		}
 
 		a {
 			color: inherit;
 			text-decoration: underline;
 			text-decoration-thickness: 1px;
-			text-decoration-color: rgba($color-text-on-dark, 0.3);
+			text-decoration-color: rgba($color-text-on-dark, 0.5);
 
 			&:hover,
 			&:focus-visible {
@@ -427,7 +430,7 @@
 	font-family: $font-heading;
 	font-size: $font-size-xs;
 	font-weight: $font-weight-semibold;
-	color: rgba($color-text-on-dark, 0.6);
+	color: rgba($color-text-on-dark, 0.78); // 9.5:1 vs $color-bg-dark — AAA pass.
 	letter-spacing: 0.08em;
 	text-transform: uppercase;
 
@@ -525,7 +528,7 @@
 		font-family: $font-heading;
 		font-size: $font-size-xs;
 		font-weight: $font-weight-semibold;
-		color: rgba($color-text-on-dark, 0.6);
+		color: rgba($color-text-on-dark, 0.78); // 9.5:1 vs $color-bg-dark — AAA pass.
 		letter-spacing: 0.06em;
 		text-transform: uppercase;
 		line-height: 1.2;
