@@ -485,22 +485,41 @@
 // In-hero info grid (Company / Hosting / First WP / Birthday)
 // Replaces the wide labelled table that used to live below the hero
 // card. Renders as a compact 2-col grid of label + value cells with a
-// faint dividing hairline at the top, sized to the dark hero context.
+// hairline at the top, hairline dividers between cells, sized to the
+// dark hero context.
 // -----------------------------------------------------------------------------
 .wcu-folks-hero__info {
 	display: grid;
 	grid-template-columns: repeat(2, minmax(0, 1fr));
-	gap: $space-2 $space-4;
+	gap: 0;
 	margin: $space-2 0 0;
-	padding-top: $space-3;
 	border-top: $border-width solid rgba($color-text-on-dark, 0.1);
 }
 
 .wcu-folks-hero__info-cell {
 	display: flex;
 	flex-direction: column;
-	gap: 2px;
+	gap: $space-1;
 	min-width: 0;
+	padding: $space-3 0;
+	border-bottom: $border-width solid rgba($color-text-on-dark, 0.06);
+
+	// Hairline divider between the two columns on each row. Applied to
+	// the LEFT cell of each row (odd-indexed cells), with a right border.
+	&:nth-child(odd) {
+		padding-right: $space-4;
+		border-right: $border-width solid rgba($color-text-on-dark, 0.06);
+	}
+
+	&:nth-child(even) {
+		padding-left: $space-4;
+	}
+
+	// Last row drops the bottom divider so the grid ends cleanly.
+	&:nth-last-child(-n + 2) {
+		border-bottom: 0;
+		padding-bottom: 0;
+	}
 
 	dt {
 		font-family: $font-heading;
@@ -509,6 +528,7 @@
 		color: rgba($color-text-on-dark, 0.6);
 		letter-spacing: 0.06em;
 		text-transform: uppercase;
+		line-height: 1.2;
 	}
 
 	dd {
@@ -517,6 +537,7 @@
 		font-size: $font-size-sm;
 		font-weight: $font-weight-medium;
 		color: rgba($color-text-on-dark, 0.95);
+		line-height: 1.3;
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
