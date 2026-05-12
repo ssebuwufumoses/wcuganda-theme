@@ -67,10 +67,17 @@ body .site-header {
 	display: flex;
 	flex-direction: column;
 	min-height: 100vh;
+	// Safety net against any descendant element that overshoots the
+	// viewport width (long URLs, oversized iframes, third-party
+	// embeds). `clip` is preferred over `hidden` because it doesn't
+	// create a scroll container and doesn't break `position: sticky`
+	// elsewhere on the page.
+	overflow-x: clip;
 }
 
 .site-content {
 	flex: 1 0 auto;
+	min-width: 0;
 }
 
 .container {

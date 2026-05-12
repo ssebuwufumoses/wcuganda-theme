@@ -818,10 +818,12 @@
 	margin: 0;
 	font-size: $font-size-sm;
 	color: var(--wcu-text-muted);
+	overflow-wrap: anywhere;
 
 	a {
 		font-family: $font-mono;
 		color: $color-primary;
+		overflow-wrap: anywhere;
 		text-decoration: none;
 
 		&:hover,
@@ -1105,6 +1107,7 @@
 	color: $color-primary;
 	text-decoration: underline;
 	text-underline-offset: 2px;
+	overflow-wrap: anywhere;
 
 	&:hover,
 	&:focus-visible {
@@ -1189,6 +1192,7 @@
 	color: $color-primary;
 	text-decoration: underline;
 	text-underline-offset: 2px;
+	overflow-wrap: anywhere;
 
 	&:hover,
 	&:focus-visible {
@@ -1390,6 +1394,7 @@
 	flex: 1 1 auto;
 	min-width: 0;
 	color: var(--wcu-text);
+	overflow-wrap: anywhere;
 
 	a {
 		color: $color-primary;
@@ -1608,11 +1613,14 @@
 	font-size: $font-size-md;
 	line-height: $line-height-base;
 	color: var(--wcu-text);
+	overflow-wrap: anywhere;
+	min-width: 0;
 
 	a {
 		color: $color-primary;
 		text-decoration: underline;
 		text-underline-offset: 2px;
+		overflow-wrap: anywhere;
 
 		&:hover,
 		&:focus-visible {
@@ -1631,6 +1639,7 @@
 	font-weight: $font-weight-semibold;
 	line-height: $line-height-snug;
 	color: var(--wcu-text);
+	overflow-wrap: anywhere;
 }
 
 .wcu-folks-activity__time {
