@@ -29,6 +29,10 @@
 	background-color: $color-primary;
 	border: $border-width-thick solid $color-primary;
 	border-radius: $radius-lg;
+	// iOS / touch optimizations — drop the 300ms tap delay and the
+	// grey tap-highlight tint so button presses feel native.
+	touch-action: manipulation;
+	-webkit-tap-highlight-color: transparent;
 	transition: background-color $transition-fast, border-color $transition-fast,
 		color $transition-fast, transform $transition-fast,
 		box-shadow $transition-fast;

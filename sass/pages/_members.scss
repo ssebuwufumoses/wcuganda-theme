@@ -271,6 +271,10 @@
 	font-size: $h2;
 	line-height: $line-height-tight;
 	color: $color-text-on-dark;
+	// Allow long names to break cleanly on narrow phones rather than
+	// pushing the card horizontally.
+	overflow-wrap: anywhere;
+	min-width: 0;
 }
 
 .wcu-folks-hero__verified {
@@ -305,6 +309,9 @@
 	font-weight: $font-weight-medium;
 	color: $color-primary;
 	letter-spacing: -0.01em;
+	// Long usernames shouldn't push the column horizontally on phones.
+	overflow-wrap: anywhere;
+	min-width: 0;
 }
 
 .wcu-folks-hero__role {
@@ -368,12 +375,18 @@
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		width: 2rem;
-		height: 2rem;
+		// 40x40 hit target — matches iOS HIG (44pt with 4pt extra padding
+		// via flex centering, well above WCAG 2.5.5 Enhanced 24x24).
+		width: 2.5rem;
+		height: 2.5rem;
 		color: rgba($color-text-on-dark, 0.85);
 		background-color: rgba($color-text-on-dark, 0.08);
 		border-radius: $radius-circle;
 		transition: color $transition-fast, background-color $transition-fast;
+		// Drop the 300ms tap delay + the iOS tap-highlight tint so
+		// touches feel native.
+		touch-action: manipulation;
+		-webkit-tap-highlight-color: transparent;
 
 		&:hover,
 		&:focus-visible {
@@ -511,10 +524,16 @@
 // -----------------------------------------------------------------------------
 .wcu-folks-hero__info {
 	display: grid;
-	grid-template-columns: repeat(2, minmax(0, 1fr));
+	// Mobile-first: single column so long values (company names, etc.)
+	// render fully instead of being ellipsized at 120px-wide cells.
+	grid-template-columns: 1fr;
 	gap: 0;
 	margin: $space-2 0 0;
 	border-top: $border-width solid rgba($color-text-on-dark, 0.1);
+
+	@include breakpoint-up(sm) {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
 }
 
 .wcu-folks-hero__info-cell {
@@ -525,21 +544,29 @@
 	padding: $space-3 0;
 	border-bottom: $border-width solid rgba($color-text-on-dark, 0.06);
 
-	// Hairline divider between the two columns on each row. Applied to
-	// the LEFT cell of each row (odd-indexed cells), with a right border.
-	&:nth-child(odd) {
-		padding-right: $space-4;
-		border-right: $border-width solid rgba($color-text-on-dark, 0.06);
-	}
-
-	&:nth-child(even) {
-		padding-left: $space-4;
-	}
-
-	// Last row drops the bottom divider so the grid ends cleanly.
-	&:nth-last-child(-n + 2) {
+	// Last child drops the bottom divider on mobile (1-col layout).
+	&:last-child {
 		border-bottom: 0;
 		padding-bottom: 0;
+	}
+
+	@include breakpoint-up(sm) {
+		// Hairline divider between the two columns on each row. Applied
+		// to the LEFT cell of each row, with a right border.
+		&:nth-child(odd) {
+			padding-right: $space-4;
+			border-right: $border-width solid rgba($color-text-on-dark, 0.06);
+		}
+
+		&:nth-child(even) {
+			padding-left: $space-4;
+		}
+
+		// Last row (last two cells) drops bottom divider on tablet+.
+		&:nth-last-child(-n + 2) {
+			border-bottom: 0;
+			padding-bottom: 0;
+		}
 	}
 
 	dt {
@@ -559,9 +586,9 @@
 		font-weight: $font-weight-medium;
 		color: rgba($color-text-on-dark, 0.95);
 		line-height: 1.3;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
+		// Allow long company names to break instead of overflowing the
+		// narrow column on small screens.
+		overflow-wrap: anywhere;
 	}
 }
 
@@ -1223,7 +1250,10 @@
 	align-items: center;
 	justify-content: space-between;
 	width: auto;
-	padding: $space-2 0;
+	// Mobile: 40px min hit area + 8px horizontal padding so the tap
+	// targets are comfortable on phones (was ~28px tall, too small).
+	min-height: 2.5rem;
+	padding: $space-2 $space-2;
 	font-family: $font-heading;
 	font-size: $font-size-sm;
 	font-weight: $font-weight-medium;
@@ -1231,6 +1261,8 @@
 	text-decoration: underline;
 	text-decoration-color: transparent;
 	text-underline-offset: 4px;
+	touch-action: manipulation;
+	-webkit-tap-highlight-color: transparent;
 	transition: color $transition-fast, text-decoration-color $transition-fast;
 
 	&:hover {
