@@ -482,6 +482,48 @@
 }
 
 // -----------------------------------------------------------------------------
+// In-hero info grid (Company / Hosting / First WP / Birthday)
+// Replaces the wide labelled table that used to live below the hero
+// card. Renders as a compact 2-col grid of label + value cells with a
+// faint dividing hairline at the top, sized to the dark hero context.
+// -----------------------------------------------------------------------------
+.wcu-folks-hero__info {
+	display: grid;
+	grid-template-columns: repeat(2, minmax(0, 1fr));
+	gap: $space-2 $space-4;
+	margin: $space-2 0 0;
+	padding-top: $space-3;
+	border-top: $border-width solid rgba($color-text-on-dark, 0.1);
+}
+
+.wcu-folks-hero__info-cell {
+	display: flex;
+	flex-direction: column;
+	gap: 2px;
+	min-width: 0;
+
+	dt {
+		font-family: $font-heading;
+		font-size: $font-size-xs;
+		font-weight: $font-weight-semibold;
+		color: rgba($color-text-on-dark, 0.6);
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+	}
+
+	dd {
+		margin: 0;
+		font-family: $font-mono;
+		font-size: $font-size-sm;
+		font-weight: $font-weight-medium;
+		color: rgba($color-text-on-dark, 0.95);
+		overflow: hidden;
+		text-overflow: ellipsis;
+		white-space: nowrap;
+	}
+}
+
+// -----------------------------------------------------------------------------
 // Below-hero strips: availability + info grid + specialties + roles
 // -----------------------------------------------------------------------------
 .wcu-folks-availability,

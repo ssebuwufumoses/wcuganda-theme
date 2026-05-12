@@ -232,6 +232,35 @@ while ( have_posts() ) :
 							</ul>
 						</div>
 					<?php endif; ?>
+
+					<?php if ( ! empty( $wcu_company ) || ! empty( $wcu_hosting ) || ! empty( $wcu_first_wp ) || ! empty( $wcu_birthday ) ) : ?>
+						<dl class="wcu-folks-hero__info">
+							<?php if ( ! empty( $wcu_company ) ) : ?>
+								<div class="wcu-folks-hero__info-cell">
+									<dt><?php esc_html_e( 'Company', 'wcuganda' ); ?></dt>
+									<dd><?php echo esc_html( $wcu_company ); ?></dd>
+								</div>
+							<?php endif; ?>
+							<?php if ( ! empty( $wcu_hosting ) ) : ?>
+								<div class="wcu-folks-hero__info-cell">
+									<dt><?php esc_html_e( 'Hosting', 'wcuganda' ); ?></dt>
+									<dd><?php echo esc_html( $wcu_hosting ); ?></dd>
+								</div>
+							<?php endif; ?>
+							<?php if ( ! empty( $wcu_first_wp ) ) : ?>
+								<div class="wcu-folks-hero__info-cell">
+									<dt><?php esc_html_e( 'First WP', 'wcuganda' ); ?></dt>
+									<dd><?php echo esc_html( $wcu_first_wp ); ?></dd>
+								</div>
+							<?php endif; ?>
+							<?php if ( ! empty( $wcu_birthday ) ) : ?>
+								<div class="wcu-folks-hero__info-cell">
+									<dt><?php esc_html_e( 'Birthday', 'wcuganda' ); ?></dt>
+									<dd><?php echo esc_html( $wcu_birthday ); ?></dd>
+								</div>
+							<?php endif; ?>
+						</dl>
+					<?php endif; ?>
 				</div>
 
 				<div class="wcu-folks-hero__actions">
@@ -255,34 +284,6 @@ while ( have_posts() ) :
 
 			</header>
 
-			<?php if ( ! empty( $wcu_company ) || ! empty( $wcu_hosting ) || ! empty( $wcu_first_wp ) || ! empty( $wcu_birthday ) ) : ?>
-				<dl class="wcu-folks-info">
-					<?php if ( ! empty( $wcu_company ) ) : ?>
-						<div class="wcu-folks-info__row">
-							<dt><?php esc_html_e( 'Company', 'wcuganda' ); ?></dt>
-							<dd><?php echo esc_html( $wcu_company ); ?></dd>
-						</div>
-					<?php endif; ?>
-					<?php if ( ! empty( $wcu_hosting ) ) : ?>
-						<div class="wcu-folks-info__row">
-							<dt><?php esc_html_e( 'Preferred hosting', 'wcuganda' ); ?></dt>
-							<dd><?php echo esc_html( $wcu_hosting ); ?></dd>
-						</div>
-					<?php endif; ?>
-					<?php if ( ! empty( $wcu_first_wp ) ) : ?>
-						<div class="wcu-folks-info__row">
-							<dt><?php esc_html_e( 'First WP version used', 'wcuganda' ); ?></dt>
-							<dd><?php echo esc_html( $wcu_first_wp ); ?></dd>
-						</div>
-					<?php endif; ?>
-					<?php if ( ! empty( $wcu_birthday ) ) : ?>
-						<div class="wcu-folks-info__row">
-							<dt><?php esc_html_e( 'Birthday', 'wcuganda' ); ?></dt>
-							<dd><?php echo esc_html( $wcu_birthday ); ?></dd>
-						</div>
-					<?php endif; ?>
-				</dl>
-			<?php endif; ?>
 
 			<?php if ( $wcu_role_terms && ! is_wp_error( $wcu_role_terms ) ) : ?>
 				<div class="wcu-folks-roles">
